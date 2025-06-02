@@ -14,18 +14,18 @@
                         <a class="nav-link" href="/Projects/AuraEdition/products/listings.php">Vehicles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Projects/AuraEdition/categories.php">Categories</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/pages/categories.php">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Projects/AuraEdition/about.php">About</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/pages/about.php">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Projects/AuraEdition/contact.php">Contact</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/pages/contact.php">Contact</a>
                     </li>
                 </ul>
 
                 <div class="ms-auto d-flex align-items-center">
-                    <a href="/Projects/AuraEdition/auth/login.php">
+                    <a href="/Projects/AuraEdition/pages/cart.php">
                         <i class="bi bi-cart-fill fs-3 me-3 text-light"></i>
                     </a>
 
