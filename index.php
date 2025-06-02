@@ -24,18 +24,107 @@
         <div class="row">
 
             <div class="col-2 mb-4">
-                <div class="square-card bg-black align-items-center d-flex justify-content-center">
-                    <img src="./public/images/hero-img.png" alt="">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-1.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-2.jpg" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-3.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-4.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-5.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-6.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-7.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-8.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-9.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-10.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-11.png" alt="car_brand">
+                </div>
+            </div>
+
+            <div class="col-2 mb-4">
+                <div class="square-card align-items-center d-flex justify-content-center">
+                    <img src="./public/images/make-12.png" alt="car_brand">
                 </div>
             </div>
 
         </div>
     </div>
-
     <!-- Popular Makes Section -->
 
 
     <!-- Featured Vehicles Section -->
+    <div class="container-md my-5">
+        <h2 class="text-start mb-4">Featured Vehicles</h2>
+        <div class="row">
+
+            <div class="col-3 mb-4">
+                <div class="card">
+                    <img src="./public/images/featured-1.jpg" class="card-img-top" alt="Featured Vehicle">
+                    <div class="card-body">
+                        <h5 class="card-title">2023 Lamborghini Huracan</h5>
+                        <p class="card-text">$250,000</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 mb-4">
+                <div class="card">
+                    <img src="./public/images/featured-2.jpg" class="card-img-top" alt="Featured Vehicle">
+                    <div class="card-body">
+                        <h5 class="card-title">2022 Ferrari 488 GTB</h5>
+                        <p class="card-text">$280,000</p>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Featured Vehicles Section -->
 
