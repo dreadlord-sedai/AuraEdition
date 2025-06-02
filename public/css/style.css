@@ -68,8 +68,12 @@ h6 {
 
 }
 
-/* Featured Vehicles */
+/* Product Cards */
 .card, .card-img-top {
-
     border-radius: 0;
+}
+
+.card-img-top {
+    max-height: 250px;
+    object-fit: cover;
 }
