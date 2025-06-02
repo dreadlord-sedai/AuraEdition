@@ -65,5 +65,11 @@ h6 {
   object-fit: cover;
   width: 60%;
   height: auto;
-  
+
+}
+
+/* Featured Vehicles */
+.card, .card-img-top {
+
+    border-radius: 0;
 }
