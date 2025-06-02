@@ -22,10 +22,10 @@
     <div class="container-md my-5">
         <h2 class="text-start mb-4">Popular Makes</h2>
         <div class="row">
+
             <div class="col-2 mb-4">
-                <div class="card aspect-ratio ratio-1x1 bg-black">
-                        <img src="./public/images/hero-img.png" alt="">
-                    </div>
+                <div class="square-card bg-black align-items-center d-flex justify-content-center">
+                    <img src="./public/images/hero-img.png" alt="">
                 </div>
             </div>
 

@@ -10,6 +10,7 @@
 }
 
 
+/* Global Styles */
 
 :root {
     --primary-color: #3498db;
@@ -19,7 +20,7 @@
     --text-color: #333;
     --heading-color: #222;
     --border-radius: 0.5rem;
-    --box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     --primary-font: 'Trajan Pro', serif;
     --secondary-font: 'Inter', Arial, sans-serif;
     --font-size-base: 16px;
@@ -31,14 +32,38 @@
     --spacing-lg: 2rem;
 }
 
-body, p, li, span, a {
+body,
+p,
+li,
+span,
+a {
     font-family: var(--secondary-font);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--primary-font);
 }
 
+
+/* Navigation */
 .logo {
     font-family: var(--primary-font);
+}
+
+
+/* Popular Makes */
+.square-card {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+.square-card img {
+  object-fit: cover;
+  width: 60%;
+  height: auto;
+  
 }
