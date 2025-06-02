@@ -9,7 +9,7 @@
     <!-- Hero Section -->
     <div class="">
         <img src="./public/images/hero-img.png" alt="Hero" class="img-fluid w-100">
-        <div class="position-absolute top-50 alighn-items-start text-white ms-5 ">
+        <div class="position-absolute top-50 align-items-start text-white ms-5 ">
             <h1>AuraEdition</h1>
             <p>Explore 31,000+ luxury cars, supercars and exotic cars for sale worldwide in one
                 simple search</p>

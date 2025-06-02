@@ -31,10 +31,14 @@
     --spacing-lg: 2rem;
 }
 
-body, p, li, span {
+body, p, li, span, a {
     font-family: var(--secondary-font);
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-family: var(--primary-font);
+}
+
+.logo {
     font-family: var(--primary-font);
 }
