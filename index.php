@@ -16,7 +16,7 @@
 
     <!-- Hero Section -->
     <div class="">
-        <img src="./public/images/hero-img.png" alt="Hero" class="img-fluid w-100">
+        <img src="./assets/images/hero-img.png" alt="Hero" class="img-fluid w-100">
         <div class="position-absolute top-50 align-items-start text-white ms-5 ">
             <h1>AuraEdition</h1>
             <p>Explore 31,000+ luxury cars, supercars and exotic cars for sale worldwide in one
@@ -33,73 +33,73 @@
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-1.png" alt="car_brand">
+                    <img src="./assets/images/make-1.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-2.jpg" alt="car_brand">
+                    <img src="./assets/images/make-2.jpg" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-3.png" alt="car_brand">
+                    <img src="./assets/images/make-3.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-4.png" alt="car_brand">
+                    <img src="./assets/images/make-4.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-5.png" alt="car_brand">
+                    <img src="./assets/images/make-5.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-6.png" alt="car_brand">
+                    <img src="./assets/images/make-6.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-7.png" alt="car_brand">
+                    <img src="./assets/images/make-7.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-8.png" alt="car_brand">
+                    <img src="./assets/images/make-8.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-9.png" alt="car_brand">
+                    <img src="./assets/images/make-9.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-10.png" alt="car_brand">
+                    <img src="./assets/images/make-10.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-11.png" alt="car_brand">
+                    <img src="./assets/images/make-11.png" alt="car_brand">
                 </div>
             </div>
 
             <div class="col-2 mb-4">
                 <div class="square-card align-items-center d-flex justify-content-center">
-                    <img src="./public/images/make-12.png" alt="car_brand">
+                    <img src="./assets/images/make-12.png" alt="car_brand">
                 </div>
             </div>
 
