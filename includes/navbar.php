@@ -8,29 +8,33 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="listings.php">Vehicles</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/products/listings.php">Vehicles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="categories.php">Categories</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/categories.php">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.php">About</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/about.php">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.php">Contact</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/contact.php">Contact</a>
                     </li>
                 </ul>
 
                 <div class="ms-auto d-flex align-items-center">
-                    <a href="cart.php">
+                    <a href="/Projects/AuraEdition/auth/login.php">
                         <i class="bi bi-cart-fill fs-3 me-3 text-light"></i>
                     </a>
-                    <button class="btn btn-outline-success d-flex align-items-center" type="submit">
+
+                    <a href="/Projects/AuraEdition/auth/login.php" class="text-decoration-none text-light">
+                        <button class="btn btn-outline-success d-flex align-items-center">
                         Login
                     </button>
+                    </a>
+                    
                 </div>
             </div>
 
