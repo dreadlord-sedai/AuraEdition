@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./public/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="./public/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -40,8 +41,13 @@
                     </li>
                 </ul>
 
-                <div class="ms-auto">
-                    <button class="btn btn-outline-success" type="submit">Login</button>
+                <div class="ms-auto d-flex align-items-center">
+                    <a href="cart.php">
+                        <i class="bi bi-cart-fill fs-3 me-3 text-light"></i>
+                    </a>
+                    <button class="btn btn-outline-success d-flex align-items-center" type="submit">
+                        Login
+                    </button>
                 </div>
             </div>
 
