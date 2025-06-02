@@ -1,6 +1,13 @@
 /* Fonts */
+@font-face {
+    font-family: "Trajan Pro";
+    src: url("../fonts/TrajanPro-Regular.ttf") format("truetype");
+}
 
-
+@font-face {
+    font-family: "inter";
+    src: url("../fonts/Inter-VariableFont_opsz\,wght.ttf") format("truetype");
+}
 
 
 
@@ -13,7 +20,8 @@
     --heading-color: #222;
     --border-radius: 0.5rem;
     --box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    --font-family: 'Arial', sans-serif;
+    --primary-font: 'Trajan Pro', serif;
+    --secondary-font: 'Inter', Arial, sans-serif;
     --font-size-base: 16px;
     --font-size-lg: 1.25rem;
     --font-size-sm: 0.875rem;
@@ -21,4 +29,12 @@
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 2rem;
+}
+
+body, p, li, span {
+    font-family: var(--secondary-font);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--primary-font);
 }
