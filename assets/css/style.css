@@ -77,3 +77,13 @@ h6 {
     max-height: 250px;
     object-fit: cover;
 }
+
+.wishlist-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    cursor: pointer;
+}
