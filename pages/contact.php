@@ -27,7 +27,7 @@
 
         <!-- Contact Section -->
         <div class="container-md justify-content-center align-items-center">
-            
+
             <form action="" method="POST" class="contact-form col-md-8 mx-auto p-4 bg-light shadow rounded">
 
                 <div class="row mb-3">
@@ -45,12 +45,13 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="_replyto" required>
                 </div>
+                
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
                     <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Send Message</button>
 
+                <button type="submit" class="btn btn-primary w-100">Send Message</button>
         </div>
         <!-- Contact Section -->
 
