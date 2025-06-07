@@ -11,7 +11,7 @@
                         <a class="nav-link" href="/Projects/AuraEdition/index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Projects/AuraEdition/products/listings.php">Vehicles</a>
+                        <a class="nav-link" href="/Projects/AuraEdition/products/listings.php">Listings</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Projects/AuraEdition/pages/categories.php">Makes</a>
