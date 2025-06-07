@@ -15,7 +15,7 @@
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
-    <div class="">
+    <div class="Hero">
         <img src="./assets/images/hero-img.png" alt="Hero" class="img-fluid w-100">
         <div class="position-absolute top-50 align-items-start text-white ms-5 ">
             <h1>AuraEdition</h1>
