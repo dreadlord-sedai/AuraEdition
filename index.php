@@ -122,7 +122,10 @@
                     <div class="card-body">
                         <h5 class="card-title">2023 Lamborghini Huracan</h5>
                         <p class="card-text">$250,000</p>
-                        <a href="#" class="btn btn-primary w-100">View</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buy Now</a>
+                            <a href="#" class="btn btn-primary"> Add to Cart</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -200,7 +203,10 @@
                     <div class="card-body">
                         <h5 class="card-title">2023 Lamborghini Huracan</h5>
                         <p class="card-text">$250,000</p>
-                        <a href="#" class="btn btn-primary w-100">View</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buy Now</a>
+                            <a href="#" class="btn btn-primary"> Add to Cart</a>
+                        </div>
                     </div>
                 </div>
             </div>
