@@ -1,7 +1,8 @@
 <nav class="FilterBar navbar navbar-expand-lg bg-light border-bottom mb-4">
         <div class="container-md">
-            <form class="FilterBar-search row d-flex flex-wrap w-100 gap-2" role="search">
-
+            
+            <form class="FilterBar-search row d-flex flex-wrap w-100 gap-2 align-content-around" role="search">
+                <!-- Filter Options -->
                 <div class="col d-flex align-items-center gap-2">
                     <Button class="btn btn-primary">Filter</Button>
 
@@ -27,6 +28,7 @@
                     </select>
                 </div>
 
+                <!-- Search Bar -->
                 <div class="col d-flex align-items-center gap-2 w-50">
                     <input class="form-control me-2" type="search" placeholder="Search vehicles..." aria-label="Search">
                     <button class="btn btn-primary" type="submit">Search</button>
