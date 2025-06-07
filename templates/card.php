@@ -26,7 +26,11 @@
                 <div class="card-body">
                     <h5 class="card-title">2024 Mustang GT 500</h5>
                     <p class="card-text">$150,000</p>
-                    <a href="#" class="btn btn-primary w-100">View</a>
+                    <div class="d-flex justify-content-between">
+                        <a href="#" class="btn btn-primary">View</a>
+                        <a href="#" class="btn btn-primary"> Add to Cart</a>
+                    </div>
+
                 </div>
             </div>
         </div>
