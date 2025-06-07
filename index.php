@@ -27,7 +27,7 @@
     <!-- Hero Section -->
 
     <!-- Popular Makes Section -->
-    <div class="container-md my-5">
+    <div class="container-md my-5 main-content">
         <h2 class="text-start mb-4">Popular Makes</h2>
         <div class="row">
 

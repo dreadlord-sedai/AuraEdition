@@ -18,7 +18,7 @@
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/filterBar.php'; ?>
     <!-- Search and Filter Bar -->
 
-    <div class="container-md my-5">
+    <div class="container-md my-5 main-content">
         <h2 class="text-start mb-4">All Listings</h2>
         <div class="row">
 
