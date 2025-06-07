@@ -104,3 +104,8 @@ h6 {
     color: black;
     
 }
+
+.makesCard-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
