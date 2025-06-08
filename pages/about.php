@@ -15,8 +15,15 @@
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
-    <div class="Hero">
-        
+    <div class="Hero position-relative">
+        <video class="w-100" autoplay muted loop playsinline>
+            <source src="/Projects/AuraEdition/assets/video/hero.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <!-- Optional: Overlay text -->
+        <div class="position-absolute top-50 start-50 translate-middle text-white text-center">
+            <h1>AuraEdition</h1>
+            <p>Discover luxury cars worldwide</p>
         </div>
     </div>
     <!-- Hero Section -->
