@@ -11,7 +11,7 @@
 <body>
 
     <!-- Navigation Bar -- -->
-    <nav class="fixed top-0 left-0 w-full z-20">
+    <nav class="z-20">
         <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbarTransparent.php'; ?>
     </nav>
     <!-- Navigation Bar -->
@@ -32,10 +32,32 @@
     </div>
     <!-- Hero Section -->
 
-
-    <div class="container-md my-5 main-content">
+    <!-- Main Content -->
+    <div class="container my-20 main-content">
 
         <!-- About Section -->
+        <div class="text-center mb-10">
+            <h3 class="">Connecting Buyers and Sellers Worldwide,<br>
+                to Facilitate Life's Most Important <br>
+                Personal Transactions</h3>
+            </h2>
+        </div>
+
+
+
+        <div class="flex a">
+            <div class="">
+                <h4>The Best of the Best</h4>
+                <p class="text-left">Through a combination of automation and manual <br>
+                    curation our moderation team selects the highest <br>
+                    quality listings on the market.</p>
+            </div>
+
+            <div class="w-lg">
+                <img src="/Projects/AuraEdition/assets/images/about1.jpg" alt="car">
+            </div>
+
+        </div>
 
     </div>
 
