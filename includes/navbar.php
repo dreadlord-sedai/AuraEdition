@@ -3,7 +3,7 @@
     <div class="container-md flex items-center justify-between py-3">
         <a class="logo text-2xl text-white" href="/Projects/AuraEdition/index.php">AuraEdition</a>
         <ul class="flex space-x-6 list-none items-center m-0 p-0">
-            <li><a class="nav-link text-blue-400 hover:text-blue-400 transition" href="/Projects/AuraEdition/index.php">Home</a></li>
+            <li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/index.php">Home</a></li>
             <li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/products/listings.php">Listings</a></li>
             <li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/pages/categories.php">Makes</a></li>
             <li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/pages/about.php">About</a></li>
