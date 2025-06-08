@@ -11,19 +11,21 @@
 <body>
 
     <!-- Navigation Bar -- -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
+    <nav class="fixed top-0 left-0 w-full z-20">
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbarTransparent.php'; ?>
+    </nav>
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
-    <div class="Hero position-relative">
-        <video class="w-100" autoplay muted loop playsinline>
+    <div class="w-full min-h-screen">
+        <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
             <source src="/Projects/AuraEdition/assets/video/hero.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <!-- Optional: Overlay text -->
-        <div class="position-absolute top-50 start-50 translate-middle text-white text-center">
-            <h1>AuraEdition</h1>
-            <p>Discover luxury cars worldwide</p>
+        <!-- Overlay text -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center z-10">
+            <h1 class="text-4xl font-bold">AuraEdition</h1>
+            <p class="text-xl">Discover luxury cars worldwide</p>
         </div>
     </div>
     <!-- Hero Section -->
