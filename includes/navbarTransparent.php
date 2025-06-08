@@ -1,5 +1,5 @@
 <!-- Navigation Bar -->
-<nav class="w-full bg-transparent fixed top-0 left-0 z-20">
+<nav class="w-full bg-transparent border-b border-white z-20">
     <div class="container-md flex items-center justify-between py-3">
         <a class="logo text-2xl text-white" href="/Projects/AuraEdition/index.php">AuraEdition</a>
         <ul class="flex space-x-6 list-none items-center m-0 p-0">
