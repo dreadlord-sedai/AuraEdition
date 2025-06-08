@@ -23,9 +23,11 @@
             Your browser does not support the video tag.
         </video>
         <!-- Overlay text -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center z-10">
-            <h1 class="text-4xl font-bold">AuraEdition</h1>
-            <p class="text-xl">Discover luxury cars worldwide</p>
+        <div class="absolute top-1/2 left-1/15 -translate-y-1/2 text-white text-left z-10">
+            <h1 class="text-4xl font-bold">Discover<br>The Best Cars<br>on Earth</h1>
+            <p class="text-xl">For those who wish to pursue greatness,<br>
+                we provide the most premier destination to realize<br>
+                a life well-lived.</p>
         </div>
     </div>
     <!-- Hero Section -->
