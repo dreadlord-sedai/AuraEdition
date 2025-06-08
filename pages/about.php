@@ -43,9 +43,7 @@
             </h2>
         </div>
 
-
-
-        <div class="flex a">
+        <div class="flex flex-row justify-evenly items-center mb-30 mt-30">
             <div class="">
                 <h4>The Best of the Best</h4>
                 <p class="text-left">Through a combination of automation and manual <br>
@@ -56,7 +54,22 @@
             <div class="w-lg">
                 <img src="/Projects/AuraEdition/assets/images/about1.jpg" alt="car">
             </div>
+        </div>
 
+        <div class="flex flex-row justify-evenly items-center mb-20 mt-30">
+            <div class="w-lg">
+                <img src="/Projects/AuraEdition/assets/images/about2.jpg" alt="car">
+            </div>
+            <div class="">
+                <h4>One Search, <br>
+                    Unlimited Potential</h4>
+                <p class="text-left">
+                    We give you back your valuable time by creating <br>
+                    one source for all premium listings, eliminating the<br>
+                    need to visit multiple dealers or agents to find<br>
+                    exactly what you are looking for.
+                </p>
+            </div>
         </div>
 
     </div>
