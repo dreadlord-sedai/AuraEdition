@@ -44,7 +44,7 @@
                                 class="bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Register
                             </button>
-                            <a href="/Projects/AuraEdition/auth/register.php"
+                            <a href="/Projects/AuraEdition/auth/login.php"
                                 class="w-full">
                                 <button type="button"
                                     class="w-full bg-gray-100 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded border border-blue-500 focus:outline-none focus:shadow-outline">
