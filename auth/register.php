@@ -28,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 // Email does not exist, proceed with registration
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $register_user_query = $connection->prepare("INSERT INTO users (fname, lname, email, password,registerd_date) VALUES (?, ?, ?, ?, NOW())");
-                $register_user_query->bind_param("ssss", $fname, $lname, $email, $password);
+                $register_user_query = $connection->prepare("INSERT INTO users (fname, lname, email, hashed_password,registerd_date) VALUES (?, ?, ?, ?, NOW())");
+                $register_user_query->bind_param("ssss", $fname, $lname, $email, $hashed_password);
                 if ($register_user_query->execute()) {
                     $register_user_query->close();
                     header("Location: /Projects/AuraEdition/auth/login.php?registered=1");

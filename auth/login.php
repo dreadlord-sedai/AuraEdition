@@ -21,6 +21,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $select_user_query->bind_param("s", $email);
             $select_user_query->execute();
             $select_user_query->store_result();
+
+            if ($select_user_query->num_rows > 0) {
+                // Email exists, fetch user data
+                $select_user_query->bind_result($user_id, $fname, $lname, $email, $hashed_password, $registered_date);
+                $select_user_query->fetch();
+
+                // Verify the password
+                if (password_verify($password, $hashed_password)) {
+                    // Password is correct, set session variables
+                    $_SESSION['user_id'] = $user_id;
+                    $_SESSION['fname'] = $fname;
+                    $_SESSION['lname'] = $lname;
+                    $_SESSION['email'] = $email;
+
+                    // Redirect to the dashboard or home page
+                    header("Location: /Projects/AuraEdition/index.php");
+                    exit;
+                } else {
+                    $Error_message = "Incorrect password. Please try again.";
+                }
+            } else {
+                $Error_message = "Email not found. Please register first.";
+            }
         }
     } else {
         $Error_message = "Please fill in all fields.";
