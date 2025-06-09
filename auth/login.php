@@ -1,3 +1,33 @@
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+
+$Error_message = "";
+$Success_message = "";
+
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the form data and trim whitespace
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    // Validate input
+    if ($email && $password) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $Error_message = "Invalid email format.";
+        } else {
+            // Prepare and execute the SQL statement to check if the email exists
+            $stmt = $connection->prepare("SELECT id FROM users WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $stmt->store_result();
+        }
+    } else {
+        $Error_message = "Please fill in all fields.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +46,15 @@
             <div class="w-full max-w-md">
                 <div class="bg-black/40 backdrop-blur shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <h2 class="text-2xl font-bold mb-4 text-white">Login</h2>
+
+                    <!-- Display message-->
+                    <?php if (!empty($Error_message)): ?>
+                    <div class="mb-4 text-center text-red-200 font-semibold  bg-white/20 border border-red-500 rounded px-2 py-1">
+                        <?= htmlspecialchars($Error_message) ?>
+                    </div>
+                    <?php endif; ?>
+                    <!-- Display message-->
+
                     <form action="/Projects/AuraEdition/auth/login.php" method="POST">
                         <div class="mb-4">
                             <label for="email" class="block text-white text-sm font-bold mb-2">Email</label>
