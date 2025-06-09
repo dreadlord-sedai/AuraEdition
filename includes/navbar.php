@@ -40,11 +40,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
             }
             ?>
 
-            <!-- <a href="/Projects/AuraEdition/auth/login.php" class="text-decoration-none text-white">
-                <button class="border border-green-500 text-green-500 px-4 py-1 rounded hover:bg-green-500 hover:text-white transition d-flex align-items-center">
-                    Login
-                </button>
-            </a> -->
         </div>
     </div>
 </nav>
