@@ -1,41 +1,49 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php'; ?>
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php'; ?>
-
-<!-- Registration Logic -->
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 
-if (isset($_POST['submit'])) {
-    $fname = $_POST['fname'];
-    $lname = $_POST['lname'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+$message = "";
 
-    // Validate inputs
-    if (!empty($fname) && !empty($lname) && !empty($email) && !empty($password)) {
-        // Check if email already exists
-        $stmt = $connection->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the form data and trim whitespace
+    $fname = trim($_POST['fname'] ?? '');
+    $lname = trim($_POST['lname'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-        if ($result->num_rows > 0) {
-            echo "<script>alert('Email already exists. Please choose a different email.');</script>";
+    // Validate input
+    if ($fname && $lname && $email && $password) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $message = "Invalid email format.";
         } else {
-            // Insert user into database
-            $query = $connection->prepare("INSERT INTO users (fname, lname, email, password) VALUES (?, ?, ?, ?)");
-            $query->bind_param("ssss", $fname, $lname, $email, $password);
-            $query->execute();
-            echo "<script>alert('Registration successful. Please log in.');</script>";
-            header("Location: /Projects/AuraEdition/auth/login.php");
+            // Prepare and execute the SQL statement to check if the email already exists
+            $stmt = $connection->prepare("SELECT id FROM users WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $stmt->store_result();
+
+            if ($stmt->num_rows > 0) {
+                $message = "Email already exists. Please choose a different email.";
+            } else {
+                // Email does not exist, proceed with registration
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $stmt = $connection->prepare("INSERT INTO users (fname, lname, email, password) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssss", $fname, $lname, $email, $hashed_password);
+                if ($stmt->execute()) {
+                    header("Location: /Projects/AuraEdition/auth/login.php?registered=1");
+                    exit;
+                } else {
+                    $message = "Registration failed. Please try again.";
+                }
+            }
+            $stmt->close();
         }
     } else {
-        echo "<script>alert('Please fill in all fields.');</script>";
+        $message = "Please fill in all fields.";
     }
 }
-
 ?>
-<!-- Registration Logic -->
-
 
 
 <!DOCTYPE html>
