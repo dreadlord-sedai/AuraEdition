@@ -5,6 +5,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php'
 $Error_message = "";
 $Success_message = "";
 
+// Show registration success message if redirected
+if (isset($_GET['registered']) && $_GET['registered'] == 1) {
+    $Success_message = "Registration successful! You can now log in.";
+}
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the form data and trim whitespace
@@ -16,17 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $Error_message = "Invalid email format.";
         } else {
-            // Prepare and execute the SQL statement to check if the email exists
-            $select_user_query = $connection->prepare("SELECT * FROM users WHERE email = ?");
+            // Explicitly select columns in the correct order
+            $select_user_query = $connection->prepare("SELECT id, fname, lname, email, hashed_password, role FROM users WHERE email = ?");
             $select_user_query->bind_param("s", $email);
             $select_user_query->execute();
             $select_user_query->store_result();
 
-            
-
             if ($select_user_query->num_rows > 0) {
                 // Email exists, fetch user data
-                $select_user_query->bind_result($id, $fname, $lname, $email, $hashed_password, $role, $registered_date);
+                $select_user_query->bind_result($id, $fname, $lname, $db_email, $hashed_password, $role);
                 $select_user_query->fetch();
 
                 // Verify the password
@@ -35,9 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['user_id'] = $id;
                     $_SESSION['fname'] = $fname;
                     $_SESSION['lname'] = $lname;
-                    $_SESSION['email'] = $email;
-                    $_SESSION['role'] = $email;
+                    $_SESSION['email'] = $db_email;
+                    $_SESSION['role'] = $role;
 
+                    $select_user_query->close();
                     // Redirect to the dashboard or home page
                     header("Location: /Projects/AuraEdition/index.php");
                     exit;
@@ -47,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $Error_message = "Email not found. Please register first.";
             }
+            $select_user_query->close();
         }
     } else {
         $Error_message = "Please fill in all fields.";
@@ -80,6 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <?php endif; ?>
                     <!-- Display message-->
+                    <!-- Display success message-->
+                    <?php if (!empty($Success_message)): ?>
+                    <div class="mb-4 text-center text-green-200 font-semibold  bg-white/20 border border-green-500 rounded px-2 py-1">
+                        <?= htmlspecialchars($Success_message) ?>
+                    </div>
+                    <?php endif; ?>
+                    <!-- Display success message-->
 
                     <form action="/Projects/AuraEdition/auth/login.php" method="POST">
                         <div class="mb-4">
