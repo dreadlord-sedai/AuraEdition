@@ -28,9 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 // Email does not exist, proceed with registration
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $connection->prepare("INSERT INTO users (fname, lname, email, password) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("ssss", $fname, $lname, $email, $hashed_password);
+                $stmt = $connection->prepare("INSERT INTO users (fname, lname, email, password,registerd_date) VALUES (?, ?, ?, ?, NOW())");
+                $stmt->bind_param("ssss", $fname, $lname, $email, $password);
                 if ($stmt->execute()) {
+                    //$message = "Registration successful! You can now log in.";
                     header("Location: /Projects/AuraEdition/auth/login.php?registered=1");
                     exit;
                 } else {
@@ -63,8 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="absolute inset-0 flex justify-center items-center">
             <div class="w-full max-w-md">
                 <div class="bg-black/40 backdrop-blur shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    <h2 class="text-2xl font-bold mb-4 text-white">Login</h2>
-                    <form action="/Projects/AuraEdition/auth/login.php" method="POST">
+                    <h2 class="text-2xl font-bold mb-4 text-white">Register</h2>
+
+                    <!-- Display message-->
+                    <?php if (!empty($message)): ?>
+                    <div class="mb-4 text-center text-red-600 font-semibold bg-white/20 border border-red-500 rounded px-2 py-1">
+                        <?= htmlspecialchars($message) ?>
+                    </div>
+                    <?php endif; ?>
+                    <!-- Display message-->
+
+                    <form action="/Projects/AuraEdition/auth/register.php" method="POST">
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div class="">
                                 <label for="fname" class="block text-white text-sm font-bold mb-2">First Name</label>
