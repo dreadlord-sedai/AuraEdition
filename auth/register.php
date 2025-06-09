@@ -2,7 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 
-$message = "";
+$Error_message = "";
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate input
     if ($fname && $lname && $email && $password) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $message = "Invalid email format.";
+            $Error_message = "Invalid email format.";
         } else {
             // Prepare and execute the SQL statement to check if the email already exists
             $stmt = $connection->prepare("SELECT id FROM users WHERE email = ?");
@@ -24,24 +24,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->store_result();
 
             if ($stmt->num_rows > 0) {
-                $message = "Email already exists. Please choose a different email.";
+                $Error_message = "Email already exists. Please choose a different email.";
             } else {
                 // Email does not exist, proceed with registration
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $stmt = $connection->prepare("INSERT INTO users (fname, lname, email, password,registerd_date) VALUES (?, ?, ?, ?, NOW())");
                 $stmt->bind_param("ssss", $fname, $lname, $email, $password);
                 if ($stmt->execute()) {
-                    //$message = "Registration successful! You can now log in.";
+                    //$Error_message = "Registration successful! You can now log in.";
                     header("Location: /Projects/AuraEdition/auth/login.php?registered=1");
                     exit;
                 } else {
-                    $message = "Registration failed. Please try again.";
+                    $Error_message = "Registration failed. Please try again.";
                 }
             }
             $stmt->close();
         }
     } else {
-        $message = "Please fill in all fields.";
+        $Error_message = "Please fill in all fields.";
     }
 }
 ?>
@@ -67,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 class="text-2xl font-bold mb-4 text-white">Register</h2>
 
                     <!-- Display message-->
-                    <?php if (!empty($message)): ?>
-                    <div class="mb-4 text-center text-red-600 font-semibold bg-white/20 border border-red-500 rounded px-2 py-1">
-                        <?= htmlspecialchars($message) ?>
+                    <?php if (!empty($Error_message)): ?>
+                    <div class="mb-4 text-center text-red-200 font-semibold  bg-white/20 border border-red-500 rounded px-2 py-1">
+                        <?= htmlspecialchars($Error_message) ?>
                     </div>
                     <?php endif; ?>
                     <!-- Display message-->
