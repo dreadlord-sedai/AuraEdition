@@ -1,7 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 ?>
-<!-- Navigation Bar -->
+<!-- Transparent Navigation Bar -->
 <nav class="w-full bg-transparent border-b border-white z-20">
     <div class="container-md flex items-center justify-between py-3">
         <a class="logo text-2xl text-white" href="/Projects/AuraEdition/index.php">AuraEdition</a>
@@ -43,4 +43,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
         </div>
     </div>
 </nav>
-<!-- Navigation Bar -->
+<!-- Transparent Navigation Bar -->
