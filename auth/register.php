@@ -18,27 +18,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $Error_message = "Invalid email format.";
         } else {
             // Prepare and execute the SQL statement to check if the email already exists
-            $stmt = $connection->prepare("SELECT id FROM users WHERE email = ?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $stmt->store_result();
+            $select_user_id = $connection->prepare("SELECT id FROM users WHERE email = ?");
+            $select_user_id->bind_param("s", $email);
+            $select_user_id->execute();
+            $select_user_id->store_result();
 
-            if ($stmt->num_rows > 0) {
+            if ($select_user_id->num_rows > 0) {
                 $Error_message = "Email already exists. Please choose a different email.";
             } else {
                 // Email does not exist, proceed with registration
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $connection->prepare("INSERT INTO users (fname, lname, email, password,registerd_date) VALUES (?, ?, ?, ?, NOW())");
-                $stmt->bind_param("ssss", $fname, $lname, $email, $password);
-                if ($stmt->execute()) {
-                    //$Error_message = "Registration successful! You can now log in.";
+                $register_user_query = $connection->prepare("INSERT INTO users (fname, lname, email, password,registerd_date) VALUES (?, ?, ?, ?, NOW())");
+                $register_user_query->bind_param("ssss", $fname, $lname, $email, $password);
+                if ($register_user_query->execute()) {
+                    $register_user_query->close();
                     header("Location: /Projects/AuraEdition/auth/login.php?registered=1");
                     exit;
                 } else {
                     $Error_message = "Registration failed. Please try again.";
+                    $register_user_query->close();
                 }
             }
-            $stmt->close();
+            $select_user_id->close();
         }
     } else {
         $Error_message = "Please fill in all fields.";

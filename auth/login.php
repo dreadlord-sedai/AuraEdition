@@ -17,10 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $Error_message = "Invalid email format.";
         } else {
             // Prepare and execute the SQL statement to check if the email exists
-            $stmt = $connection->prepare("SELECT id FROM users WHERE email = ?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $stmt->store_result();
+            $select_user_query = $connection->prepare("SELECT * FROM users WHERE email = ?");
+            $select_user_query->bind_param("s", $email);
+            $select_user_query->execute();
+            $select_user_query->store_result();
         }
     } else {
         $Error_message = "Please fill in all fields.";
