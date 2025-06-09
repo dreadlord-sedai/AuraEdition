@@ -1,4 +1,43 @@
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php'; ?>
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php'; ?>
+
+<!-- Registration Logic -->
+<?php
+
+if (isset($_POST['submit'])) {
+    $fname = $_POST['fname'];
+    $lname = $_POST['lname'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Validate inputs
+    if (!empty($fname) && !empty($lname) && !empty($email) && !empty($password)) {
+        // Check if email already exists
+        $stmt = $connection->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            echo "<script>alert('Email already exists. Please choose a different email.');</script>";
+        } else {
+            // Insert user into database
+            $query = $connection->prepare("INSERT INTO users (fname, lname, email, password) VALUES (?, ?, ?, ?)");
+            $query->bind_param("ssss", $fname, $lname, $email, $password);
+            $query->execute();
+            echo "<script>alert('Registration successful. Please log in.');</script>";
+            header("Location: /Projects/AuraEdition/auth/login.php");
+        }
+    } else {
+        echo "<script>alert('Please fill in all fields.');</script>";
+    }
+}
+
+?>
+<!-- Registration Logic -->
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
