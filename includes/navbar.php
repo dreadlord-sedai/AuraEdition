@@ -12,10 +12,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
             <li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/pages/about.php">About</a></li>
             <li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/pages/contact.php">Contact</a></li>
             <?php
-            if (isset($_SESSION['user_id'])) {
-                echo '<li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/auth/logout.php">Logout</a></li>';
-            } else {
-                echo '<li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/auth/login.php">Login</a></li>';
+            if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'admin') {
+                // Display the dashboard link only for admin users
+                echo '<li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/admin/dashboard.php">Dashboard</a></li>';
             }
             ?>
         </ul>
