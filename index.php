@@ -129,7 +129,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             <i class="bi bi-heart mt-1"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
-                            <img src="/products/img/feature1.jpg" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
+                            <img src="/Projects/AuraEdition/products/img/feature1.jpg" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
