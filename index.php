@@ -154,6 +154,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
     <!-- Popular Vehicles Section -->
 
     <?php
+    $popular_vehicles = get_popular_vehicles($connection, 3);
+    foreach ($popular_vehicles as $vehicle) {
+        $image = get_vehicle_image($vehicle['id'], $connection);
+        $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+    }
     ?>
 
     <div class="container-md my-5">

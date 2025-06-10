@@ -41,7 +41,7 @@ function get_popular_vehicles($connection, $limit = 3)
         "SELECT id, title, price FROM vehicles WHERE is_popular = ? LIMIT ?"
     );
     $popular = 1;
-    $select_Popular->bind_param("i", $popular, $limit);
+    $select_Popular->bind_param("ii", $popular, $limit);
     $select_Popular->execute();
 
     // Use get_result() for easier fetching (if available)
