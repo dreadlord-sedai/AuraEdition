@@ -62,12 +62,12 @@
                 <div class="flex flex-col gap-4 w-1/3  text-center justify-center items-center p-2">
                     <div class="CTA-card flex flex-col gap-4 justify-center items-center p-2
                         bg-white/10 rounded-lg shadow-lg w-64 h-72">
-                        <a href="">
+                        <a href="BuyNow.php">
                             <button class="btn btn-primary d-flex justify-content-center align-items-center">
                                 Buy Now
                             </button>
                         </a>
-                        <a href="">
+                        <a href="cart.php">
                             <button class="btn btn-primary d-flex justify-content-center align-items-center">
                                 Add to cart
                             </button>
