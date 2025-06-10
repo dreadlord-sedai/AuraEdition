@@ -33,3 +33,20 @@ function get_vehicle_image($vehicle_id, $connection)
     
     return null; // Return null if no image found
 }
+
+function get_popular_vehicles($connection, $limit = 3)
+{
+    // Fetch popular vehicles
+    $select_Popular = $connection->prepare(
+        "SELECT id, title, price FROM vehicles WHERE is_popular = ? LIMIT ?"
+    );
+    $popular = 1;
+    $select_Popular->bind_param("i", $popular, $limit);
+    $select_Popular->execute();
+
+    // Use get_result() for easier fetching (if available)
+    $result = $select_Popular->get_result();
+    $popular_vehicles = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    $select_Popular->close();
+    return $popular_vehicles;
+}
