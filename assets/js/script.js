@@ -1,0 +1,14 @@
+function logout() {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+            var response = request.responseText;
+            if (response == "success") {
+                window.location = "index.php";
+            }
+        }
+    }
+    request.open("POST", "/Projects/AuraEdition/process/logoutProcess.php", true);
+    request.send();
+}

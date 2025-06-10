@@ -27,7 +27,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
             <?php
             if (isset($_SESSION['user_id'])) {
                 echo '<a href="/Projects/AuraEdition/process/logoutProcess.php" class="text-decoration-none text-white">
-                <button class="border border-red-500 text-red-500 px-4 py-1 rounded hover:bg-red-500 hover:text-white transition d-flex align-items-center">
+                <button class="border border-red-500 text-red-500 px-4 py-1 rounded hover:bg-red-500 hover:text-white transition d-flex align-items-center"
+                onclick=logout();>
                     Logout
                 </button>
             </a>';
