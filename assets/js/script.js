@@ -1,3 +1,5 @@
+/* AUTH */
+
 function logout() {
     var request = new XMLHttpRequest();
 
@@ -12,3 +14,15 @@ function logout() {
     request.open("POST", "/Projects/AuraEdition/process/logoutProcess.php", true);
     request.send();
 }
+
+/* AUTH */
+
+
+/* USER FLOW */
+
+/* USER FLOW */
+
+
+/* CART */
+
+/* CART */
