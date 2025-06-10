@@ -44,58 +44,124 @@
             </div>
 
             <hr>
-            <!-- Product Details -->
+            <!-- Product Details Section -->
             <div class="flex flex-row justify-between items-center mt-4 mb-20 p-4">
-
+                <!-- Product Details -->
                 <div class="flex flex-col gap-4 w-2/3 text-center justify-center items-start p-2">
                     <div class="flex flex-row gap-14 justify-start items-center">
                         <h2 class="text-2xl font-bold ">2023 Mustang GT</h2>
                         <h3 class="text-gray-500 ">$250,000</h3>
                     </div>
 
-                    <p class="text-gray-600 text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
+                    <p class="text-gray-600 text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 </div>
+                <!-- Product Details -->
 
                 <!-- Action Buttons Section -->
                 <div class="flex flex-col gap-4 w-1/3  text-center justify-center items-center p-2">
                     <div class="CTA-card flex flex-col gap-4 justify-center items-center p-2
                         bg-white/10 rounded-lg shadow-lg w-64 h-72">
                         <a href="">
-                        <button class="btn btn-primary d-flex justify-content-center align-items-center">
-                            Buy Now
-                        </button>
-                    </a>
-                     <a href="">
-                        <button class="btn btn-primary d-flex justify-content-center align-items-center">
-                            Add to cart
-                        </button>
-                    </a>
+                            <button class="btn btn-primary d-flex justify-content-center align-items-center">
+                                Buy Now
+                            </button>
+                        </a>
+                        <a href="">
+                            <button class="btn btn-primary d-flex justify-content-center align-items-center">
+                                Add to cart
+                            </button>
+                        </a>
 
-                    <div class="flex flex-row gap-2 justify-center items-center">
-                        <label for="quantity" class="text-gray-600">Quantity:</label>
-                        <select name="quantity" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
+                        <div class="flex flex-row gap-2 justify-center items-center">
+                            <label for="quantity" class="text-gray-600">Quantity:</label>
+                            <select name="quantity" id="">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
                     </div>
+                </div>
+                <!-- Action Buttons Section -->
+            </div>
+        </div>
+        <hr>
+        <!-- Product Details Section -->
+
+
+        <!-- Recent Listings Section -->
+        <div class="container-md my-5">
+            <h2 class="text-start mb-4">Popular</h2>
+            <div class="row">
+
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card">
+                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                            <i class="bi bi-heart mt-1"></i>
+                        </button>
+                        <a href="/Projects/AuraEdition/products/productDetails.php">
+                            <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">2023 Lamborghini Huracan</h5>
+                            <p class="card-text">$250,000</p>
+                            <div class="d-flex gap-2">
+                                <a href="/Projects/AuraEdition/products/productDetails.php" class="btn btn-primary">Buy Now</a>
+                                <a href="/Projects/AuraEdition/pages/cart.php" class="btn btn-primary"> Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card">
+                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                            <i class="bi bi-heart mt-1"></i>
+                        </button>
+                        <a href="/Projects/AuraEdition/products/productDetails.php">
+                            <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">2023 Lamborghini Huracan</h5>
+                            <p class="card-text">$250,000</p>
+                            <div class="d-flex gap-2">
+                                <a href="/Projects/AuraEdition/products/productDetails.php" class="btn btn-primary">Buy Now</a>
+                                <a href="/Projects/AuraEdition/pages/cart.php" class="btn btn-primary"> Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card">
+                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                            <i class="bi bi-heart mt-1"></i>
+                        </button>
+                        <a href="/Projects/AuraEdition/products/productDetails.php">
+                            <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">2023 Lamborghini Huracan</h5>
+                            <p class="card-text">$250,000</p>
+                            <div class="d-flex gap-2">
+                                <a href="/Projects/AuraEdition/products/productDetails.php" class="btn btn-primary">Buy Now</a>
+                                <a href="/Projects/AuraEdition/pages/cart.php" class="btn btn-primary"> Add to Cart</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
             </div>
-
         </div>
-
-        <hr>
-        <!-- Product Details Section -->
 
 
 
