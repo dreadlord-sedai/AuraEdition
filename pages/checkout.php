@@ -19,7 +19,7 @@
     <div class="container-md my-5 main-content">
 
         <!-- Checkout  -->
-        <div class="flex flex-row gap-3 justify-content-between rounded-lg align-items-start bg-gray-500 p-4 mb-5">
+        <div class="flex flex-row gap-3 justify-between rounded-lg items-stretch bg-gray-500 p-4 mb-5">
 
 
             <!-- Checkout Card -->
@@ -137,7 +137,8 @@
 
 
             <!-- Payment Card -->
-            <div class="flex flex-col w-2/5 justify-content-center rounded-lg align-items-center bg-gray-200 p-4">
+            <div class="flex flex-col w-2/5  justify-content-center rounded-lg align-items-center
+             bg-gray-200 p-4">
 
                 <div class="flex flex-col w-5/6 justify-content-center text-center mb-3 border-b-1 pb-2">
                     <p>Total Amount</p>
