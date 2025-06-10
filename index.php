@@ -117,6 +117,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
     <!-- Featured Vehicles Section -->
     <?php
     $featured_vehicles = get_featured_vehicles($connection, 3);
+    foreach ($featured_vehicles as $vehicle) {
+        $image = get_vehicle_image($vehicle['id'], $connection);
+        $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+    }
     ?>
 
     <div class="container-md my-5">
@@ -129,7 +133,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             <i class="bi bi-heart mt-1"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
-                            <img src="/Projects/AuraEdition/products/img/feature1.jpg" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
+                            <img src="/Projects/AuraEdition/products/img/<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
