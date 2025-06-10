@@ -19,7 +19,7 @@
     <div class="container-md my-5 main-content">
 
         <!-- Checkout  -->
-        <div class="flex flex-row gap-3 justify-content-between rounded-lg align-items-start bg-gray-500 p-3">
+        <div class="flex flex-row gap-3 justify-content-between rounded-lg align-items-start bg-gray-500 p-4 mb-5">
 
 
             <!-- Checkout Card -->
@@ -160,7 +160,7 @@
                             <p>$100</p>
                             <p>$100</p>
                             <p>$100</p>
-                            
+
                         </div>
 
                     </div>
@@ -171,7 +171,17 @@
                     <p class="font-bold text-end">$400</p>
                 </div>
 
-                
+                <div class="flex flex-row w-5/6 justify-content-center text-center mb-5 pb-2">
+
+                    <!-- Make the Pay button a long green button with Tailwind -->
+                    <div class="flex flex-row gap-2 w-full px">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold
+                         py-3 rounded-lg transition">
+                            Pay
+                        </button>
+                    </div>
+
+                </div>
 
 
             </div>
