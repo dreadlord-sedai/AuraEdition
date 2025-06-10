@@ -181,26 +181,11 @@
                             Pay
                         </button>
                     </div>
-
                 </div>
-
-
             </div>
-
             <!-- Payment Card -->
-
         </div>
-
-
-
-
     </div>
-    </div>
-
-
-    </div>
-
-
     <!-- Main Content -->
 
 
