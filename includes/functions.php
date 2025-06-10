@@ -72,7 +72,7 @@ function getAllMakes(mysqli $connection): array {
     return $makes;
 }
 
-function getAllVehicles($connection) {
+function get_all_vehicles($connection) {
     $select_All_listings = $connection->prepare(
         "SELECT id, title, price, description, stock FROM vehicles"
     );
