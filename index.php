@@ -152,7 +152,37 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
     <!-- Featured Vehicles Section -->
 
     <!-- Popular Vehicles Section -->
+
+    <?php
+    ?>
+
     <div class="container-md my-5">
+        <h2 class="text-start mb-4">Popular</h2>
+        <div class="row">
+            <?php foreach ($popular_vehicles as $vehicle): ?>
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card">
+                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                            <i class="bi bi-heart mt-1"></i>
+                        </button>
+                        <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
+                            <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
+                            <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
+                            <div class="d-flex gap-2">
+                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
+                                <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- <div class="container-md my-5">
         <h2 class="text-start mb-4">Popular</h2>
         <div class="row">
 
@@ -162,7 +192,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                         <i class="bi bi-heart mt-1"></i>
                     </button>
                     <a href="/Projects/AuraEdition/products/productDetails.php">
-                        <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
+                        <img src="/Projects/AuraEdition/products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">2023 Lamborghini Huracan</h5>
@@ -175,7 +205,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Popular Vehicles Section -->
 
