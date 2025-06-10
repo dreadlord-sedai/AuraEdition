@@ -18,29 +18,34 @@
 
         <!-- Product Details Section -->
 
-        <div class="flex gap-8 justify-center">
+        <!--- Product Image Section -->
+        <div class="flex gap-2 justify-center">
             <!-- Main Product Image (left, fixed size) -->
             <div class="flex items-center justify-center">
-                <div class="aspect-square w-[400px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
+                <div class="aspect-square w-[420px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
                     <img src="/Projects/AuraEdition/products/img/product1.jpg" alt="Main Product" class="object-cover w-full h-full rounded-lg" />
                 </div>
             </div>
             <!-- Image Grid (right, 2x2, each image half the main image size) -->
-            <div class="grid grid-cols-2 grid-rows-2 gap-4">
-                <div class="aspect-square w-[190px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
+            <div class="grid grid-cols-2 grid-rows-2 gap-2">
+                <div class="aspect-square w-[200px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
                     <img src="/Projects/AuraEdition/products/img/product1.jpg" alt="Grid 1" class="object-cover w-full h-full rounded-lg" />
                 </div>
-                <div class="aspect-square w-[190px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
+                <div class="aspect-square w-[200px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
                     <img src="/Projects/AuraEdition/products/img/product1.jpg" alt="Grid 2" class="object-cover w-full h-full rounded-lg" />
                 </div>
-                <div class="aspect-square w-[190px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
+                <div class="aspect-square w-[200px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
                     <img src="/Projects/AuraEdition/products/img/product1.jpg" alt="Grid 3" class="object-cover w-full h-full rounded-lg" />
                 </div>
-                <div class="aspect-square w-[190px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
+                <div class="aspect-square w-[200px] bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
                     <img src="/Projects/AuraEdition/products/img/product1.jpg" alt="Grid 4" class="object-cover w-full h-full rounded-lg" />
                 </div>
             </div>
         </div>
+
+
+
+        
 
         <!-- Product Details Section -->
 
