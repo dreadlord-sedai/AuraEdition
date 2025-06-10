@@ -43,7 +43,6 @@
                 </div>
             </div>
 
-            <hr>
             <!-- Product Details Section -->
             <div class="flex flex-row justify-between items-center mt-4 mb-20 p-4">
                 <!-- Product Details -->
@@ -94,25 +93,27 @@
                 <!-- Action Buttons Section -->
             </div>
         </div>
+
         <hr>
         <!-- Product Details Section -->
 
 
         <!-- Recent Listings Section -->
-        <div class="container-md my-5">
-            <h2 class="text-start mb-4">Popular</h2>
+        <div class="container-md my-20">
+            <h2 class="text-start mb-4">Recent Listings</h2>
             <div class="row">
 
+                <!-- Vehicle card-->
                 <div class="col-12 col-sm-6 col-md-4 mb-4">
                     <div class="card">
                         <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
                             <i class="bi bi-heart mt-1"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php">
-                            <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
+                            <img src="/Projects/AuraEdition/products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title">2023 Lamborghini Huracan</h5>
+                            <h5 class="card-title">2023 Ford F-150 Raptor</h5>
                             <p class="card-text">$250,000</p>
                             <div class="d-flex gap-2">
                                 <a href="/Projects/AuraEdition/products/productDetails.php" class="btn btn-primary">Buy Now</a>
@@ -128,10 +129,10 @@
                             <i class="bi bi-heart mt-1"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php">
-                            <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
+                            <img src="/Projects/AuraEdition/products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title">2023 Lamborghini Huracan</h5>
+                            <h5 class="card-title">2023 Ford F-150 Raptor</h5>
                             <p class="card-text">$250,000</p>
                             <div class="d-flex gap-2">
                                 <a href="/Projects/AuraEdition/products/productDetails.php" class="btn btn-primary">Buy Now</a>
@@ -147,10 +148,10 @@
                             <i class="bi bi-heart mt-1"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php">
-                            <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
+                            <img src="/Projects/AuraEdition/products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title">2023 Lamborghini Huracan</h5>
+                            <h5 class="card-title">2023 Ford F-150 Raptor</h5>
                             <p class="card-text">$250,000</p>
                             <div class="d-flex gap-2">
                                 <a href="/Projects/AuraEdition/products/productDetails.php" class="btn btn-primary">Buy Now</a>
@@ -159,6 +160,8 @@
                         </div>
                     </div>
                 </div>
+
+                
 
             </div>
         </div>
