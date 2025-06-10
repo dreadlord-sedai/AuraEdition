@@ -82,3 +82,14 @@ function get_all_vehicles($connection) {
     $select_All_listings->close();
     return $all_vehicles;
 }
+
+function get_all_recent_vehicles($connection) {
+    $select_All_listings = $connection->prepare(
+        "SELECT id, title, price, description, stock FROM vehicles ORDER BY created_at DESC LIMIT 3"
+    );
+    $select_All_listings->execute();
+    $result = $select_All_listings->get_result();
+    $all_vehicles = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    $select_All_listings->close();
+    return $all_vehicles;
+}
