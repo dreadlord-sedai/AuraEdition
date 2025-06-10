@@ -76,4 +76,9 @@ function getAllVehicles($connection) {
     $select_All_listings = $connection->prepare(
         "SELECT id, title, price, description, stock FROM vehicles"
     );
+    $select_All_listings->execute();
+    $result = $select_All_listings->get_result();
+    $all_vehicles = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    $select_All_listings->close();
+    return $all_vehicles;
 }

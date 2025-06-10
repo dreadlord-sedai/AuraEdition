@@ -41,10 +41,9 @@
                     </div>
                 </div>
             </div>
-
-
-
             <!-- Product Cards -->
+
+            
 
             <!-- Pagination -->
             <nav aria-label="Page navigation" class="PageNavigation">
