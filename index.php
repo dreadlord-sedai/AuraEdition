@@ -1,4 +1,9 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php'; ?>
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -111,18 +116,7 @@
 
     <!-- Featured Vehicles Section -->
     <?php
-    // Fetch featured vehicles
-    $featured = 1;
-    $select_Featured = $connection->prepare(
-        "SELECT id, title, price FROM vehicles WHERE is_featured = ? LIMIT 3"
-    );
-    $select_Featured->bind_param("i", $featured);
-    $select_Featured->execute();
-
-    // Use get_result() for easier fetching (if available)
-    $result = $select_Featured->get_result();
-    $featured_vehicles = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
-    $select_Featured->close();
+    $featured_vehicles = get_featured_vehicles($connection, 3);
     ?>
 
     <div class="container-md my-5">
