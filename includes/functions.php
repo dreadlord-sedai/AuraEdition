@@ -52,17 +52,28 @@ function get_popular_vehicles($connection, $limit = 3)
 }
 
 // Function to fetch all makes and their listing counts
-function getAllMakes($connection) {
+function getAllMakes(mysqli $connection): array {
     $sql = "SELECT m.make_id, m.make_name, m.make_image, COUNT(v.id) AS listings_count
             FROM makes m
             LEFT JOIN vehicles v ON m.make_id = v.make_id
             GROUP BY m.make_id, m.make_name, m.make_image";
-    $result = $connection->query($sql);
+    $stmt = $connection->prepare($sql);
     $makes = [];
-    if ($result) {
+    if ($stmt) {
+        $stmt->execute();
+        $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
             $makes[] = $row;
         }
+        $stmt->close();
+    } else {
+        error_log("MySQL Error in getAllMakes: " . $connection->error);
     }
     return $makes;
+}
+
+function getAllVehicles($connection) {
+    $select_All_listings = $connection->prepare(
+        "SELECT id, title, price, description, stock FROM vehicles"
+    );
 }
