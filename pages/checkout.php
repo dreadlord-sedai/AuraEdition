@@ -18,10 +18,12 @@
     <!-- Main Content -->
     <div class="container-md my-5 main-content">
 
-        <!-- Checkout -->
+        <!-- Checkout  -->
         <div class="flex flex-row gap-3 justify-content-between rounded-lg align-items-start bg-gray-500 p-3">
 
-            <div class="flex flex-col w-3/5 gap-2 justify-content-center rounded-lg align-items-start bg-gray-200 p-5">
+
+            <!-- Checkout Card -->
+            <div class="flex flex-col w-3/5 gap-3 justify-content-center rounded-lg align-items-start bg-gray-200 p-5">
                 <h4>Checkout</h4>
 
                 <!-- Item Card -->
@@ -131,12 +133,50 @@
                 <!-- Item Card -->
 
             </div>
+            <!-- Checkout Card -->
 
 
+            <!-- Payment Card -->
+            <div class="flex flex-col w-2/5 justify-content-center rounded-lg align-items-center bg-gray-200 p-4">
 
-            <div class="flex flex-row w-2/5 justify-content-between rounded-lg align-items-center bg-gray-200 p-5">
+                <div class="flex flex-col w-5/6 justify-content-center text-center mb-3 border-b-1 pb-2">
+                    <p>Total Amount</p>
+                    <h1 class="font-bold">$400</h1>
+                </div>
+
+                <div class="flex flex-col w-5/6 gap-2 justify-content-start text-start mb-3 border-b-1 pb-2">
+                    <p class="font-bold">Order Summary</p>
+
+                    <div class="flex flex-row gap-50 justify-content-center">
+                        <div class="flex flex-col">
+                            <p>Item 1</p>
+                            <p>Item 2</p>
+                            <p>Item 3</p>
+                            <p>Item 4</p>
+                        </div>
+
+                        <div class="flex flex-col font-bold text-end">
+                            <p>$100</p>
+                            <p>$100</p>
+                            <p>$100</p>
+                            <p>$100</p>
+                            
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flex flex-row w-5/6 gap-53 justify-content-start text-start mb-5 px-3 pb-2">
+                    <p>Total</p>
+                    <p class="font-bold text-end">$400</p>
+                </div>
+
+                
+
 
             </div>
+
+            <!-- Payment Card -->
 
         </div>
 
