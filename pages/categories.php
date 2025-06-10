@@ -22,6 +22,12 @@
         <h2 class="text-start mb-4">Makes</h2>
         <div class="row">
 
+        <?php
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+        $makes = getAllMakes($conn);
+        ?>
+
             <!-- Makes Card -->
             <div class="col-12 col-sm-6 col-md-4 mb-4">
                 <div class="card makes-card  d-flex flex-row align-items-center gap-3">
@@ -41,12 +47,9 @@
                     </div>
                 </div>
             </div>
-            
-
-
-
+            <!-- Makes Card -->
+             
         </div>
-
     </div>
 
 
