@@ -25,7 +25,7 @@
         <?php
         include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
         include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
-        $makes = getAllMakes($conn);
+        $makes = getAllMakes($connection);
         ?>
 
             <!-- Makes Card -->

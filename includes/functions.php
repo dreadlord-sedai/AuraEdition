@@ -50,3 +50,12 @@ function get_popular_vehicles($connection, $limit = 3)
     $select_Popular->close();
     return $popular_vehicles;
 }
+
+function getAllMakes($connection) {
+    $select_makes = $connection->prepare("SELECT * FROM makes");
+    $select_makes->execute();
+    $result = $select_makes->get_result();
+    $makes = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    $select_makes->close();
+    return $makes;
+}
