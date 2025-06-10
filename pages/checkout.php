@@ -18,9 +18,38 @@
     <!-- Main Content -->
     <div class="container-md my-5 main-content">
 
+        <!-- Checkout -->
+        <div class="flex flex-row gap-3 justify-content-between rounded-lg align-items-start bg-gray-500 p-3">
+
+            <div class="flex flex-col w-3/5 justify-content-center rounded-lg align-items-start bg-gray-200 p-5">
+                <h4>Checkout</h4>
+
+                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-3">
+                    <div class="flex flex-row w-1/2 justify-content-center  rounded-sm ">
+                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover" alt="">
+                    </div>
+                </div>
+
+            </div>
+        
+
+
+        <div class="flex flex-row w-2/5 justify-content-between rounded-lg align-items-center bg-gray-200 p-5">
+
+        </div>
+
+    </div>
+
+
 
 
     </div>
+    </div>
+
+
+    </div>
+
+
     <!-- Main Content -->
 
 
