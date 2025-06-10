@@ -1,3 +1,4 @@
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,6 +113,44 @@
     <div class="container-md my-5">
         <h2 class="text-start mb-4">Featured </h2>
         <div class="row">
+
+        <?php
+
+        $select_Featured = $connection->prepare(
+            "SELECT id, name, price, image, is_featured FROM vehicles WHERE is_featured = ? LIMIT 3"
+        );
+        $featured = 1;
+        $select_Featured->bind_param("i", $featured);
+        $select_Featured->execute();
+        $select_Featured->store_result();
+
+        if ($select_Featured->num_rows > 0) {
+            $select_Featured->bind_result($id, $name, $price, $image, $is_featured);
+            while ($select_Featured->fetch()) {
+                echo '
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card">
+                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                            <i class="bi bi-heart mt-1"></i>
+                        </button>
+                        <a href="/Projects/AuraEdition/products/productDetails.php?id=' . $id . '">
+                            <img src="./products/img/' . $image . '" class="card-img-top" alt="' . $name . '">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">' . $name . '</h5>
+                            <p class="card-text">$' . number_format($price, 2) . '</p>   
+                            <div class="d-flex gap-2">
+                                <a href="/Projects/AuraEdition/products/productDetails.php?id=' . $id . '" class="btn btn-primary">Buy Now</a>
+                                <a href="/Projects/AuraEdition/pages/cart.php?id=' . $id . '" class="btn btn-primary"> Add to Cart</a>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                ';
+            }
+        }
+
+        ?>
 
             <div class="col-12 col-sm-6 col-md-4 mb-4">
                 <div class="card">
