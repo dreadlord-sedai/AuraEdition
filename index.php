@@ -110,56 +110,61 @@
 
 
     <!-- Featured Vehicles Section -->
+    <?php
+    // Fetch featured vehicles
+    $featured = 1;
+    $select_Featured = $connection->prepare(
+        "SELECT id, title, price FROM vehicles WHERE is_featured = ? LIMIT 3"
+    );
+    $select_Featured->bind_param("i", $featured);
+    $select_Featured->execute();
+
+    // Use get_result() for easier fetching (if available)
+    $result = $select_Featured->get_result();
+    $featured_vehicles = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    $select_Featured->close();
+    ?>
+
     <div class="container-md my-5">
-        <h2 class="text-start mb-4">Featured </h2>
+        <h2 class="text-start mb-4">Featured</h2>
         <div class="row">
-
-        <?php
-
-        $select_Featured = $connection->prepare(
-            "SELECT id, title, price FROM vehicles WHERE is_featured = ? LIMIT 3"
-        );
-        $featured = 1;
-        $select_Featured->bind_param("i", $featured);
-        $select_Featured->execute();
-        $select_Featured->store_result();
-
-        if ($select_Featured->num_rows > 0) {
-            $select_Featured->bind_result($id, $title, $price);
-            while ($select_Featured->fetch()) {
-                echo '
+            <?php foreach ($featured_vehicles as $vehicle): ?>
                 <div class="col-12 col-sm-6 col-md-4 mb-4">
                     <div class="card">
                         <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
                             <i class="bi bi-heart mt-1"></i>
                         </button>
-                        <a href="/Projects/AuraEdition/products/productDetails.php?id=' . $id . '">
-                             <img src="./products/img/feature1.jpg" class="card-img-top" alt="' . $title . '">
-                            
+                        <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
+                            <img src="./products/img/feature1.jpg" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title">' . $title . '</h5>
-                            <p class="card-text">$' . number_format($price, 2) . '</p>   
+                            <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
+                            <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
                             <div class="d-flex gap-2">
-                                <a href="/Projects/AuraEdition/products/productDetails.php?id=' . $id . '" class="btn btn-primary">Buy Now</a>
-                                <a href="/Projects/AuraEdition/pages/cart.php?id=' . $id . '" class="btn btn-primary"> Add to Cart</a>
+                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
+                                <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Add to Cart</a>
                             </div>
-                        </div>    
+                        </div>
                     </div>
                 </div>
-                ';
-            }
-        }
+            <?php endforeach; ?>
+        </div>
+    </div>
 
-        ?>
+    <!-- Featured Vehicles Section -->
 
-            <!-- <div class="col-12 col-sm-6 col-md-4 mb-4">
+    <!-- Popular Vehicles Section -->
+    <div class="container-md my-5">
+        <h2 class="text-start mb-4">Popular</h2>
+        <div class="row">
+
+            <div class="col-12 col-sm-6 col-md-4 mb-4">
                 <div class="card">
                     <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
                         <i class="bi bi-heart mt-1"></i>
                     </button>
                     <a href="/Projects/AuraEdition/products/productDetails.php">
-                        <img src="./products/img/feature1.jpg" class="card-img-top" alt="Featured Vehicle">
+                        <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">2023 Lamborghini Huracan</h5>
@@ -170,39 +175,7 @@
                         </div>
                     </div>
                 </div>
-            </div> -->
-
-
-
-
-            <!-- Featured Vehicles Section -->
-
-            <!-- Popular Vehicles Section -->
-            <div class="container-md my-5">
-                <h2 class="text-start mb-4">Popular</h2>
-                <div class="row">
-
-                    <div class="col-12 col-sm-6 col-md-4 mb-4">
-                        <div class="card">
-                            <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
-                                <i class="bi bi-heart mt-1"></i>
-                            </button>
-                            <a href="/Projects/AuraEdition/products/productDetails.php">
-                                <img src="./products/img/feature2.jpg" class="card-img-top" alt="Featured Vehicle">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">2023 Lamborghini Huracan</h5>
-                                <p class="card-text">$250,000</p>
-                                <div class="d-flex gap-2">
-                                    <a href="/Projects/AuraEdition/products/productDetails.php" class="btn btn-primary">Buy Now</a>
-                                    <a href="/Projects/AuraEdition/pages/cart.php" class="btn btn-primary"> Add to Cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
         </div>
     </div>
 
