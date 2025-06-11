@@ -93,3 +93,7 @@ function get_all_recent_vehicles($connection) {
     $select_All_listings->close();
     return $all_vehicles;
 }
+
+
+// User Purchase Flow //
+// User Purchase Flow //
