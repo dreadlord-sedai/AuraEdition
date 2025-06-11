@@ -13,12 +13,14 @@ if (!$user || $user['role'] != "admin") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Dashboard</title>
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
 </head>
+
 <body>
     <!-- Navigation Bar -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
@@ -27,5 +29,5 @@ if (!$user || $user['role'] != "admin") {
     <div class="container-md my-5 main-content">
         <!-- Dashboard content here -->
     </div>
-</body>
-</html>
+
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
