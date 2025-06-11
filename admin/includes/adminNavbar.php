@@ -4,9 +4,14 @@
     <div class=" flex flex-row w-full items-center justify-between py-3 px-5">
         <div class="flex items-center gap-3 flex-row">
 
-            <!-- sidebar button -->
+            <!-- Sidebar button (Hamburger menu) -->
             <div>
-                
+                <button id="sidebarToggle" type="button" class="focus:outline-none p-2 rounded hover:bg-gray-700 transition">
+                    <!-- Hamburger icon -->
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
             </div>
 
             <!-- Logo -->
