@@ -4,7 +4,7 @@
 
  if (isset($_SESSION['user_id'])) {
     include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
     $user = getUser($connection, $_SESSION['user_id']);
     if ($user['role'] == 1) {
         include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php';
