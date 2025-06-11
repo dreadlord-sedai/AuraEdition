@@ -10,8 +10,8 @@
 
             <!-- Display logout button -->
             <div class="text-decoration-none text-white ml-10">
-                <button onclick="logout()"
-                class="border border-red-500 text-red-500 px-4 py-1 rounded
+                <button type="button" onclick="logout()"
+                    class="border border-red-500 text-red-500 px-4 py-1 rounded
                          hover:bg-red-500 hover:text-white transition d-flex align-items-center">
                     Logout
                 </button>
@@ -23,6 +23,6 @@
 
 
     </div>
-    </div>
+
 </nav>
 <!-- Navigation Bar -->

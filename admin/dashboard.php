@@ -6,7 +6,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/a
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUser($connection, $_SESSION['user_id']) : null;
 if (!$user || $user['role'] != "admin") {
-    header("Location: /Projects/AuraEdition/auth/login.php");
+    header("Location: /Projects/AuraEdition/index.php");
     exit;
 }
 ?>
