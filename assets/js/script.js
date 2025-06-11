@@ -7,7 +7,7 @@ function logout() {
         if (request.readyState == 4 && request.status == 200) {
             var response = request.responseText;
             if (response == "success") {
-                window.location = "index.php";
+                window.location = "/Projects/AuraEdition/index.php";
             }
         }
     }
