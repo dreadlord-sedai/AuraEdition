@@ -1,6 +1,6 @@
 <!--Sidebar-->
-<div id="adminSidebar" class="h-screen w-64 bg-gray-900 text-white flex flex-col py-8 px-6 fixed 
-left-0 top-0 z-30 transition-all duration-300">
+<div id="adminSidebar" class="h-screen bg-gray-900 text-white flex flex-col py-8 px-6 fixed 
+left-0 top-0 z-30 transition-all duration-300 w-1/6">
     <!-- Panel Title -->
     <div class="mb-10">
         <span class="text-2xl font-semibold tracking-wide">Admin Panel</span>

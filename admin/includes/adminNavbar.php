@@ -1,5 +1,5 @@
 <!-- Navigation Bar -->
-<nav class="w-full bg-black text-white">
+<nav class="bg-black text-white w-5/6">
 
     <div class=" flex flex-row w-full items-center justify-between py-3 px-5">
         <div class="flex items-center gap-3 flex-row">
