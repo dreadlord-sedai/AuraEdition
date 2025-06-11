@@ -26,8 +26,20 @@ if (!$user || $user['role'] != "admin") {
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
     <!-- Navigation Bar -->
 
-    <div class="container-md my-5 main-content">
+
+    <!-- Main Content -->
+    <div class="">
         <!-- Dashboard content here -->
+
+            <!--Side Bar-->
+            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+            <!--Side Bar-->
+
+
+
+
+
     </div>
+    <!-- Main Content -->
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
