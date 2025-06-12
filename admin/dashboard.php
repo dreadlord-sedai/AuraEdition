@@ -21,11 +21,12 @@ if (!$user || $user['role'] != "admin") {
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
 </head>
 
-<body class="d-flex">
-   <div class="flex">
+<body class="bg-gray-950">
+    <div class="flex">
         <!-- Sidebar -->
         <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
 
+        <!-- Main Content Area -->
         <div class="flex-1 min-h-screen flex flex-col">
             <!-- Navigation Bar -->
             <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
