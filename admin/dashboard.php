@@ -31,8 +31,30 @@ if (!$user || $user['role'] != "admin") {
             <!-- Navigation Bar -->
             <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
             <!-- Main Content -->
-            <div class="p-8">
+            <div class="p-8 flex flex-col">
                 <!-- Dashboard content here -->
+                 <!--Analytics-->
+                <div class="flex flex-row justify-content-center gap-5 align-items-center"> 
+                    <div class=" flex flex-col card-1 bg-gray-400 px-5 py-3 rounded-lg text-start">
+                        <p>Total products</p>
+                        <b><p>150</p></b>
+                    </div>
+
+                    <div class="card-1 bg-gray-400 px-5 py-3 rounded-lg justify-content-center align-items-center">
+                        <p>Total products</p>
+                        <b><p>150</p></b>
+                    </div>
+
+                    <div class="card-1 bg-gray-400 px-5 py-3 rounded-lg justify-content-center align-items-center">
+                        <p>Total products</p>
+                        <b><p>150</p></b>
+                    </div>
+                </div>
+                <!--Analytics-->
+
+                <!--Recent orders-->
+                
+
             </div>
         </div>
     </div>
