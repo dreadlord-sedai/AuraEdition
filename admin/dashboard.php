@@ -21,7 +21,7 @@ if (!$user || $user['role'] != "admin") {
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
 </head>
 
-<body class="bg-gray-950">
+<body class="bg-black">
     <div class="flex">
         <!-- Sidebar -->
         <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
