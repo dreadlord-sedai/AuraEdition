@@ -1,5 +1,5 @@
 <!--Sidebar-->
-<div id="adminSidebar" cclass="h-screen w-64 bg-gray-900 text-white flex flex-col py-8 px-6">
+<div id="adminSidebar" class="h-screen w-64 bg-gray-900 text-white flex flex-col py-8 px-6">
     <!-- Panel Title -->
     <div class="mb-10">
         <span class="text-2xl font-semibold tracking-wide">Admin Panel</span>
