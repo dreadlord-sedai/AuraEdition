@@ -22,24 +22,18 @@ if (!$user || $user['role'] != "admin") {
 </head>
 
 <body class="d-flex">
-    <!-- Navigation Bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
-    <!-- Navigation Bar -->
+   <div class="flex">
+        <!-- Sidebar -->
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
 
-
-    <!-- Main Content -->
-    <div class="">
-        <!-- Dashboard content here -->
-
-            <!--Side Bar-->
-            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
-            <!--Side Bar-->
-
-
-
-
-
+        <div class="flex-1 min-h-screen flex flex-col">
+            <!-- Navigation Bar -->
+            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
+            <!-- Main Content -->
+            <div class="p-8">
+                <!-- Dashboard content here -->
+            </div>
+        </div>
     </div>
-    <!-- Main Content -->
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
