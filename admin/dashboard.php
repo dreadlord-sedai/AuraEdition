@@ -122,7 +122,46 @@ if (!$user || $user['role'] != "admin") {
                         </table>
                     </div>
                 </div>
+                <!--Recent orders-->
 
+                <!--Analytics-->
+
+                <div class="mt-10">
+                    <h2 class="text-lg font-semibold mb-4 text-light">Sales Overview</h2>
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                            <div>
+                                <div class="text-3xl font-bold text-white">$1,250,000</div>
+                                <div class="text-gray-400">Last 12 Months <span class="text-green-400 font-semibold">+15%</span></div>
+                            </div>
+                            <div class="mt-4 md:mt-0">
+                                <span class="inline-block bg-green-600 text-white px-3 py-1 rounded-full text-xs">Sales Trend</span>
+                            </div>
+                        </div>
+                        <!-- Simple SVG Chart (placeholder) -->
+                        <div class="w-full h-32">
+                            <svg viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                <polyline
+                                    fill="none"
+                                    stroke="#34d399"
+                                    stroke-width="4"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    points="0,60 30,40 60,50 90,20 120,40 150,10 180,50 210,30 240,60 270,20 300,60" />
+                            </svg>
+                            <div class="flex justify-between text-xs text-gray-400 mt-2 px-1">
+                                <span>Jan</span>
+                                <span>Feb</span>
+                                <span>Mar</span>
+                                <span>Apr</span>
+                                <span>May</span>
+                                <span>Jun</span>
+                                <span>Jul</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Analytics-->
             </div>
         </div>
     </div>
