@@ -76,54 +76,52 @@ if (!$user || $user['role'] != "admin") {
                     </div>
                 </div>
 
-                <!-- Product table -->
+                                <!-- Orders Table -->
                 <div class="overflow-x-auto mt-10">
                     <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden">
                         <thead>
                             <tr>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">ID</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Name</th>
+                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Order ID</th>
+                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Customer</th>
+                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Order Date</th>
                                 <th class="px-4 py-2 text-left text-gray-300 font-medium">Status</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Price</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Stock</th>
+                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Total Amount</th>
                                 <th class="px-4 py-2 text-left text-gray-300 font-medium">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Example static rows, replace with PHP loop for dynamic data -->
                             <tr class="border-b border-gray-700">
-                                <td class="px-4 py-2 text-gray-100">1</td>
-                                <td class="px-4 py-2 text-gray-100">Product A</td>
+                                <td class="px-4 py-2 text-gray-100">#1001</td>
+                                <td class="px-4 py-2 text-gray-100">Ethan Harper</td>
+                                <td class="px-4 py-2 text-gray-100">2024-07-26</td>
                                 <td class="px-4 py-2">
-                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs">Active</span>
+                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs">Shipped</span>
                                 </td>
-                                <td class="px-4 py-2 text-gray-100">$100</td>
-                                <td class="px-4 py-2 text-gray-100">50</td>
+                                <td class="px-4 py-2 text-gray-100">$150,000</td>
                                 <td class="px-4 py-2">
-                                    <a href="#" class="text-blue-400 hover:underline mr-2">Edit</a>
-                                    <a href="#" class="text-red-400 hover:underline">Delete</a>
+                                    <a href="#" class="text-blue-400 hover:underline">View Details</a>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="px-4 py-2 text-gray-100">2</td>
-                                <td class="px-4 py-2 text-gray-100">Product B</td>
+                                <td class="px-4 py-2 text-gray-100">#1002</td>
+                                <td class="px-4 py-2 text-gray-100">Olivia Bennett</td>
+                                <td class="px-4 py-2 text-gray-100">2024-07-25</td>
                                 <td class="px-4 py-2">
-                                    <span class="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs">Inactive</span>
+                                    <span class="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs">Processing</span>
                                 </td>
-                                <td class="px-4 py-2 text-gray-100">$200</td>
-                                <td class="px-4 py-2 text-gray-100">20</td>
+                                <td class="px-4 py-2 text-gray-100">$200,000</td>
                                 <td class="px-4 py-2">
-                                    <a href="#" class="text-blue-400 hover:underline mr-2">Edit</a>
-                                    <a href="#" class="text-red-400 hover:underline">Delete</a>
+                                    <a href="#" class="text-blue-400 hover:underline">View Details</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Product table -->
             </div>
             <!-- Main Content -->
+
         </div>
     </div>
 
