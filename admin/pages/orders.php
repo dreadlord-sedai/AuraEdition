@@ -34,8 +34,6 @@ if (!$user || $user['role'] != "admin") {
             <div class="p-8 flex flex-col">
                 <div class="flex justify-between items-center mb-5">
                     <h3 class="text-2xl font-semibold mb-4 text-light">Products</h3>
-                    <button><a href="/Projects/AuraEdition/admin/pages/addProduct.php"
-                            class="btn btn-primary">Add Product</a></button>
                 </div>
 
 
