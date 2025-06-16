@@ -1,6 +1,7 @@
-<?php 
+<?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +23,15 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
     <div class="container-md my-5 main-content">
 
         <div>
+
+            <?php
+
+            if (isset($_GET['id'])):
+                $vehicle_id = $_GET['id'];
+                $vehicle = get_vehicle($vehicle_id, $connection);
+            
+
+            ?>
 
             <!--- Product Image Section -->
             <div class="flex gap-6 justify-center">
@@ -98,6 +108,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 <!-- Action Buttons Section -->
             </div>
         </div>
+        <?php endif; ?>
 
         <hr>
         <!-- Product Details Section -->
@@ -108,36 +119,36 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
             <h2 class="text-start mb-4">Recent Listings</h2>
             <div class="row">
 
-            <?php
-            $recent_vehicles = get_all_recent_vehicles($connection);
-            foreach ($recent_vehicles as $vehicle) {
-                $image = get_vehicle_image($vehicle['id'], $connection);
-                $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
-            }
-            
-            ?>
+                <?php
+                $recent_vehicles = get_all_recent_vehicles($connection);
+                foreach ($recent_vehicles as $vehicle) {
+                    $image = get_vehicle_image($vehicle['id'], $connection);
+                    $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+                }
+
+                ?>
 
                 <!-- Vehicle card-->
-                 <?php foreach ($recent_vehicles as $vehicle): ?>
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
-                    <div class="card">
-                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
-                            <i class="bi bi-heart mt-1"></i>
-                        </button>
-                        <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
-                            <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
-                        </a>
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
-                            <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
-                            <div class="d-flex gap-2">
-                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
-                                <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Add to Cart</a>
+                <?php foreach ($recent_vehicles as $vehicle): ?>
+                    <div class="col-12 col-sm-6 col-md-4 mb-4">
+                        <div class="card">
+                            <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                                <i class="bi bi-heart mt-1"></i>
+                            </button>
+                            <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
+                                <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
+                                <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
+                                <div class="d-flex gap-2">
+                                    <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
+                                    <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Add to Cart</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
                 <!-- Vehicle card-->
             </div>
         </div>

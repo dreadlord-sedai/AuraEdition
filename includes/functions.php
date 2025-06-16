@@ -94,6 +94,17 @@ function get_all_recent_vehicles($connection) {
     return $all_vehicles;
 }
 
+function get_vehicle($vehicle_id, $connection) {
+    $select_vehicle = $connection->prepare(
+        "SELECT id, title, price, description, stock FROM vehicles WHERE id = ?"
+    );
+    $select_vehicle->bind_param("i", $vehicle_id);
+    $select_vehicle->execute();
+    $result = $select_vehicle->get_result();
+    $vehicle = $result ? $result->fetch_assoc() : [];
+    $select_vehicle->close();
+    return $vehicle;
+}
 
 // User Purchase Flow //
 // User Purchase Flow //
