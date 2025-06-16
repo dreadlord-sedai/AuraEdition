@@ -1,3 +1,6 @@
+<?php
+$currentPage = basename($_SERVER['PHP_SELF']);
+?>
 <!--Sidebar-->
 <div id="adminSidebar" class="h-screen w-64 bg-gray-900 text-white flex flex-col py-8 px-6">
     <!-- Panel Title -->
