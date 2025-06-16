@@ -38,7 +38,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 <!-- Main Product Image (left, takes half width) -->
                 <div class="w-1/2 flex items-center justify-center">
                     <div class="aspect-square w-full bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
-                        <img src="/Projects/AuraEdition/products/img/product1.jpg" alt="Main Product" class="object-cover w-full h-full rounded-lg" />
+                        <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Main Product" class="object-cover w-full h-full rounded-lg" />
                     </div>
                 </div>
                 <!-- Image Grid (right, 2x2, takes half width) -->
