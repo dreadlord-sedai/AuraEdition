@@ -33,60 +33,68 @@ if (!$user || $user['role'] != "admin") {
             <!-- Main Content -->
             <div class="p-8 flex flex-col">
                 <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Products</h3>
-                    <a href="/Projects/AuraEdition/admin/pages/products.php" class="btn btn-secondary">Back to Products</a>
+                    <h3 class="text-2xl font-semibold mb-4 text-light">Add New Vehicle Product</h3>
+                    
                 </div>
 
-                <!--Add vehicle Form-->
-                <form action="/Projects/AuraEdition/admin/actions/handleAddProduct.php" method="POST" enctype="multipart/form-data" class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto">
-                    <h4 class="text-xl font-semibold mb-6 text-light text-center">Add New Product</h4>
+                <!-- Add Vehicle Product Form -->
+                <form action="/Projects/AuraEdition/admin/actions/handleAddProduct.php" method="POST" enctype="multipart/form-data" 
+                class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
+                    
 
                     <!-- Product Title -->
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Product Title</label>
-                        <input type="text" name="title" id="title" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" name="title" id="title" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Vehicle Make -->
                     <div class="mb-4">
-                        <label for="status" class="block text-sm font-medium text-gray-300 mb-1">Make</label>
-                        <select name="status" id="status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="active">make 1</option>
-                            <option value="inactive">Inactive</option>
+                        <label for="make" class="block text-sm font-medium text-gray-300 mb-1">Make</label>
+                        <select name="make" id="make" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                            <option value="">-- Select Make --</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Ford">Ford</option>
+                            <option value="BMW">BMW</option>
+                            <!-- Add more makes as needed, or populate dynamically -->
                         </select>
                     </div>
 
                     <!-- Vehicle Model -->
                     <div class="mb-4">
-                        <label for="status" class="block text-sm font-medium text-gray-300 mb-1">Model</label>
-                        <select name="status" id="status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="active">Model 1</option>
-                            <option value="inactive">Inactive</option>
+                        <label for="model" class="block text-sm font-medium text-gray-300 mb-1">Model</label>
+                        <select name="model" id="model" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                            <option value="">-- Select Model --</option>
+                            <option value="Camry">Camry (Toyota)</option>
+                            <option value="Civic">Civic (Honda)</option>
+                            <option value="F-150">F-150 (Ford)</option>
+                            <!-- Add more models as needed, ideally populated based on selected make -->
                         </select>
                     </div>
 
                     <!-- Vehicle Description -->
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                        <textarea name="description" id="description" rows="4" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        <textarea name="description" id="description" rows="4" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"></textarea>
                     </div>
 
                     <!-- Product Price -->
                     <div class="mb-4">
                         <label for="price" class="block text-sm font-medium text-gray-300 mb-1">Price ($)</label>
-                        <input type="number" name="price" id="price" step="0.01" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="number" name="price" id="price" step="0.01" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Product Stock -->
                     <div class="mb-4">
                         <label for="stock" class="block text-sm font-medium text-gray-300 mb-1">Stock Quantity</label>
-                        <input type="number" name="stock" id="stock" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="number" name="stock" id="stock" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Product Status -->
                     <div class="mb-4">
-                        <label for="status" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
-                        <select name="status" id="status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label for="product_status" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
+                        <select name="product_status" id="product_status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
@@ -95,15 +103,15 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Product Image -->
                     <div class="mb-6">
                         <label for="image" class="block text-sm font-medium text-gray-300 mb-1">Product Image</label>
-                        <input type="file" name="image" id="image" accept="image/*" class="w-full text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+                        <input type="file" name="image" id="image" accept="image/*" class="w-full text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 border border-gray-600">
                     </div>
 
                     <!-- Submit Button -->
                     <div class="flex justify-end">
-                        <button type="submit" class="btn btn-primary px-6 py-2">Add Product</button>
+                        <button type="submit" class="btn btn-primary px-6 py-2">Add Vehicle Product</button>
                     </div>
                 </form>
-                <!--End Add Product Form-->
+                <!--End Add Vehicle Product Form-->
 
 
 
