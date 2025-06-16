@@ -10,8 +10,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <!-- Navigation -->
     <nav class="flex flex-col gap-2">
         <a href="/Projects/AuraEdition/admin/dashboard.php"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-800 font-medium focus:outline-none 
-           transition hover:bg-gray-700 text-decoration-none " >
+            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition hover:bg-gray-700 text-decoration-none <?= $currentPage == 'dashboard.php' ? 'bg-gray-800' : '' ?>">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 
@@ -20,8 +19,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             Dashboard
         </a>
         <a href="/Projects/AuraEdition/admin/pages/products.php"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition
-            hover:bg-gray-700 text-decoration-none">
+            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition hover:bg-gray-700 text-decoration-none <?= $currentPage == 'products.php' ? 'bg-gray-800' : '' ?>">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 
@@ -30,8 +28,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             Products
         </a>
         <a href="/Projects/AuraEdition/admin/pages/orders.php"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition
-            hover:bg-gray-700 text-decoration-none">
+            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition hover:bg-gray-700 text-decoration-none <?= $currentPage == 'orders.php' ? 'bg-gray-800' : '' ?>">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 
@@ -40,8 +37,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             Orders
         </a>
         <a href="/Projects/AuraEdition/admin/pages/addProduct.php"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition 
-            hover:bg-gray-700 text-decoration-none">
+            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition hover:bg-gray-700 text-decoration-none <?= $currentPage == 'addProduct.php' ? 'bg-gray-800' : '' ?>">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -49,8 +45,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             Add Products
         </a>
         <a href="/Projects/AuraEdition/admin/pages/analytics.php"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition
-             hover:bg-gray-700 text-decoration-none">
+            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition hover:bg-gray-700 text-decoration-none <?= $currentPage == 'analytics.php' ? 'bg-gray-800' : '' ?>">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 19V6m4 13V6m-8 13v-6" />
