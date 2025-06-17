@@ -26,7 +26,10 @@ function pay() {
         if (request.readyState == 4 && request.status == 200) {
             var response = request.responseText;
             if (response == "success") {
+                alert("Payment successful!");
                 window.location = "/Projects/AuraEdition/pages/invoice.php";
+            } else {
+                alert("Payment Failed!"); // Move the alert here
             }
         }
     }
