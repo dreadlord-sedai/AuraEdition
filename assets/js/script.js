@@ -26,7 +26,7 @@ function buyNow(id) {
         if (request.readyState == 4 && request.status == 200) {
             var response = request.responseText;
             if (response == "success") {
-                window.location = "/Projects/AuraEdition/pages/invoice.php";
+                window.location = "/Projects/AuraEdition/pages/checkout.php";
             }
         }
     }
