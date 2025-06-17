@@ -177,7 +177,7 @@
                     <!-- Make the Pay button a long green button with Tailwind -->
                     <div class="flex flex-row gap-2 w-full px">
                         <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold
-                         py-3 rounded-lg transition">
+                         py-3 rounded-lg transition" type="submit" name="submit" value="Pay" onclick="pay();">
                             Pay
                         </button>
                     </div>
