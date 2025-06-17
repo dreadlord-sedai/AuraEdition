@@ -19,6 +19,21 @@ function logout() {
 
 
 /* USER FLOW */
+function buyNow(id) {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+            var response = request.responseText;
+            if (response == "success") {
+                window.location = "/Projects/AuraEdition/pages/invoice.php";
+            }
+        }
+    }
+    request.open("POST", "/Projects/AuraEdition/process/buyNowProcess.php?id=" + id, true);
+    request.send();
+}
+
 function pay() {
     var request = new XMLHttpRequest();
 
