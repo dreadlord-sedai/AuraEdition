@@ -1,3 +1,9 @@
+?<?php
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+    ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -132,21 +138,72 @@
                     </div>
                 </div>
 
+
+                <!-- Item Card -->
+
                 <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full px-5">
                     <h4>Total:</h4>
                     <h4>$400</h4>
                 </div>
-                <!-- Item Card -->
+
+                <div class="flex flex-row justify-center gap-3 items-center rounded-md bg-transparent p-4 w-full">
+                    <a href="/Projects/AuraEdition/pages/checkout.php" class="btn btn-primary w-3/5">CHECKOUT</a>
+                </div>
 
             </div>
             <!-- Cart Card -->
 
             <!-- Buttons -->
-            <div class="flex flex-row gap-3 w-full justify-center p-5 my-4 border-y-1 border-gray-400 ">
-                <a href="/Projects/AuraEdition/pages/checkout.php" class="btn btn-primary">PURCHASED HISTORY</a>
-                <a href="/Projects/AuraEdition/pages/index.php" class="btn btn-primary">WATCHLIST</a>
+            <div class="flex flex-row gap-3 w-full justify-content-evenly p-5 my-4 border-y-1 border-gray-400 ">
+                <div class="flex w-1/2 justify-content-center">
+                    <a href="/Projects/AuraEdition/pages/purchasedHistory.php" class="btn btn-primary w-3/5">PURCHASED HISTORY</a>
+                </div>
+
+                <div class="flex w-1/2 justify-content-center">
+                    <a href="/Projects/AuraEdition/pages/watchlist.php" class="btn btn-primary w-3/5">WATCHLIST</a>
+                </div>
+
             </div>
             <!-- Buttons -->
+
+            <!-- Recent Listings Section -->
+            <div class="container-md my-20">
+                <h2 class="text-start mb-4">Recent Listings</h2>
+                <div class="row">
+
+                    <?php
+                    $recent_vehicles = get_all_recent_vehicles($connection);
+                    foreach ($recent_vehicles as $vehicle) {
+                        $image = get_vehicle_image($vehicle['id'], $connection);
+                        $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+                    }
+
+                    ?>
+
+                    <!-- Vehicle card-->
+                    <?php foreach ($recent_vehicles as $vehicle): ?>
+                        <div class="col-12 col-sm-6 col-md-4 mb-4">
+                            <div class="card">
+                                <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                                    <i class="bi bi-heart mt-1"></i>
+                                </button>
+                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
+                                    <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
+                                    <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
+                                    <div class="d-flex gap-2">
+                                        <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
+                                        <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Add to Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    <!-- Vehicle card-->
+                </div>
+            </div>
 
         </div>
 
