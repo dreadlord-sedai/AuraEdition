@@ -20,7 +20,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
         </ul>
         <div class="flex items-center space-x-4">
             <a href="/Projects/AuraEdition/pages/cart.php">
-                <i class="bi bi-cart-fill text-2xl"></i>
+                <i class="fa-solid fa-cart-shopping text-light"></i>
             </a>
 
             <!-- Display login or logout button based on session status -->

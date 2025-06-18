@@ -71,7 +71,13 @@
                 </p>
             </div>
         </div>
-
+        <!-- About Section -->
+    </div>
+    <!-- Main Content -->
+    <div>
+        <img src="/Projects/AuraEdition/assets/images/about3.jpg" class="img-fluid w-100" alt="">
+    </div>
+    
     </div>
 
 
