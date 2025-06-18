@@ -49,7 +49,6 @@ $listings = getListingsByMake($connection, $make_id);
                             <img src="<?php echo $listing['image_url']; ?>" class="card-img-top listing-img" alt="<?php echo $listing['title']; ?>">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $listing['title']; ?></h5>
-                                <p class="card-text text-muted mb-2"><?php echo $listing['year']; ?> · <?php echo number_format($listing['mileage']); ?> km</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="card-text fw-bold mb-0">$<?php echo number_format($listing['price']); ?></p>
                                     <a href="/Projects/AuraEdition/products/productDetails.php?id=<?php echo $listing['listing_id']; ?>" class="btn btn-primary">View Details</a>
