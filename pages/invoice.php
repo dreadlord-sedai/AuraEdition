@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraEdition | Checkout</title>
+    <title>AuraEdition | Invoice</title>
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
 
@@ -16,7 +16,7 @@
 
 
     <!-- Main Content -->
-    <div class=" flex container-md my-5 main-content justify-content-center ">
+    <div class=" flex container-md my-5 main-content justify-content-center">
         <!-- Invoice -->
         <div class="w-2/3 p-6">
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
