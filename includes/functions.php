@@ -124,13 +124,15 @@ function getMakeById(mysqli $connection, int $make_id): ?array {
 }
 
 function getListingsByMake(mysqli $connection, int $make_id): array {
-    $sql = "SELECT v.id as listing_id, v.title, v.price, v.year, v.mileage, 
-                   COALESCE(vi.image_path, '/Projects/AuraEdition/assets/images/default-car.jpg') as image_url
+    $sql = "SELECT v.id as listing_id, 
+                   v.title, 
+                   v.price,
+                   MIN(COALESCE(vi.image_path, '/Projects/AuraEdition/assets/images/default-car.jpg')) as image_url
             FROM vehicles v
             LEFT JOIN vehicle_images vi ON v.id = vi.image_vehicle_id
             WHERE v.make_id = ?
-            GROUP BY v.id
-            ORDER BY v.created_at DESC";
+            GROUP BY v.id, v.title, v.price
+            ORDER BY v.created_at DESC;";
     
     $stmt = $connection->prepare($sql);
     $listings = [];
