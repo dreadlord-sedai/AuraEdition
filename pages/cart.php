@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraEdition | Checkout</title>
+    <title>AuraEdition | Cart</title>
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
 
@@ -18,126 +18,45 @@
     <!-- Main Content -->
     <div class="container-md my-5 main-content">
 
-        <!-- Checkout  -->
-        <div class="flex flex-row gap-3 justify-between rounded-lg items-stretch bg-gray-500 p-4 mb-5">
-
-
-            <!-- Checkout Card -->
-            <div class="flex flex-col w-3/5 gap-3 justify-content-center rounded-lg align-items-start bg-gray-200 p-5">
+        <div class="flex flex-col justify-content-center align-items-center">
+            <!-- Cart Card -->
+            <div class="flex flex-col w-75 flex-grow gap-3 justify-content-center rounded-lg align-items-center bg-gray-200 p-5">
                 <h4>Checkout</h4>
 
                 <!-- Item Card -->
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
-
-                    <div class="justify-content-center rounded-sm ">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
+                <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
+                    <div class="rounded-sm">
+                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-40" alt="">
                     </div>
 
-                    <div class="flex flex-row gap-4">
-                        <div class="w-3/4 mt-2 ">
+                    <div class="flex flex-col items-center">
+                        <div class="">
                             <h5>2023 Lamborghini Huracan</h5>
                         </div>
+                        <div class="mb-2">
+                            <h5>$100</h5>
+                        </div>
 
-                        <div class="flex flex-col w-1/4 justify-content-center align-items-center">
-                            <div class="mb-2 mt-3">
-                                <h5>$100</h5>
-                            </div>
-
-                            <div class="flex flex-row gap-2">
-                                <button class="btn btn-primary">-</button>
-                                <h5>1</h5>
-                                <button class="btn btn-primary">+</button>
-                            </div>
+                        <div class="flex flex-row gap-2">
+                            <button class="btn btn-primary">-</button>
+                            <h5 class="mx-2">1</h5>
+                            <button class="btn btn-primary">+</button>
                         </div>
                     </div>
 
-                </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <button class="btn btn-outline-success">Buy Now</button>
+                        <button class="btn btn-outline-danger">Remove</button>
 
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
-
-                    <div class="justify-content-center rounded-sm ">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
                     </div>
-
-                    <div class="flex flex-row gap-4">
-                        <div class="w-3/4 mt-2 ">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-
-                        <div class="flex flex-col w-1/4 justify-content-center align-items-center">
-                            <div class="mb-2 mt-3">
-                                <h5>$100</h5>
-                            </div>
-
-                            <div class="flex flex-row gap-2">
-                                <button class="btn btn-primary">-</button>
-                                <h5>1</h5>
-                                <button class="btn btn-primary">+</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
-
-                    <div class="justify-content-center rounded-sm ">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
-                    </div>
-
-                    <div class="flex flex-row gap-4">
-                        <div class="w-3/4 mt-2 ">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-
-                        <div class="flex flex-col w-1/4 justify-content-center align-items-center">
-                            <div class="mb-2 mt-3">
-                                <h5>$100</h5>
-                            </div>
-
-                            <div class="flex flex-row gap-2">
-                                <button class="btn btn-primary">-</button>
-                                <h5>1</h5>
-                                <button class="btn btn-primary">+</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
-
-                    <div class="justify-content-center rounded-sm ">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
-                    </div>
-
-                    <div class="flex flex-row gap-4">
-                        <div class="w-3/4 mt-2 ">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-
-                        <div class="flex flex-col w-1/4 justify-content-center align-items-center">
-                            <div class="mb-2 mt-3">
-                                <h5>$100</h5>
-                            </div>
-
-                            <div class="flex flex-row gap-2">
-                                <button class="btn btn-primary">-</button>
-                                <h5>1</h5>
-                                <button class="btn btn-primary">+</button>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
                 <!-- Item Card -->
 
             </div>
-            <!-- Checkout Card -->
-
-
-           
+            <!-- Cart Card -->
         </div>
+
+
     </div>
     <!-- Main Content -->
 
