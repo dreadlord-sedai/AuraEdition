@@ -41,7 +41,7 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <p class="card-text mb-0 text-muted" style="font-size: 0.95rem;"><?= $make['listings_count'] ?> Listings</p>
-                            <a href="/Projects/AuraEdition/pages/categories.php?id=<?= $make['make_id'] ?>" class="text-decoration-none">
+                            <a href="/Projects/AuraEdition/pages/makesListings.php?id=<?= $make['make_id'] ?>" class="text-decoration-none">
                                 <button class="makesCard-btn btn btn-outline-light d-flex justify-content-center align-items-center">
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
