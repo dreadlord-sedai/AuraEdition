@@ -20,6 +20,13 @@ function logout() {
 
 /* USER FLOW */
 function buyNow(id) {
+    // Get quantity from input field with id 'quantity'
+    var quantityInput = document.getElementById('quantity');
+    var quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+    if (isNaN(quantity) || quantity < 1) {
+        quantity = 1;
+    }
+
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
@@ -40,7 +47,7 @@ function buyNow(id) {
     }
     request.open("POST", "/Projects/AuraEdition/process/buyNowProcess.php", true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.send("id=" + encodeURIComponent(id));
+    request.send("id=" + encodeURIComponent(id) + "&quantity=" + encodeURIComponent(quantity));
 }
 
 document.getElementById('cancelBtn')?.addEventListener('click', clearCheckout);

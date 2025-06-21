@@ -7,6 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // 1. Get Vehicle details from the database
         $vehicle_id = $_POST['id'];
+        $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
+        if ($quantity < 1) {
+            $quantity = 1;
+        }
         $vehicle = get_vehicle($vehicle_id, $connection);
 
         // 2. Initialize vehicles array in session if not set
@@ -14,17 +18,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['vehicles'] = [];
         }
 
-        // 3. Add vehicle to session array or increment quantity if already added
+        // 3. Add vehicle to session array or update quantity if already added
         $found = false;
         foreach ($_SESSION['vehicles'] as &$v) {
             if ($v['id'] == $vehicle['id']) {
-                $v['quantity'] = isset($v['quantity']) ? $v['quantity'] + 1 : 2;
+                $v['quantity'] = isset($v['quantity']) ? $v['quantity'] + $quantity : $quantity;
                 $found = true;
                 break;
             }
         }
         if (!$found) {
-            $vehicle['quantity'] = 1;
+            $vehicle['quantity'] = $quantity;
             $_SESSION['vehicles'][] = $vehicle;
         }
         unset($v);

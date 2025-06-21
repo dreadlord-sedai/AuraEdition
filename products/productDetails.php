@@ -80,6 +80,34 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             onclick="buyNow(<?= $vehicle['id']?>);" type="submit" name="submit" value="Buy Now">
                                 Buy Now
                             </button>
+                            <script>
+                                // Override buyNow to include quantity from input
+                                function buyNow(id) {
+                                    var quantityInput = document.getElementById('quantity');
+                                    var quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+                                    if (isNaN(quantity) || quantity < 1) {
+                                        quantity = 1;
+                                    }
+                                    var request = new XMLHttpRequest();
+                                    request.onreadystatechange = function () {
+                                        if (request.readyState == 4) {
+                                            if (request.status == 200) {
+                                                var response = request.responseText.trim();
+                                                if (response === "success") {
+                                                    window.location = "/Projects/AuraEdition/pages/checkout.php";
+                                                } else {
+                                                    alert("Buy Now failed: " + response);
+                                                }
+                                            } else {
+                                                alert("Request failed with status " + request.status);
+                                            }
+                                        }
+                                    }
+                                    request.open("POST", "/Projects/AuraEdition/process/buyNowProcess.php", true);
+                                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                                    request.send("id=" + encodeURIComponent(id) + "&quantity=" + encodeURIComponent(quantity));
+                                }
+                            </script>
                         
                         <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>">
                             <button class="btn btn-primary d-flex justify-content-center align-items-center">
@@ -89,7 +117,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
                         <div class="flex flex-row gap-2 justify-center items-center">
                             <label for="quantity" class="text-gray-600">Quantity:</label>
-                            <input type="number" id="quantity" name="quantity" min="1" max="<?php echo $vehicle['stock']; ?>" value="1" 
+                            <input type="number" id="quantity" name="quantity" min="1" max="<?= $vehicle['stock']; ?>" value="1" 
                             class="p-2 bg-white/10 rounded-lg shadow-lg w-16 h-8">
                         </div>
                     </div>
