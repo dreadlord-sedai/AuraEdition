@@ -32,16 +32,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $connection->begin_transaction();
-
+        
+        // Insert order record
         $stmt = $connection->prepare("INSERT INTO orders (user_id, total_price, orderd_at) VALUES (?, ?, NOW())");
         $stmt->bind_param("id", $user_id, $total_price);
         $stmt->execute();
         $order_id = $stmt->insert_id;
         $stmt->close();
 
-        $stmt_item = $connection->prepare("INSERT INTO order_items (order_id, vehicle_id, price) VALUES (?, ?, ?)");
+        // Insert order items
+        $stmt_item = $connection->prepare("INSERT INTO order_items (order_id, vehicle_id, quantity, price) VALUES (?, ?, ?, ?)");
         foreach ($vehicles as $vehicle) {
-            $stmt_item->bind_param("iid", $order_id, $vehicle['id'], $vehicle['price']);
+            $stmt_item->bind_param("iiid", $order_id, $vehicle['id'], $vehicle['quantity'], $vehicle['price']);
+            $stmt_item->execute();
+        }
+
+        // Update vehicle stock
+        foreach ($vehicles as $vehicle) {
+            $stmt_item = $connection->prepare("UPDATE vehicles SET stock = stock - ? WHERE id = ?");
+            $stmt_item->bind_param("ii", $vehicle['quantity'], $vehicle['id']);
             $stmt_item->execute();
         }
         $stmt_item->close();
