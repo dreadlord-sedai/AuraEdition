@@ -153,4 +153,36 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
 // Make Functions //
 
 // User Purchase Flow //
+function fetchOrdersByUserId($connection, $user_id) {
+    if (!isset($_SESSION['user_id'])) {
+    header("Location: /Projects/AuraEdition/auth/login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Fetch the latest order for the user
+$stmt = $connection->prepare("SELECT order_id, total_price, orderd_at FROM orders WHERE user_id = ? ORDER BY orderd_at DESC LIMIT 1");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$order_result = $stmt->get_result();
+$order = $order_result->fetch_assoc();
+$stmt->close();
+
+if (!$order) {
+    echo "No recent order found.";
+    exit;
+}
+
+// Fetch order items
+$stmt_items = $connection->prepare("SELECT vehicle_id, price FROM order_items WHERE order_id = ?");
+$stmt_items->bind_param("i", $order['id']);
+$stmt_items->execute();
+$items_result = $stmt_items->get_result();
+$order_items = [];
+while ($row = $items_result->fetch_assoc()) {
+    $order_items[] = $row;
+}
+$stmt_items->close();
+}
 // User Purchase Flow //

@@ -1,22 +1,34 @@
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: /Projects/AuraEdition/pages/login.php');
+    exit;
+}
+
+fetchOrdersByUserId($connection, $_SESSION['user_id']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AuraEdition | Invoice</title>
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+</head>
 
 <body>
 
-    <!-- Navigation Bar -- -->
+    <!-- Navigation Bar -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
-
     <!-- Main Content -->
-    <div class=" flex container-md my-5 main-content justify-content-center">
+    <div class="flex container-md my-5 main-content justify-content-center">
         <!-- Invoice -->
         <div class="w-2/3 p-6">
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -25,11 +37,11 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <h1 class="text-2xl font-bold">INVOICE</h1>
-                            <p class="text-gray-300 text-sm mt-1">Order #1234567890</p>
+                            <p class="text-gray-300 text-sm mt-1">Order #<?php echo htmlspecialchars($order['id']); ?></p>
                         </div>
                         <div class="text-right text-sm">
                             <p class="text-gray-300">Date Issued</p>
-                            <p class="font-semibold">July 26, 2024</p>
+                            <p class="font-semibold"><?php echo date("F j, Y", strtotime($order['created_at'])); ?></p>
                         </div>
                     </div>
                 </div>
@@ -40,19 +52,19 @@
                         <div>
                             <h2 class="text-gray-600 text-sm uppercase tracking-wider mb-2">Bill To</h2>
                             <div class="text-sm">
-                                <p class="font-semibold">Sophia Carter</p>
-                                <p class="text-gray-600">123 Maple Street</p>
-                                <p class="text-gray-600">Anytown, CA 91234</p>
-                                <p class="text-gray-600 mt-2">sophia.carter@email.com</p>
-                                <p class="text-gray-600">(555) 123-4567</p>
+                                <p class="font-semibold"><?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?></p>
+                                <p class="text-gray-600">User Address Here</p>
+                                <p class="text-gray-600">User City, State ZIP</p>
+                                <p class="text-gray-600 mt-2">User Email Here</p>
+                                <p class="text-gray-600">User Phone Here</p>
                             </div>
                         </div>
                         <div>
                             <h2 class="text-gray-600 text-sm uppercase tracking-wider mb-2">Ship To</h2>
                             <div class="text-sm">
-                                <p class="font-semibold">Sophia Carter</p>
-                                <p class="text-gray-600">123 Maple Street</p>
-                                <p class="text-gray-600">Anytown, CA 91234</p>
+                                <p class="font-semibold"><?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?></p>
+                                <p class="text-gray-600">User Address Here</p>
+                                <p class="text-gray-600">User City, State ZIP</p>
                             </div>
                         </div>
                     </div>
@@ -62,19 +74,23 @@
                         <table class="w-full text-sm">
                             <thead>
                                 <tr class="bg-gray-50">
-                                    <th class="px-4 py-2 text-left text-gray-600">Item</th>
-                                    <th class="px-4 py-2 text-left text-gray-600">Quantity</th>
-                                    <th class="px-4 py-2 text-right text-gray-600">Price</th>
-                                    <th class="px-4 py-2 text-right text-gray-600">Total</th>
+                                    <?php
+
+                                    ?>
+                                    <th class="px-4 py-2 text-left text-gray-600"></th>
+                                    <th class="px-4 py-2 text-left text-gray-600">Price</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                <tr>
-                                    <td class="px-4 py-3">Product A</td>
-                                    <td class="px-4 py-3">1</td>
-                                    <td class="px-4 py-3 text-right">$29.99</td>
-                                    <td class="px-4 py-3 text-right">$29.99</td>
-                                </tr>
+                                <?php foreach ($order_items as $item): ?>
+                                    <?php
+                                    $vehicle = get_vehicle($item['vehicle_id'], $connection);
+                                    ?>
+                                    <tr>
+                                        <td class="px-4 py-3"><?php echo htmlspecialchars($vehicle['title'] ?? 'Unknown Vehicle'); ?></td>
+                                        <td class="px-4 py-3 text-right">$<?php echo number_format($item['price'], 2); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -84,20 +100,8 @@
                         <div class="flex justify-end">
                             <div class="w-64">
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-600">Subtotal</span>
-                                    <span>$79.96</span>
-                                </div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-600">Shipping</span>
-                                    <span>$5.00</span>
-                                </div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-600">Discount</span>
-                                    <span class="text-red-600">-$10.00</span>
-                                </div>
-                                <div class="flex justify-between font-bold text-lg border-t border-gray-200 pt-2">
-                                    <span>Total</span>
-                                    <span>$74.96</span>
+                                    <span class="text-gray-600">Total</span>
+                                    <span>$<?php echo number_format($order['total_price'], 2); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -118,17 +122,15 @@
                     </div>
                 </div>
             </div>
-        </div>>
+        </div>
         <!-- Invoice -->
 
     </div>
     <!-- Main Content -->
 
-
     <!-- Scripts -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js
-"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/Projects/AuraEdition/assets/js/script.js"></script>
 
 </body>
