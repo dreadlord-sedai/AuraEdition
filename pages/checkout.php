@@ -52,11 +52,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                     </div>
 
                                     <!-- Quantity -->
-                                    <div class="flex flex-row gap-2">
-                                        <button class="btn btn-primary">-</button>
-                                        <h5>1</h5>
-                                        <button class="btn btn-primary">+</button>
-                                    </div>
+                                            <div class="flex flex-row gap-2">
+                                                <button class="btn btn-primary btn-minus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">-</button>
+                                                <h5 id="quantity-<?= htmlspecialchars($vehicle['id']); ?>">
+                                                    <?= isset($vehicle['quantity']) ? htmlspecialchars($vehicle['quantity']) : '1'; ?>
+                                                </h5>
+                                                <button class="btn btn-primary btn-plus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">+</button>
+                                            </div>
                                 </div>
                             </div>
 

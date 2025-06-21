@@ -77,6 +77,27 @@ if (window.location.pathname.endsWith('/pages/checkout.php')) {
     setupCheckoutUnloadHandler();
 }
 
+// Clear cart
+function clearCheckout() {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                var response = request.responseText.trim();
+                if (response === "success") {
+                    window.location = "/Projects/AuraEdition/products/listings.php";
+                } else {
+                    alert("Clear cart failed: " + response);
+                }
+            } else {
+                alert("Request failed with status " + request.status);
+            }
+        }
+    }
+    request.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", true);
+    request.send();
+}
+
 function pay() {
     var request = new XMLHttpRequest();
 
@@ -104,27 +125,56 @@ function pay() {
     request.send();
 }
 
-function clearCheckout() {
+/* USER FLOW */
+
+// Quantity buttons functionality
+function setupQuantityButtons() {
+    // Attach event listeners to all minus buttons
+    document.querySelectorAll('.btn-minus').forEach(button => {
+        button.addEventListener('click', () => {
+            const vehicleId = button.dataset.vehicleId;
+            const quantityElem = document.getElementById('quantity-' + vehicleId);
+            let quantity = parseInt(quantityElem.textContent);
+            if (quantity > 1) {
+                quantity--;
+                updateQuantity(vehicleId, quantity, quantityElem);
+            }
+        });
+    });
+
+    // Attach event listeners to all plus buttons
+    document.querySelectorAll('.btn-plus').forEach(button => {
+        button.addEventListener('click', () => {
+            const vehicleId = button.dataset.vehicleId;
+            const quantityElem = document.getElementById('quantity-' + vehicleId);
+            let quantity = parseInt(quantityElem.textContent);
+            quantity++;
+            updateQuantity(vehicleId, quantity, quantityElem);
+        });
+    });
+}
+
+function updateQuantity(vehicleId, quantity, quantityElem) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
             if (request.status == 200) {
                 var response = request.responseText.trim();
                 if (response === "success") {
-                    window.location = "/Projects/AuraEdition/products/listings.php";
+                    quantityElem.textContent = quantity;
+                    // Optionally, refresh the page or update total price dynamically here
+                    location.reload();
                 } else {
-                    alert("Clear cart failed: " + response);
+                    alert("Update quantity failed: " + response);
                 }
             } else {
                 alert("Request failed with status " + request.status);
             }
         }
     }
-    request.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", true);
-    request.send();
+    request.open("POST", "/Projects/AuraEdition/process/updateQuantityProcess.php", true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send("id=" + encodeURIComponent(vehicleId) + "&quantity=" + encodeURIComponent(quantity));
 }
 
 /* USER FLOW */
-
-
-/* CART */
