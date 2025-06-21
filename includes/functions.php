@@ -152,6 +152,7 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
 }
 // Make Functions //
 
+
 function fetchOrdersByUserId($connection, $user_id) {
     if (!isset($user_id)) {
         header("Location: /Projects/AuraEdition/auth/login.php");
@@ -185,7 +186,7 @@ function fetchOrdersByUserId($connection, $user_id) {
 }
 
 function fetchUserById($connection, $user_id) {
-    $stmt = $connection->prepare("SELECT id, username, email, address, city, state, zip, phone FROM users WHERE id = ?");
+    $stmt = $connection->prepare("SELECT id, fname, email, address, city, state, zip, phone FROM users WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();

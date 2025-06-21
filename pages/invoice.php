@@ -8,7 +8,16 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-fetchOrdersByUserId($connection, $_SESSION['user_id']);
+$user_id = $_SESSION['user_id'];
+$data = fetchOrdersByUserId($connection, $user_id);
+
+if (!$data || !isset($data['order'])) {
+    echo "No recent order found.";
+    exit;
+}
+
+$order = $data['order'];
+$order_items = $data['order_items'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,11 +46,11 @@ fetchOrdersByUserId($connection, $_SESSION['user_id']);
                     <div class="flex justify-between items-center">
                         <div>
                             <h1 class="text-2xl font-bold">INVOICE</h1>
-                            <p class="text-gray-300 text-sm mt-1">Order #<?php echo htmlspecialchars($order['id']); ?></p>
+                            <p class="text-gray-300 text-sm mt-1">Order #<?php echo htmlspecialchars($order['order_id']); ?></p>
                         </div>
                         <div class="text-right text-sm">
                             <p class="text-gray-300">Date Issued</p>
-                            <p class="font-semibold"><?php echo date("F j, Y", strtotime($order['created_at'])); ?></p>
+                            <p class="font-semibold"><?php echo date("F j, Y", strtotime($order['orderd_at'])); ?></p>
                         </div>
                     </div>
                 </div>
@@ -52,19 +61,19 @@ fetchOrdersByUserId($connection, $_SESSION['user_id']);
                         <div>
                             <h2 class="text-gray-600 text-sm uppercase tracking-wider mb-2">Bill To</h2>
                             <div class="text-sm">
-                                <p class="font-semibold"><?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?></p>
-                                <p class="text-gray-600">User Address Here</p>
-                                <p class="text-gray-600">User City, State ZIP</p>
-                                <p class="text-gray-600 mt-2">User Email Here</p>
-                                <p class="text-gray-600">User Phone Here</p>
+                                <p class="font-semibold"><?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
+                                <p class="text-gray-600"><?php echo htmlspecialchars($user['address'] ?? ''); ?></p>
+                                <p class="text-gray-600"><?php echo htmlspecialchars($user['city'] ?? '') . ', ' . htmlspecialchars($user['state'] ?? '') . ' ' . htmlspecialchars($user['zip'] ?? ''); ?></p>
+                                <p class="text-gray-600 mt-2"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
+                                <p class="text-gray-600"><?php echo htmlspecialchars($user['phone'] ?? ''); ?></p>
                             </div>
                         </div>
                         <div>
                             <h2 class="text-gray-600 text-sm uppercase tracking-wider mb-2">Ship To</h2>
                             <div class="text-sm">
-                                <p class="font-semibold"><?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?></p>
-                                <p class="text-gray-600">User Address Here</p>
-                                <p class="text-gray-600">User City, State ZIP</p>
+                                <p class="font-semibold"><?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
+                                <p class="text-gray-600"><?php echo htmlspecialchars($user['address'] ?? ''); ?></p>
+                                <p class="text-gray-600"><?php echo htmlspecialchars($user['city'] ?? '') . ', ' . htmlspecialchars($user['state'] ?? '') . ' ' . htmlspecialchars($user['zip'] ?? ''); ?></p>
                             </div>
                         </div>
                     </div>
@@ -74,10 +83,7 @@ fetchOrdersByUserId($connection, $_SESSION['user_id']);
                         <table class="w-full text-sm">
                             <thead>
                                 <tr class="bg-gray-50">
-                                    <?php
-
-                                    ?>
-                                    <th class="px-4 py-2 text-left text-gray-600"></th>
+                                    <th class="px-4 py-2 text-left text-gray-600">Item</th>
                                     <th class="px-4 py-2 text-left text-gray-600">Price</th>
                                 </tr>
                             </thead>
