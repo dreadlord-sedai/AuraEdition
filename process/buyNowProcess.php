@@ -14,22 +14,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['vehicles'] = [];
         }
 
-        // 3. Add vehicle to session array if not already added
+        // 3. Add vehicle to session array or increment quantity if already added
         $found = false;
         foreach ($_SESSION['vehicles'] as &$v) {
             if ($v['id'] == $vehicle['id']) {
+                if (isset($v['quantity'])) {
+                    $v['quantity'] += 1;
+                } else {
+                    $v['quantity'] = 2;
+                }
                 $found = true;
                 break;
             }
         }
         if (!$found) {
+            $vehicle['quantity'] = 1;
             $_SESSION['vehicles'][] = $vehicle;
         }
+        unset($v);
 
         // 4. Calculate total price
         $total_price = 0;
         foreach ($_SESSION['vehicles'] as $v) {
-            $total_price += $v['price'];
+            $qty = isset($v['quantity']) ? $v['quantity'] : 1;
+            $total_price += $v['price'] * $qty;
         }
         $_SESSION['total_price'] = $total_price;
 
