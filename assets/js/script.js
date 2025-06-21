@@ -43,7 +43,7 @@ function buyNow(id) {
     request.send("id=" + encodeURIComponent(id));
 }
 
-document.getElementById('cancelBtn')?.addEventListener('click', clearCart);
+document.getElementById('cancelBtn')?.addEventListener('click', clearCheckout);
 
 // Setup unload handler to clear cart if user leaves checkout page without cancel or pay
 function setupCheckoutUnloadHandler() {
