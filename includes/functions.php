@@ -199,7 +199,7 @@ function fetchUserById($connection, $user_id) {
 
 
 function getOrderItemsByOrderId($connection, $order_id) {
-    $stmt = $connection->prepare("SELECT order_id, vehicle_id, price FROM order_items WHERE order_id = ?");
+    $stmt = $connection->prepare("SELECT id, vehicle_id, price FROM order_items WHERE order_id = ?");
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
     $result = $stmt->get_result();

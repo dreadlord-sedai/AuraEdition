@@ -88,18 +88,19 @@ $order_items = $data['order_items'];
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                <?php foreach ($order_items as $item): ?>
+                                <?php 
+                                $order_items = getOrderItemsByOrderId($connection, $order['id']);
+                                foreach ($order_items as $item): ?>
                                     <?php
                                     $vehicle = get_vehicle($item['vehicle_id'], $connection);
                                     ?>
                                     <tr>
-                                        <td class="px-4 py-3"><?php echo htmlspecialchars($vehicle['title'] ?? 'Unknown Vehicle'); ?></td>
-                                        <td class="px-4 py-3 text-right">$<?php echo number_format($item['price'], 2); ?></td>
+                                        <td class="px-4 py-3"><?= htmlspecialchars($vehicle['title'] ?? 'Unknown Vehicle'); ?></td>
+                                        <td class="px-4 py-3 text-right">$<?= number_format($item['price'], 2); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                    </div>
 
                     <!-- Totals -->
                     <div class="border-t border-gray-200 pt-4">
