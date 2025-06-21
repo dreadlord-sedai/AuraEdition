@@ -87,36 +87,25 @@ function pay() {
 function setupCheckoutUnloadHandler() {
     let actionClicked = false;
 
-    function setActionClicked() {
-        console.log('Action button clicked');
+    document.getElementById('cancelBtn')?.addEventListener('click', () => {
         actionClicked = true;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const cancelBtn = document.getElementById('cancelBtn');
-        const payBtn = document.getElementById('payBtn');
-
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', setActionClicked);
-        }
-        if (payBtn) {
-            payBtn.addEventListener('click', setActionClicked);
-        }
     });
 
-    window.addEventListener('unload', (event) => {
+    document.getElementById('payBtn')?.addEventListener('click', () => {
+        actionClicked = true;
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+        // Only clear cart if navigating away, not on reload or back/forward
         if (!actionClicked) {
-            console.log('Page unload without action, clearing cart');
-            if (navigator.sendBeacon) {
-                navigator.sendBeacon("/Projects/AuraEdition/process/clearCartProcess.php");
-            } else {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", false);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.send();
+            if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+                console.log('Page reload detected, not clearing cart');
+                return;
             }
-        } else {
-            console.log('Page unload after action, not clearing cart');
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", false);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send();
         }
     });
 }
