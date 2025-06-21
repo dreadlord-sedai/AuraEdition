@@ -153,6 +153,8 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
 // Make Functions //
 
 
+// Order Functions //
+
 function fetchOrdersByUserId($connection, $user_id) {
     if (!isset($user_id)) {
         header("Location: /Projects/AuraEdition/auth/login.php");
@@ -194,3 +196,20 @@ function fetchUserById($connection, $user_id) {
     $stmt->close();
     return $user;
 }
+
+
+function getOrderItemsByOrderId($connection, $order_id) {
+    $stmt = $connection->prepare("SELECT order_id, vehicle_id, price FROM order_items WHERE order_id = ?");
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $order_items = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $order_items[] = $row;
+    }
+    $stmt->close();
+    return $order_items;
+}
+
+// Order Functions //
