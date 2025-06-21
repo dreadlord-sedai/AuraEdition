@@ -109,31 +109,43 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                     <h1 class="font-bold">$<?php echo isset($_SESSION['total_price']) ? $_SESSION['total_price'] : '0'; ?></h1>
                 </div>
 
+                <!--- Order Summary -->
                 <div class="flex flex-col w-5/6 gap-2 justify-content-start text-start mb-3 border-b-1 pb-2">
                     <p class="font-bold">Order Summary</p>
 
-                    <div class="flex flex-row gap-50 justify-content-center">
+                    <div class="flex flex-row justify-content-between mb-2">
                         <div class="flex flex-col">
-                            <p>Item 1</p>
-                            <p>Item 2</p>
-                            <p>Item 3</p>
-                            <p>Item 4</p>
+
+                            <?php
+                            if (isset($_SESSION['vehicles']) && count($_SESSION['vehicles']) > 0):
+                                foreach ($_SESSION['vehicles'] as $vehicle):
+                            ?>
+                                    <p><?= htmlspecialchars($vehicle['title']) ?></p>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
                         </div>
 
                         <div class="flex flex-col font-bold text-end">
-                            <p>$100</p>
-                            <p>$100</p>
-                            <p>$100</p>
-                            <p>$100</p>
+                            <?php
+                            if (isset($_SESSION['vehicles']) && count($_SESSION['vehicles']) > 0):
+                                foreach ($_SESSION['vehicles'] as $vehicle):
+                            ?>
+                                    <p>$<?= htmlspecialchars($vehicle['price']) ?></p>
 
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
 
                     </div>
                 </div>
 
-                <div class="flex flex-row w-5/6 gap-53 justify-content-start text-start mb-5 px-3 pb-2">
+                <div class="flex flex-row w-5/6 justify-content-between mb-5 px-3 pb-2">
                     <p>Total</p>
-                    <p class="font-bold text-end">$400</p>
+                    <p class="font-bold text-end">$
+                        <?php echo isset($_SESSION['total_price']) ? $_SESSION['total_price'] : '0'; ?>
+                    </p>
                 </div>
 
                 <div class="flex flex-row w-5/6 justify-content-center text-center mb-5 pb-2">
