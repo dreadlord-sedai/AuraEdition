@@ -51,6 +51,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                         <h5>$<?= htmlspecialchars($vehicle['price']) ?></h5>
                                     </div>
 
+                                    <!-- Quantity -->
                                     <div class="flex flex-row gap-2">
                                         <button class="btn btn-primary">-</button>
                                         <h5>1</h5>

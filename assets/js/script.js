@@ -128,5 +128,3 @@ function clearCheckout() {
 
 
 /* CART */
-
-/* CART */
