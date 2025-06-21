@@ -17,7 +17,7 @@ if (!$data || !isset($data['order'])) {
 }
 
 $order = $data['order'];
-$order_items = $data['order_items'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,8 +88,8 @@ $order_items = $data['order_items'];
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                <?php 
-                                $order_items = getOrderItemsByOrderId($connection, $order['id']);
+                                <?php
+                                $order_items = getOrderItemsByOrderId($connection, $order['order_id']);
                                 foreach ($order_items as $item): ?>
                                     <?php
                                     $vehicle = get_vehicle($item['vehicle_id'], $connection);
