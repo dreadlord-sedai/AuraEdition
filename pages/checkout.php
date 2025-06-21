@@ -33,7 +33,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 <!-- Item Card -->
                 <?php
                 if (isset($_SESSION['vehicles']) && count($_SESSION['vehicles']) > 0):
-                    foreach ($_SESSION['vehicles'] as $vehicle):
+                    foreach ($_SESSION['vehicles'] as &$vehicle):
+                        if (!isset($vehicle['quantity'])) {
+                            $vehicle['quantity'] = 1;
+                        }
                 ?>
                         <div class="flex flex-row w-full gap-3 justify-content-start rounded-md align-items-center bg-gray-400 p-4">
 
@@ -55,7 +58,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                             <div class="flex flex-row gap-2">
                                                 <button class="btn btn-primary btn-minus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">-</button>
                                                 <h5 id="quantity-<?= htmlspecialchars($vehicle['id']); ?>">
-                                                    <?= isset($vehicle['quantity']) ? htmlspecialchars($vehicle['quantity']) : '1'; ?>
+                                                    <?= htmlspecialchars($vehicle['quantity']); ?>
                                                 </h5>
                                                 <button class="btn btn-primary btn-plus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">+</button>
                                             </div>
@@ -65,6 +68,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                         </div>
                     <?php
                     endforeach;
+                    unset($vehicle);
                 else:
                     ?>
                     <p>No items to checkout.</p>
