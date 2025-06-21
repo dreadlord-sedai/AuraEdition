@@ -1,5 +1,16 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+
+// Clear vehicles in session if not on checkout page
+$currentScript = basename($_SERVER['SCRIPT_NAME']);
+if ($currentScript !== 'checkout.php') {
+    if (isset($_SESSION['vehicles'])) {
+        unset($_SESSION['vehicles']);
+    }
+    if (isset($_SESSION['total_price'])) {
+        unset($_SESSION['total_price']);
+    }
+}
 ?>
 <!-- Navigation Bar -->
 <nav class="w-full bg-black text-white">
