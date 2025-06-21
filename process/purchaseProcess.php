@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $connection->begin_transaction();
 
-        $stmt = $connection->prepare("INSERT INTO orders (user_id, total_price, created_at) VALUES (?, ?, NOW())");
+        $stmt = $connection->prepare("INSERT INTO orders (user_id, total_price, orderd_at) VALUES (?, ?, NOW())");
         $stmt->bind_param("id", $user_id, $total_price);
         $stmt->execute();
         $order_id = $stmt->insert_id;
