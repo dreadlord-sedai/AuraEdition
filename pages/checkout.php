@@ -140,7 +140,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
                     <!-- Make the Pay button a long green button with Tailwind -->
                     <div class="flex flex-col gap-2 w-full px">
-                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold
+                        <button id="payBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold
                          py-3 rounded-lg transition" type="submit" name="submit" value="Pay" onclick="pay();">
                             Pay
                         </button>

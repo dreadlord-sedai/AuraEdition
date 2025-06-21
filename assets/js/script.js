@@ -83,6 +83,33 @@ function pay() {
     request.send();
 }
 
+// Setup unload handler to clear cart if user leaves checkout page without cancel or pay
+function setupCheckoutUnloadHandler() {
+    let actionClicked = false;
+
+    document.getElementById('cancelBtn')?.addEventListener('click', () => {
+        actionClicked = true;
+    });
+
+    document.getElementById('payBtn')?.addEventListener('click', () => {
+        actionClicked = true;
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+        if (!actionClicked) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", false);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send();
+        }
+    });
+}
+
+// Call the setup function on page load if on checkout page
+if (window.location.pathname.endsWith('/pages/checkout.php')) {
+    setupCheckoutUnloadHandler();
+}
+
 /* USER FLOW */
 
 
