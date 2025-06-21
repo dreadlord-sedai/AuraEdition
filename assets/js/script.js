@@ -23,15 +23,24 @@ function buyNow(id) {
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-            var response = request.responseText;
-            if (response == "success") {
-                window.location = "/Projects/AuraEdition/pages/checkout.php";
+        if (request.readyState == 4) {
+            console.log("Response status:", request.status);
+            console.log("Response text:", request.responseText);
+            if (request.status == 200) {
+                var response = request.responseText.trim();
+                if (response === "success") {
+                    window.location = "/Projects/AuraEdition/pages/checkout.php";
+                } else {
+                    alert("Buy Now failed: " + response);
+                }
+            } else {
+                alert("Request failed with status " + request.status);
             }
         }
     }
-    request.open("POST", "/Projects/AuraEdition/process/buyNowProcess.php?id=" + id, true);
-    request.send();
+    request.open("POST", "/Projects/AuraEdition/process/buyNowProcess.php", true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send("id=" + encodeURIComponent(id));
 }
 
 function pay() {
