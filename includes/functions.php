@@ -213,3 +213,29 @@ function getOrderItemsByOrderId($connection, $order_id) {
 }
 
 // Order Functions //
+
+
+// Cart Functions //
+function getCartItemsByUserId($connection, $user_id) {
+    if (!isset($user_id)) {
+        header("Location: /Projects/AuraEdition/auth/login.php");
+        exit;
+    }
+    $stmt = $connection->prepare("SELECT vehicle_id, quantity FROM cart WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $cart_items = [];
+    while ($row = $result->fetch_assoc()) {
+        $cart_items[] = $row;
+    }
+    $stmt->close();
+    return $cart_items;
+}
+
+
+
+
+
+
+// Cart Functions //
