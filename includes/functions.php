@@ -106,6 +106,7 @@ function get_vehicle($vehicle_id, $connection) {
     return $vehicle;
 }
 
+// Make Functions //
 function getMakeById(mysqli $connection, int $make_id): ?array {
     $sql = "SELECT make_id, make_name, make_image 
             FROM makes 
@@ -149,6 +150,7 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
     
     return $listings;
 }
+// Make Functions //
 
 // User Purchase Flow //
 // User Purchase Flow //
