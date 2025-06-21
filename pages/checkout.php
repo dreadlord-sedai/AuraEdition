@@ -145,7 +145,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             Pay
                         </button>
                         <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold
-                         py-3 rounded-lg transition mt-2" type="button" id="cancelBtn">
+                         py-3 rounded-lg transition mt-2" type="button" id="cancelBtn" onclick="clearCheckout();">
                             Cancel
                         </button>
                     </div>

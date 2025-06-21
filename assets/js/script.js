@@ -43,45 +43,7 @@ function buyNow(id) {
     request.send("id=" + encodeURIComponent(id));
 }
 
-// Clear cart
-function clearCart() {
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (request.readyState == 4) {
-            if (request.status == 200) {
-                var response = request.responseText.trim();
-                if (response === "success") {
-                    window.location = "/Projects/AuraEdition/products/listings.php";
-                } else {
-                    alert("Clear cart failed: " + response);
-                }
-            } else {
-                alert("Request failed with status " + request.status);
-            }
-        }
-    }
-    request.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", true);
-    request.send();
-}
-
 document.getElementById('cancelBtn')?.addEventListener('click', clearCart);
-
-function pay() {
-    var request = new XMLHttpRequest();
-
-    request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-            var response = request.responseText;
-            if (response == "success") {
-                window.location = "/Projects/AuraEdition/pages/invoice.php";
-            } else {
-                alert("Payment Failed!");
-            }
-        }
-    }
-    request.open("POST", "/Projects/AuraEdition/process/purchaseProcess.php", true);
-    request.send();
-}
 
 // Setup unload handler to clear cart if user leaves checkout page without cancel or pay
 function setupCheckoutUnloadHandler() {
@@ -113,6 +75,43 @@ function setupCheckoutUnloadHandler() {
 // Call the setup function on page load if on checkout page
 if (window.location.pathname.endsWith('/pages/checkout.php')) {
     setupCheckoutUnloadHandler();
+}
+
+function pay() {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+            var response = request.responseText;
+            if (response == "success") {
+                window.location = "/Projects/AuraEdition/pages/invoice.php";
+            } else {
+                alert("Payment Failed!");
+            }
+        }
+    }
+    request.open("POST", "/Projects/AuraEdition/process/purchaseProcess.php", true);
+    request.send();
+}
+
+function clearCheckout() {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                var response = request.responseText.trim();
+                if (response === "success") {
+                    window.location = "/Projects/AuraEdition/products/listings.php";
+                } else {
+                    alert("Clear cart failed: " + response);
+                }
+            } else {
+                alert("Request failed with status " + request.status);
+            }
+        }
+    }
+    request.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", true);
+    request.send();
 }
 
 /* USER FLOW */
