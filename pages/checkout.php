@@ -1,3 +1,7 @@
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,72 +32,44 @@
 
                 <!-- Item Card -->
                 <?php
-                // session_start(); // Removed as session is already started in navbar.php
                 if (isset($_SESSION['vehicles']) && count($_SESSION['vehicles']) > 0):
                     foreach ($_SESSION['vehicles'] as $vehicle):
                 ?>
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
+                        <div class="flex flex-row w-full gap-3 justify-content-start rounded-md align-items-center bg-gray-400 p-4">
 
-                    <div class="justify-content-center rounded-sm ">
-                        <img src="<?php echo get_vehicle_image($vehicle['id'], $connection); ?>" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
-                    </div>
-
-                    <div class="flex flex-row gap-4">
-                        <div class="w-3/4 mt-2 ">
-                            <h5><?= htmlspecialchars($vehicle['title']) ?></h5>
-                        </div>
-
-                        <div class="flex flex-col w-1/4 justify-content-center align-items-center">
-                            <div class="mb-2 mt-3">
-                                <h5>$<?= htmlspecialchars($vehicle['price']) ?></h5>
+                            <div class="justify-content-center rounded-sm ">
+                                <img src="<?php echo get_vehicle_image($vehicle['id'], $connection); ?>" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
                             </div>
 
-                            <div class="flex flex-row gap-2">
-                                <button class="btn btn-primary">-</button>
-                                <h5>1</h5>
-                                <button class="btn btn-primary">+</button>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="flex flex-row gap-10">
+                                <div class="w-3/4 mt-2 ">
+                                    <h5><?= htmlspecialchars($vehicle['title']) ?></h5>
+                                </div>
 
-                </div>
-                <?php
+                                <div class="flex flex-col w-1/4 justify-content-center align-items-center">
+                                    <div class="mb-2 mt-3">
+                                        <h5>$<?= htmlspecialchars($vehicle['price']) ?></h5>
+                                    </div>
+
+                                    <div class="flex flex-row gap-2">
+                                        <button class="btn btn-primary">-</button>
+                                        <h5>1</h5>
+                                        <button class="btn btn-primary">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    <?php
                     endforeach;
                 else:
-                ?>
-                <p>No items in your cart.</p>
+                    ?>
+                    <p>No items in your cart.</p>
                 <?php endif; ?>
 
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
-                </div>
+                <!-- Item Card -->
 
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
-
-                    <div class="justify-content-center rounded-sm ">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
-                    </div>
-
-                    <div class="flex flex-row gap-4">
-                        <div class="w-3/4 mt-2 ">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-
-                        <div class="flex flex-col w-1/4 justify-content-center align-items-center">
-                            <div class="mb-2 mt-3">
-                                <h5>$100</h5>
-                            </div>
-
-                            <div class="flex flex-row gap-2">
-                                <button class="btn btn-primary">-</button>
-                                <h5>1</h5>
-                                <button class="btn btn-primary">+</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
+                <!-- <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
 
                     <div class="justify-content-center rounded-sm ">
                         <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
@@ -117,7 +93,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
                 <!-- Item Card -->
 
             </div>
@@ -125,7 +101,7 @@
 
 
             <!-- Payment Card -->
-                <div class="flex flex-col w-2/5  justify-content-center rounded-lg align-items-center
+            <div class="flex flex-col w-2/5  justify-content-center rounded-lg align-items-center
              bg-gray-200 p-4">
 
                 <div class="flex flex-col w-5/6 justify-content-center text-center mb-3 border-b-1 pb-2">
