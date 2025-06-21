@@ -64,7 +64,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                     endforeach;
                 else:
                     ?>
-                    <p>No items in your cart.</p>
+                    <p>No items to checkout.</p>
                 <?php endif; ?>
 
                 <!-- Item Card -->

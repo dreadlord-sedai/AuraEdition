@@ -87,20 +87,36 @@ function pay() {
 function setupCheckoutUnloadHandler() {
     let actionClicked = false;
 
-    document.getElementById('cancelBtn')?.addEventListener('click', () => {
+    function setActionClicked() {
+        console.log('Action button clicked');
         actionClicked = true;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cancelBtn = document.getElementById('cancelBtn');
+        const payBtn = document.getElementById('payBtn');
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', setActionClicked);
+        }
+        if (payBtn) {
+            payBtn.addEventListener('click', setActionClicked);
+        }
     });
 
-    document.getElementById('payBtn')?.addEventListener('click', () => {
-        actionClicked = true;
-    });
-
-    window.addEventListener('beforeunload', (event) => {
+    window.addEventListener('unload', (event) => {
         if (!actionClicked) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", false);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send();
+            console.log('Page unload without action, clearing cart');
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon("/Projects/AuraEdition/process/clearCartProcess.php");
+            } else {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", false);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send();
+            }
+        } else {
+            console.log('Page unload after action, not clearing cart');
         }
     });
 }
