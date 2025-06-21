@@ -81,16 +81,26 @@ function pay() {
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-            var response = request.responseText;
-            if (response == "success") {
-                window.location = "/Projects/AuraEdition/pages/invoice.php";
+        if (request.readyState == 4) {
+            console.log("Pay response status:", request.status);
+            console.log("Pay response text:", request.responseText);
+            if (request.status == 200) {
+                var response = request.responseText.trim();
+                if (response === "success") {
+                    window.location = "/Projects/AuraEdition/pages/invoice.php";
+                } else if (response === "Error: User not logged in") {
+                    alert("You must be logged in to complete the payment.");
+                    window.location = "/Projects/AuraEdition/auth/login.php";
+                } else {
+                    alert("Payment Failed!");
+                }
             } else {
-                alert("Payment Failed!");
+                alert("Payment request failed with status " + request.status);
             }
         }
     }
     request.open("POST", "/Projects/AuraEdition/process/purchaseProcess.php", true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     request.send();
 }
 
