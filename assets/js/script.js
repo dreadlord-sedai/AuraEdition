@@ -43,16 +43,17 @@ function buyNow(id) {
     request.send("id=" + encodeURIComponent(id));
 }
 
-document.getElementById('cancelBtn')?.addEventListener('click', function() {
+// Clear cart
+function clearCart() {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
             if (request.status == 200) {
                 var response = request.responseText.trim();
                 if (response === "success") {
-                    window.location = "/Projects/AuraEdition/pages/listings.php";
+                    window.location = "/Projects/AuraEdition/products/listings.php";
                 } else {
-                    alert("Cancel failed: " + response);
+                    alert("Clear cart failed: " + response);
                 }
             } else {
                 alert("Request failed with status " + request.status);
@@ -61,7 +62,9 @@ document.getElementById('cancelBtn')?.addEventListener('click', function() {
     }
     request.open("POST", "/Projects/AuraEdition/process/clearCartProcess.php", true);
     request.send();
-});
+}
+
+document.getElementById('cancelBtn')?.addEventListener('click', clearCart);
 
 function pay() {
     var request = new XMLHttpRequest();

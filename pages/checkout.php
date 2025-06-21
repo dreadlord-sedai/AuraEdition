@@ -27,7 +27,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
 
             <!-- Checkout Card -->
-            <div class="flex flex-col w-3/5 gap-3 justify-content-center rounded-lg align-items-start bg-gray-200 p-5">
+            <div class="flex flex-col w-3/5 gap-3 justify-content-start rounded-lg align-items-start bg-gray-200 p-5">
                 <h4>Checkout</h4>
 
                 <!-- Item Card -->
@@ -139,7 +139,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 <div class="flex flex-row w-5/6 justify-content-center text-center mb-5 pb-2">
 
                     <!-- Make the Pay button a long green button with Tailwind -->
-                    <div class="flex flex-row gap-2 w-full px">
+                    <div class="flex flex-col gap-2 w-full px">
                         <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold
                          py-3 rounded-lg transition" type="submit" name="submit" value="Pay" onclick="pay();">
                             Pay
