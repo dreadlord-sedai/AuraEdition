@@ -28,7 +28,7 @@
 
                 <!-- Item Card -->
                 <?php
-                session_start();
+                // session_start(); // Removed as session is already started in navbar.php
                 if (isset($_SESSION['vehicles']) && count($_SESSION['vehicles']) > 0):
                     foreach ($_SESSION['vehicles'] as $vehicle):
                 ?>
