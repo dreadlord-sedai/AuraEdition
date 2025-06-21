@@ -75,6 +75,7 @@ function setupCheckoutUnloadHandler() {
 // Call the setup function on page load if on checkout page
 if (window.location.pathname.endsWith('/pages/checkout.php')) {
     setupCheckoutUnloadHandler();
+    setupQuantityButtons();
 }
 
 // Clear cart

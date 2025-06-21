@@ -18,11 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $found = false;
         foreach ($_SESSION['vehicles'] as &$v) {
             if ($v['id'] == $vehicle['id']) {
-                if (isset($v['quantity'])) {
-                    $v['quantity'] += 1;
-                } else {
-                    $v['quantity'] = 2;
-                }
+                $v['quantity'] = isset($v['quantity']) ? $v['quantity'] + 1 : 2;
                 $found = true;
                 break;
             }

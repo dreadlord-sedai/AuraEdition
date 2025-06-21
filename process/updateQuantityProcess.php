@@ -2,34 +2,43 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $vehicle_id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-    $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
-
-    if ($vehicle_id <= 0 || $quantity < 1) {
-        echo "Invalid input";
+    if (!isset($_POST['id']) || !isset($_POST['quantity'])) {
+        echo "Error: Missing parameters";
         exit;
     }
 
-    if (!isset($_SESSION['vehicles']) || count($_SESSION['vehicles']) === 0) {
-        echo "Cart is empty";
+    $vehicle_id = $_POST['id'];
+    $quantity = intval($_POST['quantity']);
+    if ($quantity < 1) {
+        echo "Error: Invalid quantity";
         exit;
     }
 
-    // Update quantity in session vehicles
+    if (!isset($_SESSION['vehicles'])) {
+        echo "Error: No vehicles in session";
+        exit;
+    }
+
+    $found = false;
     foreach ($_SESSION['vehicles'] as &$vehicle) {
         if ($vehicle['id'] == $vehicle_id) {
             $vehicle['quantity'] = $quantity;
+            $found = true;
             break;
         }
     }
     unset($vehicle);
 
+    if (!$found) {
+        echo "Error: Vehicle not found in session";
+        exit;
+    }
+
     // Recalculate total price
     $total_price = 0;
     foreach ($_SESSION['vehicles'] as $vehicle) {
-        $price = isset($vehicle['price']) ? $vehicle['price'] : 0;
         $qty = isset($vehicle['quantity']) ? $vehicle['quantity'] : 1;
-        $total_price += $price * $qty;
+        $total_price += $vehicle['price'] * $qty;
     }
     $_SESSION['total_price'] = $total_price;
 
