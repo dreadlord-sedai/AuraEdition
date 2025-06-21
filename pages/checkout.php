@@ -27,20 +27,25 @@
                 <h4>Checkout</h4>
 
                 <!-- Item Card -->
+                <?php
+                session_start();
+                if (isset($_SESSION['vehicles']) && count($_SESSION['vehicles']) > 0):
+                    foreach ($_SESSION['vehicles'] as $vehicle):
+                ?>
                 <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
 
                     <div class="justify-content-center rounded-sm ">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
+                        <img src="<?php echo get_vehicle_image($vehicle['id'], $connection); ?>" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
                     </div>
 
                     <div class="flex flex-row gap-4">
                         <div class="w-3/4 mt-2 ">
-                            <h5>2023 Lamborghini Huracan</h5>
+                            <h5><?= htmlspecialchars($vehicle['title']) ?></h5>
                         </div>
 
                         <div class="flex flex-col w-1/4 justify-content-center align-items-center">
                             <div class="mb-2 mt-3">
-                                <h5>$100</h5>
+                                <h5>$<?= htmlspecialchars($vehicle['price']) ?></h5>
                             </div>
 
                             <div class="flex flex-row gap-2">
@@ -52,6 +57,12 @@
                     </div>
 
                 </div>
+                <?php
+                    endforeach;
+                else:
+                ?>
+                <p>No items in your cart.</p>
+                <?php endif; ?>
 
                 <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
 
@@ -137,12 +148,12 @@
 
 
             <!-- Payment Card -->
-            <div class="flex flex-col w-2/5  justify-content-center rounded-lg align-items-center
+                <div class="flex flex-col w-2/5  justify-content-center rounded-lg align-items-center
              bg-gray-200 p-4">
 
                 <div class="flex flex-col w-5/6 justify-content-center text-center mb-3 border-b-1 pb-2">
                     <p>Total Amount</p>
-                    <h1 class="font-bold">$400</h1>
+                    <h1 class="font-bold">$<?php echo isset($_SESSION['total_price']) ? $_SESSION['total_price'] : '0'; ?></h1>
                 </div>
 
                 <div class="flex flex-col w-5/6 gap-2 justify-content-start text-start mb-3 border-b-1 pb-2">
