@@ -216,26 +216,34 @@ function getOrderItemsByOrderId($connection, $order_id) {
 
 
 // Cart Functions //
-function getCartItemsByUserId($connection, $user_id) {
+function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
     if (!isset($user_id)) {
-        header("Location: /Projects/AuraEdition/auth/login.php");
-        exit;
+        return []; // Return an empty array if user is not logged in.
     }
-    $stmt = $connection->prepare("SELECT vehicle_id, quantity FROM cart WHERE user_id = ?");
+
+    // This query assumes a two-table structure: 'carts' and 'cart_items'.
+    // It joins with 'vehicles' and 'vehicle_images' to get all necessary display info.
+    $sql = "SELECT 
+                ci.vehicle_id, 
+                ci.quantity,
+                v.title,
+                v.price,
+                COALESCE((SELECT vi.image_path FROM vehicle_images vi WHERE vi.image_vehicle_id = v.id LIMIT 1), '/Projects/AuraEdition/assets/images/default-car.jpg') as image_path
+            FROM cart_items ci
+            JOIN carts c ON ci.cart_id = c.cart_id
+            JOIN vehicles v ON ci.vehicle_id = v.id
+            WHERE c.user_id = ?";
+
+    $stmt = $connection->prepare($sql);
+    if (!$stmt) {
+        error_log("Prepare failed for getCartItemsByUserId: " . $connection->error);
+        return [];
+    }
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $cart_items = [];
-    while ($row = $result->fetch_assoc()) {
-        $cart_items[] = $row;
-    }
+    $cart_items = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     return $cart_items;
 }
-
-
-
-
-
-
 // Cart Functions //
