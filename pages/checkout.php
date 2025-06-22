@@ -55,13 +55,14 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                     </div>
 
                                     <!-- Quantity -->
-                                            <div class="flex flex-row gap-2">
-                                                <button class="btn btn-primary btn-minus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">-</button>
-                                                <h5 id="quantity-<?= htmlspecialchars($vehicle['id']); ?>">
-                                                    <?= htmlspecialchars($vehicle['quantity']); ?>
-                                                </h5>
-                                                <button class="btn btn-primary btn-plus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">+</button>
-                                            </div>
+                                    <div class="flex flex-row gap-2">
+                                        <button class="btn btn-primary btn-minus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">-</button>
+                                        <h5 id="quantity-<?= htmlspecialchars($vehicle['id']); ?>">
+                                            <?= htmlspecialchars($vehicle['quantity']); ?>
+                                        </h5>
+                                        <button class="btn btn-primary btn-plus" data-vehicle-id="<?= htmlspecialchars($vehicle['id']); ?>">+</button>
+                                    </div>
+                                    <!-- Quantity -->
                                 </div>
                             </div>
 
@@ -74,33 +75,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                     <p>No items to checkout.</p>
                 <?php endif; ?>
 
-                <!-- Item Card -->
-
-                <!-- <div class="flex flex-row gap-3 justify-content-center rounded-md align-items-start bg-gray-400 p-4">
-
-                    <div class="justify-content-center rounded-sm ">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-24 " alt="">
-                    </div>
-
-                    <div class="flex flex-row gap-4">
-                        <div class="w-3/4 mt-2 ">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-
-                        <div class="flex flex-col w-1/4 justify-content-center align-items-center">
-                            <div class="mb-2 mt-3">
-                                <h5>$100</h5>
-                            </div>
-
-                            <div class="flex flex-row gap-2">
-                                <button class="btn btn-primary">-</button>
-                                <h5>1</h5>
-                                <button class="btn btn-primary">+</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div> -->
                 <!-- Item Card -->
 
             </div>

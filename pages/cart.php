@@ -58,11 +58,15 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                     <h5>$<?= number_format($item['price']) ?></h5>
                                 </div>
 
+                                <!-- Quantity -->
                                 <div class="flex flex-row gap-2">
-                                    <button class="btn btn-primary">-</button>
-                                    <h5 class="mx-2"><?= htmlspecialchars($item['quantity']) ?></h5>
-                                    <button class="btn btn-primary">+</button>
+                                    <button class="btn btn-primary btn-minus" data-vehicle-id="<?= htmlspecialchars($item['vehicle_id']); ?>">-</button>
+                                    <h5 id="quantity-<?= htmlspecialchars($vehicle['id']); ?>">
+                                        <?= htmlspecialchars($item['quantity']); ?>
+                                    </h5>
+                                    <button class="btn btn-primary btn-plus" data-vehicle-id="<?= htmlspecialchars($item['vehicle_id']); ?>">+</button>
                                 </div>
+                                <!-- Quantity -->
                             </div>
 
                             <div class="flex flex-col items-center gap-2">
