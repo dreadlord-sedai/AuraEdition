@@ -204,7 +204,7 @@ function setupQuantityButtons() {
             let quantity = parseInt(quantityElem.textContent);
             if (quantity > 1) {
                 quantity--;
-                updateQuantity(vehicleId, quantity, quantityElem);
+                updateQuantity(cart_item_id, quantity, quantityElem);
             }
         });
     });
@@ -216,12 +216,12 @@ function setupQuantityButtons() {
             const quantityElem = document.getElementById('quantity-' + vehicleId);
             let quantity = parseInt(quantityElem.textContent);
             quantity++;
-            updateQuantity(vehicleId, quantity, quantityElem);
+            updateQuantity(cart_item_id, quantity, quantityElem);
         });
     });
 }
 
-function updateQuantity(vehicleId, quantity, quantityElem) {
+function updateQuantity(cart_item_id, quantity, quantityElem) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
@@ -241,7 +241,7 @@ function updateQuantity(vehicleId, quantity, quantityElem) {
     }
     request.open("POST", "/Projects/AuraEdition/process/updateQuantityProcess.php", true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.send("id=" + encodeURIComponent(vehicleId) + "&quantity=" + encodeURIComponent(quantity));
+    request.send("id=" + encodeURIComponent(cart_item_id) + "&quantity=" + encodeURIComponent(quantity));
 }
 
 /* USER FLOW */

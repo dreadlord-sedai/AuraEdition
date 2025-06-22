@@ -60,11 +60,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
                                 <!-- Quantity -->
                                 <div class="flex flex-row gap-2">
-                                    <button class="btn btn-primary btn-minus" data-vehicle-id="<?= htmlspecialchars($item['vehicle_id']); ?>">-</button>
-                                    <h5 class="quantity-display" id="quantity-<?= htmlspecialchars($item['vehicle_id']); ?>">
+                                    <button class="btn btn-primary btn-minus" data-cart-item-id="<?= htmlspecialchars($item['cart_item_id']); ?>">-</button>
+                                    <h5 class="quantity-display" id="quantity-<?= htmlspecialchars($item['cart_item_id']); ?>">
                                         <?= htmlspecialchars($item['quantity']); ?>
                                     </h5>
-                                    <button class="btn btn-primary btn-plus" data-vehicle-id="<?= htmlspecialchars($item['vehicle_id']); ?>">+</button>
+                                    <button class="btn btn-primary btn-plus" data-cart-item-id="<?= htmlspecialchars($item['cart_item_id']); ?>">+</button>
                                 </div>
                                 <!-- Quantity -->
                             </div>

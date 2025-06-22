@@ -223,7 +223,7 @@ function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
 
     // Select cart_item_id for precise removal
     $sql = "SELECT 
-                ci.cart_item_id,      -- Make sure this matches your table's PK column name
+                ci.cart_item_id,
                 ci.vehicle_id, 
                 ci.quantity,
                 v.title,

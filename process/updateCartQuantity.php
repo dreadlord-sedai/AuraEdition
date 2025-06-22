@@ -12,10 +12,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Get input from the POST request (form data)
-$vehicle_id = $_POST['vehicle_id'] ?? null;
+$cart_item_id = $_POST['cart_item_id'] ?? null;
 $action = $_POST['action'] ?? null;
 
-if (!$vehicle_id || !$action || !in_array($action, ['increment', 'decrement'])) {
+if (!$cart_item_id || !$action || !in_array($action, ['increment', 'decrement'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid input.']);
     exit;
 }
@@ -41,20 +41,20 @@ $connection->begin_transaction();
 
 try {
     if ($action === 'increment') {
-        $stmt = $connection->prepare("UPDATE cart_items SET quantity = quantity + 1 WHERE cart_id = ? AND vehicle_id = ?");
-        $stmt->bind_param("ii", $cart_id, $vehicle_id);
+        $stmt = $connection->prepare("UPDATE cart_items SET quantity = quantity + 1 WHERE cart_id = ? AND cart_item_id = ?");
+        $stmt->bind_param("ii", $cart_id, $cart_item_id);
         $stmt->execute();
     } elseif ($action === 'decrement') {
         // To prevent quantity from going below 1, we only update if it's greater than 1.
         // The "Remove" button should be used to delete the item.
-        $stmt = $connection->prepare("UPDATE cart_items SET quantity = GREATEST(1, quantity - 1) WHERE cart_id = ? AND vehicle_id = ?");
-        $stmt->bind_param("ii", $cart_id, $vehicle_id);
+        $stmt = $connection->prepare("UPDATE cart_items SET quantity = GREATEST(1, quantity - 1) WHERE cart_id = ? AND cart_item_id = ?");
+        $stmt->bind_param("ii", $cart_id, $cart_item_id);
         $stmt->execute();
     }
 
     // Fetch the new quantity to send back to the browser
-    $final_qty_stmt = $connection->prepare("SELECT quantity FROM cart_items WHERE cart_id = ? AND vehicle_id = ?");
-    $final_qty_stmt->bind_param("ii", $cart_id, $vehicle_id);
+    $final_qty_stmt = $connection->prepare("SELECT quantity FROM cart_items WHERE cart_id = ? AND cart_item_id = ?");
+    $final_qty_stmt->bind_param("ii", $cart_id, $cart_item_id);
     $final_qty_stmt->execute();
     $final_qty_result = $final_qty_stmt->get_result();
     $final_item = $final_qty_result->fetch_assoc();
