@@ -45,7 +45,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                         // Calculate the total price. The price and quantity come directly from the joined query.
                         $total_price += $item['price'] * $item['quantity'];
                     ?>
-                        <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
+                        <div class="cart-item-row flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full" data-price="<?= htmlspecialchars($item['price']) ?>">
                             <div class="rounded-sm">
                                 <img src="<?= htmlspecialchars($item['image_path']) ?>" class="img-fluid object-fit-cover aspect-square w-40" alt="<?= htmlspecialchars($item['title']) ?>">
                             </div>
@@ -61,7 +61,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                 <!-- Quantity -->
                                 <div class="flex flex-row gap-2">
                                     <button class="btn btn-primary btn-minus" data-vehicle-id="<?= htmlspecialchars($item['vehicle_id']); ?>">-</button>
-                                    <h5 id="quantity-<?= htmlspecialchars($vehicle['id']); ?>">
+                                    <h5 class="quantity-display" id="quantity-<?= htmlspecialchars($item['vehicle_id']); ?>">
                                         <?= htmlspecialchars($item['quantity']); ?>
                                     </h5>
                                     <button class="btn btn-primary btn-plus" data-vehicle-id="<?= htmlspecialchars($item['vehicle_id']); ?>">+</button>
@@ -78,8 +78,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
                     <!-- Total -->
                     <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full px-5">
-                        <h4>Total:</h4>
-                        <h4>$<?= number_format($total_price, 2) ?></h4>
+                        <h4 class="font-bold">Total:</h4>
+                        <h4 class="font-bold" id="cart-total-price">$<?= number_format($total_price, 2) ?></h4>
                     </div>
 
                     <div class="flex flex-row justify-center gap-3 items-center rounded-md bg-transparent p-4 w-full">
