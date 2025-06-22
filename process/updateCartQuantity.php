@@ -11,10 +11,9 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Get input from the POST request (we expect JSON)
-$input = json_decode(file_get_contents('php://input'), true);
-$vehicle_id = $input['vehicle_id'] ?? null;
-$action = $input['action'] ?? null;
+// Get input from the POST request (form data)
+$vehicle_id = $_POST['vehicle_id'] ?? null;
+$action = $_POST['action'] ?? null;
 
 if (!$vehicle_id || !$action || !in_array($action, ['increment', 'decrement'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid input.']);

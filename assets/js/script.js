@@ -270,4 +270,44 @@ function removeFromCart(id) {
     request.send("id=" + encodeURIComponent(id));
 }
 
+function setupCartPageQuantityButtons() {
+    document.querySelectorAll('.cart-item-row .btn-plus, .cart-item-row .btn-minus').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const vehicleId = event.currentTarget.dataset.vehicleId;
+            const action = event.currentTarget.classList.contains('btn-plus') ? 'increment' : 'decrement';
+
+            // Use FormData for compatibility with PHP $_POST
+            const formData = new URLSearchParams();
+            formData.append('vehicle_id', vehicleId);
+            formData.append('action', action);
+
+            try {
+                const response = await fetch('/Projects/AuraEdition/process/updateCartQuantity.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update the quantity display on the page
+                    const quantityElement = document.getElementById(`quantity-${vehicleId}`);
+                    if (quantityElement) {
+                        quantityElement.textContent = result.newQuantity;
+                    }
+                    // Recalculate and update the total price
+                    updateCartTotal();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Failed to update quantity:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+}
 /* CART */
