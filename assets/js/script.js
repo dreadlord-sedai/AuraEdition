@@ -212,4 +212,8 @@ function removeFromCart(id) {
 }
 
 
+function cartCheckout() {
+    
+}
+
 /* CART */
