@@ -270,6 +270,28 @@ function removeFromCart(id) {
     request.send("id=" + encodeURIComponent(id));
 }
 
+function addToCart(vehicleId) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                var response = request.responseText.trim();
+                if (response === "success") {
+                    alert("Item added to cart successfully.");
+                    // Optionally, update cart UI here
+                } else {
+                    alert("Add to cart failed: " + response);
+                }
+            } else {
+                alert("Request failed with status " + request.status);
+            }
+        }
+    }
+    request.open("POST", "/Projects/AuraEdition/process/addToCartProcess.php", true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send("vehicle_id=" + encodeURIComponent(vehicleId));
+}
+
 function setupCartPageQuantityButtons() {
     document.querySelectorAll('.cart-item-row .btn-plus, .cart-item-row .btn-minus').forEach(button => {
         button.addEventListener('click', async (event) => {

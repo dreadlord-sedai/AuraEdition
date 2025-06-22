@@ -140,7 +140,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
                             <div class="d-flex gap-2">
                                 <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
-                                <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Add to Cart</a>
+                                <button class="btn btn-primary" onclick="addToCart(<?= $vehicle['id'] ?>)">Add to Cart</button>
                             </div>
                         </div>
                     </div>
