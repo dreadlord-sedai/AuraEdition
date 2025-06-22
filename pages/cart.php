@@ -35,7 +35,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 <?php
                 $user_id = $_SESSION['user_id'] ?? null;
                 $cart_items = getCartItemsByUserId($connection, $user_id);
-                $total_price = 100;
+                $total_price = 0;
 
                 if (empty($cart_items)) :
                 ?>
@@ -69,11 +69,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                 <button class="btn btn-outline-success" onclick="buyNow(<?= $item['vehicle_id'] ?>)" data-id="<?= $item['vehicle_id'] ?>">Buy Now</button>
                                 <button class="btn btn-outline-danger" onclick="removeFromCart(<?= $item['vehicle_id'] ?>)" data-id="<?= $item['vehicle_id'] ?>">Remove</button>
                             </div>
-                        </div>
-
-                        <div class="flex flex-col items-center gap-2">
-                            <button class="btn btn-outline-success" onclick="buyNow(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Buy Now</button>
-                            <button class="btn btn-outline-danger" onclick="removeFromCart(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Remove</button>
                         </div>
                     <?php endforeach; ?>
 
