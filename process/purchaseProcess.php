@@ -47,11 +47,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_item->execute();
         }
 
-        // Update vehicle stock
+        // Update vehicle stock and set status to INACTIVE if stock reaches 0
         foreach ($vehicles as $vehicle) {
             $stmt_item = $connection->prepare("UPDATE vehicles SET stock = stock - ? WHERE id = ?");
             $stmt_item->bind_param("ii", $vehicle['quantity'], $vehicle['id']);
             $stmt_item->execute();
+
+            // Check if stock is 0 and update status
+            $check_stock_stmt = $connection->prepare("SELECT stock FROM vehicles WHERE id = ?");
+            $check_stock_stmt->bind_param("i", $vehicle['id']);
+            $check_stock_stmt->execute();
+            $result = $check_stock_stmt->get_result();
+            $row = $result->fetch_assoc();
+            $check_stock_stmt->close();
+
+            if ($row && $row['stock'] <= 0) {
+                $update_status_stmt = $connection->prepare("UPDATE vehicles SET status = 'INACTIVE' WHERE id = ?");
+                $update_status_stmt->bind_param("i", $vehicle['id']);
+                $update_status_stmt->execute();
+                $update_status_stmt->close();
+            }
         }
         $stmt_item->close();
 
