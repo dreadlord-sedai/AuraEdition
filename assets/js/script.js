@@ -211,9 +211,4 @@ function removeFromCart(id) {
     request.send("id=" + encodeURIComponent(id));
 }
 
-
-function cartCheckout() {
-    
-}
-
 /* CART */
