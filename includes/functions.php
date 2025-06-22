@@ -246,4 +246,15 @@ function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
     $stmt->close();
     return $cart_items;
 }
+
+
+function removeFromCart($connection, $user_id, $vehicle_id) {
+    if (!isset($user_id)) {
+        return;
+    }
+    $stmt = $connection->prepare("DELETE FROM cart_items WHERE cart_id = (SELECT cart_id FROM carts WHERE user_id = ?) AND vehicle_id = ?");
+    $stmt->bind_param("ii", $user_id, $vehicle_id);
+    $stmt->execute();
+    $stmt->close();
+}
 // Cart Functions //
