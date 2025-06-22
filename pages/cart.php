@@ -30,18 +30,26 @@
             <div class="flex flex-col w-75 flex-grow gap-3 justify-content-center rounded-lg align-items-center bg-gray-200 p-5">
                 <h4>Cart</h4>
 
-                <!-- Item Card -->
+                <!-- Cart Card -->
+
+                <?php 
+                $cart_items = getCartItemsByUserId($connection, $_SESSION['user_id']);
+                foreach ($cart_items as $item) {
+                    $vehicle = get_vehicle($item['vehicle_id'], $connection);
+                    $image = get_vehicle_image($vehicle['id'], $connection);
+
+                ?>
                 <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
                     <div class="rounded-sm">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-40" alt="">
+                        <img src="<?= $image ?>" class="img-fluid object-fit-cover aspect-square w-40" alt="">
                     </div>
 
                     <div class="flex flex-col items-center">
                         <div class="">
-                            <h5>2023 Lamborghini Huracan</h5>
+                            <h5><?= htmlspecialchars($vehicle['title']) ?></h5>
                         </div>
                         <div class="mb-2">
-                            <h5>$100</h5>
+                            <h5>$<?= number_format($vehicle['price']) ?></h5>
                         </div>
 
                         <div class="flex flex-row gap-2">
@@ -52,95 +60,13 @@
                     </div>
 
                     <div class="flex flex-col items-center gap-2">
-                        <button class="btn btn-outline-success">Buy Now</button>
-                        <button class="btn btn-outline-danger">Remove</button>
+                        <button class="btn btn-outline-success" onclick="buyNow(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Buy Now</button>
+                        <button class="btn btn-outline-danger" onclick="removeFromCart(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Remove</button>
 
                     </div>
                 </div>
-
-                <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
-                    <div class="rounded-sm">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-40" alt="">
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-                        <div class="mb-2">
-                            <h5>$100</h5>
-                        </div>
-
-                        <div class="flex flex-row gap-2">
-                            <button class="btn btn-primary">-</button>
-                            <h5 class="mx-2">1</h5>
-                            <button class="btn btn-primary">+</button>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col items-center gap-2">
-                        <button class="btn btn-outline-success">Buy Now</button>
-                        <button class="btn btn-outline-danger">Remove</button>
-
-                    </div>
-                </div>
-
-                <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
-                    <div class="rounded-sm">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-40" alt="">
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-                        <div class="mb-2">
-                            <h5>$100</h5>
-                        </div>
-
-                        <div class="flex flex-row gap-2">
-                            <button class="btn btn-primary">-</button>
-                            <h5 class="mx-2">1</h5>
-                            <button class="btn btn-primary">+</button>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col items-center gap-2">
-                        <button class="btn btn-outline-success">Buy Now</button>
-                        <button class="btn btn-outline-danger">Remove</button>
-
-                    </div>
-                </div>
-
-                <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
-                    <div class="rounded-sm">
-                        <img src="/Projects/AuraEdition/assets/images/checkout1.jpg" class="img-fluid object-fit-cover aspect-square w-40" alt="">
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="">
-                            <h5>2023 Lamborghini Huracan</h5>
-                        </div>
-                        <div class="mb-2">
-                            <h5>$100</h5>
-                        </div>
-
-                        <div class="flex flex-row gap-2">
-                            <button class="btn btn-primary">-</button>
-                            <h5 class="mx-2">1</h5>
-                            <button class="btn btn-primary">+</button>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col items-center gap-2">
-                        <button class="btn btn-outline-success">Buy Now</button>
-                        <button class="btn btn-outline-danger">Remove</button>
-
-                    </div>
-                </div>
-
-
-                <!-- Item Card -->
+                <?php } ?>
+                <!-- CartCard -->
 
                 <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full px-5">
                     <h4>Total:</h4>
