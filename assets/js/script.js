@@ -277,8 +277,7 @@ function addToCart(vehicleId) {
             if (request.status == 200) {
                 var response = request.responseText.trim();
                 if (response === "success") {
-                    alert("Item added to cart successfully.");
-                    // Optionally, update cart UI here
+                    alert("Vehicle added to cart.");
                 } else {
                     alert("Add to cart failed: " + response);
                 }

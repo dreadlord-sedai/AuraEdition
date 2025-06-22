@@ -15,7 +15,7 @@ if (isset($_POST['vehicle_id'])) {
     $user_id = $_SESSION['user_id'];
 
     if (addToCart($connection, $user_id, $vehicle_id)) {
-        echo "Success: Vehicle added to cart.";
+        echo "success";
     } else {
         echo "Error: Failed to add vehicle to cart.";
     }
