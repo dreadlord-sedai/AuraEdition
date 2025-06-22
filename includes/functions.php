@@ -248,30 +248,13 @@ function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
 }
 
 
-function removeFromCart($connection, $user_id, $vehicle_id) {
-    if (!isset($user_id) || !isset($vehicle_id)) {
+function removeFromCart($connection, $cart_item_id) {
+    if (!isset($cart_item_id)) {
         return false;
     }
-    // First, get the user's cart ID. This is a safer and clearer approach.
-    $cart_stmt = $connection->prepare("SELECT cart_id FROM carts WHERE user_id = ?");
-    if (!$cart_stmt) return false;
-    $cart_stmt->bind_param("i", $user_id);
-    $cart_stmt->execute();
-    $cart_result = $cart_stmt->get_result();
-    $cart = $cart_result->fetch_assoc();
-    $cart_stmt->close();
-
-    if (!$cart) {
-        // The user doesn't have a cart, so there's nothing to remove.
-        return true;
-    }
-    $cart_id = $cart['cart_id'];
-
-    // Now, delete the specific item from that cart.
-    $stmt = $connection->prepare("DELETE FROM cart_items WHERE cart_id = ? AND vehicle_id = ?");
+    $stmt = $connection->prepare("DELETE FROM cart_items WHERE cart_item_id = ?");
     if (!$stmt) return false;
-    
-    $stmt->bind_param("ii", $cart_id, $vehicle_id);
+    $stmt->bind_param("i", $cart_item_id);
     $success = $stmt->execute();
     $stmt->close();
     return $success;
