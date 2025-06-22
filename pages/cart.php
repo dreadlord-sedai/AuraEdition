@@ -83,7 +83,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                     </div>
 
                     <div class="flex flex-row justify-center gap-3 items-center rounded-md bg-transparent p-4 w-full">
-                        <a href="/Projects/AuraEdition/pages/checkout.php" class="btn btn-primary w-3/5">CHECKOUT</a>
+                        <a onclick="cartCheckout()" class="btn btn-primary w-3/5">CHECKOUT</a>
                     </div>
                 <?php endif; ?>
 
