@@ -4,7 +4,7 @@ function get_featured_vehicles($connection, $limit = 3)
     // Fetch featured vehicles
     $featured = 1;
     $select_Featured = $connection->prepare(
-        "SELECT id, title, price FROM vehicles WHERE is_featured = ? LIMIT 3"
+        "SELECT id, title, price FROM vehicles WHERE is_featured = ?  AND status = 'ACTIVE' LIMIT 3"
     );
     $select_Featured->bind_param("i", $featured);
     $select_Featured->execute();
@@ -38,7 +38,7 @@ function get_popular_vehicles($connection, $limit = 3)
 {
     // Fetch popular vehicles
     $select_Popular = $connection->prepare(
-        "SELECT id, title, price FROM vehicles WHERE is_popular = ? LIMIT ?"
+        "SELECT id, title, price FROM vehicles WHERE is_popular = ? AND status = 'ACTIVE' LIMIT ?"
     );
     $popular = 1;
     $select_Popular->bind_param("ii", $popular, $limit);
@@ -74,7 +74,7 @@ function getAllMakes(mysqli $connection): array {
 
 function get_all_vehicles($connection) {
     $select_All_listings = $connection->prepare(
-        "SELECT id, title, price, description, stock FROM vehicles"
+        "SELECT id, title, price, description, stock FROM vehicles WHERE status = 'ACTIVE'"
     );
     $select_All_listings->execute();
     $result = $select_All_listings->get_result();
@@ -85,7 +85,7 @@ function get_all_vehicles($connection) {
 
 function get_all_recent_vehicles($connection) {
     $select_All_listings = $connection->prepare(
-        "SELECT id, title, price, description, stock FROM vehicles ORDER BY created_at DESC LIMIT 3"
+        "SELECT id, title, price, description, stock FROM vehicles WHERE status = 'ACTIVE' ORDER BY created_at DESC LIMIT 3"
     );
     $select_All_listings->execute();
     $result = $select_All_listings->get_result();
@@ -96,7 +96,7 @@ function get_all_recent_vehicles($connection) {
 
 function get_vehicle($vehicle_id, $connection) {
     $select_vehicle = $connection->prepare(
-        "SELECT id, title, price, description, stock FROM vehicles WHERE id = ?"
+        "SELECT id, title, price, description, stock FROM vehicles WHERE id = ? AND status = 'ACTIVE'"
     );
     $select_vehicle->bind_param("i", $vehicle_id);
     $select_vehicle->execute();
@@ -131,7 +131,7 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
                    MIN(COALESCE(vi.image_path, '/Projects/AuraEdition/assets/images/default-car.jpg')) as image_url
             FROM vehicles v
             LEFT JOIN vehicle_images vi ON v.id = vi.image_vehicle_id
-            WHERE v.make_id = ?
+            WHERE v.make_id = ? AND v.status = 'ACTIVE'
             GROUP BY v.id, v.title, v.price
             ORDER BY v.created_at DESC;";
     
