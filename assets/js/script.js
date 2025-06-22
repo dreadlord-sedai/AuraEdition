@@ -85,6 +85,65 @@ if (window.location.pathname.endsWith('/pages/checkout.php')) {
     setupQuantityButtons();
 }
 
+// Call the setup function on page load if on cart page
+if (window.location.pathname.endsWith('/pages/cart.php')) {
+    setupCartPageQuantityButtons();
+}
+
+// This function is specifically for the cart page for dynamic updates
+function setupCartPageQuantityButtons() {
+    document.querySelectorAll('.cart-item-row .btn-plus, .cart-item-row .btn-minus').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const vehicleId = event.currentTarget.dataset.vehicleId;
+            const action = event.currentTarget.classList.contains('btn-plus') ? 'increment' : 'decrement';
+
+            try {
+                const response = await fetch('/Projects/AuraEdition/process/updateCartQuantity.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ vehicle_id: vehicleId, action: action })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update the quantity display on the page
+                    const quantityElement = document.getElementById(`quantity-${vehicleId}`);
+                    if (quantityElement) {
+                        quantityElement.textContent = result.newQuantity;
+                    }
+                    // Recalculate and update the total price
+                    updateCartTotal();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Failed to update quantity:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+}
+
+function updateCartTotal() {
+    const cartTotalElement = document.getElementById('cart-total-price');
+    if (!cartTotalElement) return;
+
+    let newTotal = 0;
+    document.querySelectorAll('.cart-item-row').forEach(itemRow => {
+        const price = parseFloat(itemRow.dataset.price);
+        const quantity = parseInt(itemRow.querySelector('.quantity-display').textContent);
+        if (!isNaN(price) && !isNaN(quantity)) {
+            newTotal += price * quantity;
+        }
+    });
+
+    cartTotalElement.textContent = '$' + newTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 // Clear Checkout cart
 function clearCheckout() {
     var request = new XMLHttpRequest();
