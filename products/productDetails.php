@@ -109,11 +109,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                 }
                             </script>
                         
-                        <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>">
-                            <button class="btn btn-primary d-flex justify-content-center align-items-center">
-                                Add to cart
-                            </button>
-                        </a>
+                        <a onclick="addToCart(<?= $vehicle['id'] ?>)" class="btn btn-primary">Add to Cart</a>
 
                         <div class="flex flex-row gap-2 justify-center items-center">
                             <label for="quantity" class="text-gray-600">Quantity:</label>
@@ -160,7 +156,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                                 <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
                                 <div class="d-flex gap-2">
                                     <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
-                                    <a href="/Projects/AuraEdition/pages/cart.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Add to Cart</a>
+                                    <a onclick="addToCart(<?= $vehicle['id'] ?>)" class="btn btn-primary">Add to Cart</a>
                                 </div>
                             </div>
                         </div>
