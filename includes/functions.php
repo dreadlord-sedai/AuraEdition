@@ -221,9 +221,9 @@ function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
         return []; // Return an empty array if user is not logged in.
     }
 
-    // This query assumes a two-table structure: 'carts' and 'cart_items'.
-    // It joins with 'vehicles' and 'vehicle_images' to get all necessary display info.
+    // Select cart_item_id for precise removal
     $sql = "SELECT 
+                ci.cart_item_id,      -- Make sure this matches your table's PK column name
                 ci.vehicle_id, 
                 ci.quantity,
                 v.title,
@@ -246,7 +246,6 @@ function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
     $stmt->close();
     return $cart_items;
 }
-
 
 function removeFromCart($connection, $cart_item_id) {
     if (!isset($cart_item_id)) {
