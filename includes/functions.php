@@ -216,6 +216,20 @@ function getOrderItemsByOrderId($connection, $order_id) {
 
 
 // Cart Functions //
+
+function addToCart($connection, $user_id, $vehicle_id, $quantity = 1) {
+    if (!isset($user_id) || !isset($vehicle_id)) {
+        return false;
+    }
+
+    $stmt = $connection->prepare("INSERT INTO cart_items (cart_id, vehicle_id, quantity) VALUES ((SELECT cart_id FROM carts WHERE user_id = ?), ?, ?)");
+    $stmt->bind_param("iii", $user_id, $vehicle_id, $quantity);
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
+}
+
+
 function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
     if (!isset($user_id)) {
         return []; // Return an empty array if user is not logged in.
