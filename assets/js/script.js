@@ -204,7 +204,7 @@ function setupQuantityButtons() {
             let quantity = parseInt(quantityElem.textContent);
             if (quantity > 1) {
                 quantity--;
-                updateQuantity(cart_item_id, quantity, quantityElem);
+                updateQuantity(vehicleId, quantity, quantityElem);
             }
         });
     });
@@ -216,12 +216,12 @@ function setupQuantityButtons() {
             const quantityElem = document.getElementById('quantity-' + vehicleId);
             let quantity = parseInt(quantityElem.textContent);
             quantity++;
-            updateQuantity(cart_item_id, quantity, quantityElem);
+            updateQuantity(vehicleId, quantity, quantityElem);
         });
     });
 }
 
-function updateQuantity(cart_item_id, quantity, quantityElem) {
+function updateQuantity(vehicleId, quantity, quantityElem) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
@@ -241,7 +241,7 @@ function updateQuantity(cart_item_id, quantity, quantityElem) {
     }
     request.open("POST", "/Projects/AuraEdition/process/updateQuantityProcess.php", true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.send("id=" + encodeURIComponent(cart_item_id) + "&quantity=" + encodeURIComponent(quantity));
+    request.send("id=" + encodeURIComponent(vehicleId) + "&quantity=" + encodeURIComponent(quantity));
 }
 
 /* USER FLOW */
@@ -273,12 +273,12 @@ function removeFromCart(id) {
 function setupCartPageQuantityButtons() {
     document.querySelectorAll('.cart-item-row .btn-plus, .cart-item-row .btn-minus').forEach(button => {
         button.addEventListener('click', async (event) => {
-            const vehicleId = event.currentTarget.dataset.vehicleId;
+            const cartItemId = event.currentTarget.dataset.cartItemId;
             const action = event.currentTarget.classList.contains('btn-plus') ? 'increment' : 'decrement';
 
             // Use FormData for compatibility with PHP $_POST
             const formData = new URLSearchParams();
-            formData.append('vehicle_id', vehicleId);
+            formData.append('cart_item_id', cartItemId);
             formData.append('action', action);
 
             try {
@@ -294,7 +294,7 @@ function setupCartPageQuantityButtons() {
 
                 if (result.success) {
                     // Update the quantity display on the page
-                    const quantityElement = document.getElementById(`quantity-${vehicleId}`);
+                    const quantityElement = document.getElementById(`quantity-${cartItemId}`);
                     if (quantityElement) {
                         quantityElement.textContent = result.newQuantity;
                     }
