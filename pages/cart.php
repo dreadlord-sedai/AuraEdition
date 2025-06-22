@@ -27,7 +27,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
         <div class="flex flex-col justify-content-center align-items-center gap-10">
 
             <!-- Cart Card -->
-            <div class="flex flex-col w-75 flex-grow gap-3 justify-content-center rounded-lg align-items-center bg-gray-200 p-5">
+            <div class=" cart-container flex flex-col w-75 flex-grow gap-3 justify-content-center rounded-lg align-items-center bg-gray-200 p-5">
                 <h4>Cart</h4>
 
                 <!-- Cart Card -->
