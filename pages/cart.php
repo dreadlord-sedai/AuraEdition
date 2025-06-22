@@ -1,8 +1,8 @@
 <?php
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
-    ?>
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+?>
 
 
 <!DOCTYPE html>
@@ -24,58 +24,69 @@
 
     <!-- Main Content -->
     <div class="container-md my-5 main-content">
-
         <div class="flex flex-col justify-content-center align-items-center gap-10">
+
             <!-- Cart Card -->
             <div class="flex flex-col w-75 flex-grow gap-3 justify-content-center rounded-lg align-items-center bg-gray-200 p-5">
                 <h4>Cart</h4>
 
                 <!-- Cart Card -->
 
-                <?php 
-                $cart_items = getCartItemsByUserId($connection, $_SESSION['user_id']);
-                foreach ($cart_items as $item) {
-                    $vehicle = get_vehicle($item['vehicle_id'], $connection);
-                    $image = get_vehicle_image($vehicle['id'], $connection);
+                <?php
+                $user_id = $_SESSION['user_id'] ?? null;
+                $cart_items = getCartItemsByUserId($connection, $user_id);
+                $total_price = 100;
 
+                if (empty($cart_items)) :
                 ?>
-                <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
-                    <div class="rounded-sm">
-                        <img src="<?= $image ?>" class="img-fluid object-fit-cover aspect-square w-40" alt="">
+                    <p class="text-center">Your cart is empty.</p>
+                <?php else : ?>
+                    <?php foreach ($cart_items as $item) :
+                        // Calculate the total price. The price and quantity come directly from the joined query.
+                        $total_price += $item['price'] * $item['quantity'];
+                    ?>
+                        <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full">
+                            <div class="rounded-sm">
+                                <img src="<?= htmlspecialchars($item['image_path']) ?>" class="img-fluid object-fit-cover aspect-square w-40" alt="<?= htmlspecialchars($item['title']) ?>">
+                            </div>
+
+                            <div class="flex flex-col items-center">
+                                <div class="">
+                                    <h5><?= htmlspecialchars($item['title']) ?></h5>
+                                </div>
+                                <div class="mb-2">
+                                    <h5>$<?= number_format($item['price']) ?></h5>
+                                </div>
+
+                                <div class="flex flex-row gap-2">
+                                    <button class="btn btn-primary">-</button>
+                                    <h5 class="mx-2"><?= htmlspecialchars($item['quantity']) ?></h5>
+                                    <button class="btn btn-primary">+</button>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-center gap-2">
+                                <button class="btn btn-outline-success" onclick="buyNow(<?= $item['vehicle_id'] ?>)" data-id="<?= $item['vehicle_id'] ?>">Buy Now</button>
+                                <button class="btn btn-outline-danger" onclick="removeFromCart(<?= $item['vehicle_id'] ?>)" data-id="<?= $item['vehicle_id'] ?>">Remove</button>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center gap-2">
+                            <button class="btn btn-outline-success" onclick="buyNow(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Buy Now</button>
+                            <button class="btn btn-outline-danger" onclick="removeFromCart(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Remove</button>
+                        </div>
+                    <?php endforeach; ?>
+
+                    <!-- Total -->
+                    <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full px-5">
+                        <h4>Total:</h4>
+                        <h4>$<?= number_format($total_price, 2) ?></h4>
                     </div>
 
-                    <div class="flex flex-col items-center">
-                        <div class="">
-                            <h5><?= htmlspecialchars($vehicle['title']) ?></h5>
-                        </div>
-                        <div class="mb-2">
-                            <h5>$<?= number_format($vehicle['price']) ?></h5>
-                        </div>
-
-                        <div class="flex flex-row gap-2">
-                            <button class="btn btn-primary">-</button>
-                            <h5 class="mx-2">1</h5>
-                            <button class="btn btn-primary">+</button>
-                        </div>
+                    <div class="flex flex-row justify-center gap-3 items-center rounded-md bg-transparent p-4 w-full">
+                        <a href="/Projects/AuraEdition/pages/checkout.php" class="btn btn-primary w-3/5">CHECKOUT</a>
                     </div>
-
-                    <div class="flex flex-col items-center gap-2">
-                        <button class="btn btn-outline-success" onclick="buyNow(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Buy Now</button>
-                        <button class="btn btn-outline-danger" onclick="removeFromCart(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">Remove</button>
-
-                    </div>
-                </div>
-                <?php } ?>
-                <!-- CartCard -->
-
-                <div class="flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full px-5">
-                    <h4>Total:</h4>
-                    <h4>$400</h4>
-                </div>
-
-                <div class="flex flex-row justify-center gap-3 items-center rounded-md bg-transparent p-4 w-full">
-                    <a href="/Projects/AuraEdition/pages/checkout.php" class="btn btn-primary w-3/5">CHECKOUT</a>
-                </div>
+                <?php endif; ?>
 
             </div>
             <!-- Cart Card -->
