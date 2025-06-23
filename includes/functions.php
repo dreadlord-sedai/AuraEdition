@@ -299,7 +299,7 @@ function getWishlistItemsByUserId($connection, $user_id) {
     if (!isset($user_id)) {
         return [];
     }
-    $stmt = $connection->prepare("SELECT vehicle_id FROM wishlist_items WHERE user_id = ?");
+    $stmt = $connection->prepare("SELECT id, vehicle_id FROM wishlist_items WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
