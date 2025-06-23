@@ -29,7 +29,7 @@ WHERE u.id = ?");
 function updateAccount($connection, $user_id, $fname, $lname, $email, $confirm_password)
 {
     $hashedPassword = password_hash($confirm_password, PASSWORD_DEFAULT);
-    $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, password = ? WHERE id = ?");
+    $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, hashed_password = ? WHERE id = ?");
     if (!$stmt) return null;
     $stmt->bind_param("ssssi", $fname, $lname, $email, $hashedPassword, $user_id);
     $stmt->execute();
