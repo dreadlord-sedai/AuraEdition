@@ -48,3 +48,15 @@ function updateAddress($connection, $user_id, $address, $city, $state)
 
 /* Account Functions */
 
+
+function getRecentOrders($connection)
+{   
+    $stmt = $connection->prepare("SELECT * FROM orders ORDER BY orderd_at DESC LIMIT 5");
+    if (!$stmt) return null;
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $orders = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $orders;
+}
+

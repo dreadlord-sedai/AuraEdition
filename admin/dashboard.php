@@ -59,6 +59,7 @@ if (!$user || $user['role'] != "admin") {
                 <!--Analytics-->
 
                 <!--Recent orders-->
+
                 <div class="mt-10">
                     <h2 class="text-lg font-semibold mb-4 text-light">Recent Orders</h2>
                     <div class="overflow-x-auto">
@@ -68,60 +69,29 @@ if (!$user || $user['role'] != "admin") {
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Order ID</th>
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Customer</th>
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Date</th>
-                                    <th class="px-4 py-2 text-left text-gray-300 font-medium">Status</th>
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-b border-gray-700">
-                                    <td class="px-4 py-2 text-gray-100">#1001</td>
-                                    <td class="px-4 py-2 text-gray-100">Ethan Harper</td>
-                                    <td class="px-4 py-2 text-gray-100">2024-07-26</td>
-                                    <td class="px-4 py-2">
-                                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs">Shipped</span>
-                                    </td>
-                                    <td class="px-4 py-2 text-gray-100">$150,000</td>
-                                </tr>
-                                <tr class="border-b border-gray-700">
-                                    <td class="px-4 py-2 text-gray-100">#1002</td>
-                                    <td class="px-4 py-2 text-gray-100">Olivia Bennett</td>
-                                    <td class="px-4 py-2 text-gray-100">2024-07-25</td>
-                                    <td class="px-4 py-2">
-                                        <span class="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs">Processing</span>
-                                    </td>
-                                    <td class="px-4 py-2 text-gray-100">$200,000</td>
-                                </tr>
-                                <tr class="border-b border-gray-700">
-                                    <td class="px-4 py-2 text-gray-100">#1003</td>
-                                    <td class="px-4 py-2 text-gray-100">Liam Carter</td>
-                                    <td class="px-4 py-2 text-gray-100">2024-07-24</td>
-                                    <td class="px-4 py-2">
-                                        <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs">Delivered</span>
-                                    </td>
-                                    <td class="px-4 py-2 text-gray-100">$250,000</td>
-                                </tr>
-                                <tr class="border-b border-gray-700">
-                                    <td class="px-4 py-2 text-gray-100">#1004</td>
-                                    <td class="px-4 py-2 text-gray-100">Sophia Evans</td>
-                                    <td class="px-4 py-2 text-gray-100">2024-07-23</td>
-                                    <td class="px-4 py-2">
-                                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs">Shipped</span>
-                                    </td>
-                                    <td class="px-4 py-2 text-gray-100">$300,000</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-2 text-gray-100">#1005</td>
-                                    <td class="px-4 py-2 text-gray-100">Noah Foster</td>
-                                    <td class="px-4 py-2 text-gray-100">2024-07-22</td>
-                                    <td class="px-4 py-2">
-                                        <span class="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs">Processing</span>
-                                    </td>
-                                    <td class="px-4 py-2 text-gray-100">$350,000</td>
-                                </tr>
+                                <?php
+                                $orders = getRecentOrders($connection);
+                                if ($orders) {
+                                    foreach ($orders as $order):
+                                        $user = getUserInfo($connection, $order['user_id']);
+                                ?>
+                                        <tr class="border-b border-gray-700">
+                                            <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($order['order_id']); ?></td>
+                                            <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($user['email']); ?></td>
+                                            <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($order['orderd_at']); ?></td>
+                                            <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($order['total_price']); ?></td>
+                                        </tr>
+                                <?php endforeach;
+                                } ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 <!--Recent orders-->
 
                 <!--Analytics-->
