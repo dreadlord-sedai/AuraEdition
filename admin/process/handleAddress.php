@@ -17,10 +17,9 @@ if (isset($_POST['update_address'])) {
     $address = $_POST['address'];
     $city = $_POST['city'];
     $state = $_POST['state'];
-    $zip = $_POST['zip'];
 
     // Update account information in the database
-    updateAddress($connection, $user['id'], $address, $city, $state, $zip);
+    updateAddress($connection, $user['id'], $address, $city, $state,);
 
     // Redirect back to the admin account page
     header("Location: /Projects/AuraEdition/admin/pages/adminAccount.php");

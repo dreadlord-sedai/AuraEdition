@@ -88,7 +88,7 @@ if (!$user || $user['role'] !== 'admin') {
                 <!-- Address Form -->
                 <div class="mt-8">
                     <h3 class="text-2xl font-semibold mb-4 text-light">Address</h3>
-                    <form action="/Projects/AuraEdition/admin/actions/handleAddress.php" method="POST" class="flex flex-col gap-3">
+                    <form action="/Projects/AuraEdition/admin/process/handleAddress.php" method="POST" class="flex flex-col gap-3">
                         <div class="flex flex-col gap-3">
                             <div class="flex flex-col gap-2">
                                 <label for="address" class="text-light">Address</label>                        
@@ -104,11 +104,6 @@ if (!$user || $user['role'] !== 'admin') {
                                 <label for="state" class="text-light">State</label>
                                 <input type="text" name="state" id="state"  value="<?= htmlspecialchars($user['state'] ?? '') ?>" 
                                 class=" w-full px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label for="zip" class="text-light">Zip Code</label>
-                                <input type="text" name="zip" id="zip" value="<?= htmlspecialchars($user['zip'] ?? '') ?>" 
-                                class="w-full px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
                         <div class="flex justify-end">
