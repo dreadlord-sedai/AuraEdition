@@ -38,7 +38,7 @@ if (!$user || $user['role'] != "admin") {
                 </div>
 
                 <!-- Add Vehicle Product Form -->
-                <form action="/Projects/AuraEdition/admin/actions/handleAddProduct.php" method="POST" enctype="multipart/form-data" 
+                <form action="/Projects/AuraEdition/admin/actions/editProductProcess.php" method="POST" enctype="multipart/form-data" 
                 class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
                     
 
@@ -112,7 +112,7 @@ if (!$user || $user['role'] != "admin") {
 
                     <!-- Submit Button -->
                     <div class="flex justify-end">
-                        <button type="submit" class="btn btn-primary px-6 py-2">Edit Vehicle Product</button>
+                        <button type="submit" name="update_product" value="update_product" class="btn btn-primary px-6 py-2">Update Vehicle Product</button>
                     </div>
                 </form>
                 <!--End Add Vehicle Product Form-->
