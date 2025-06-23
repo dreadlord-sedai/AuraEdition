@@ -44,14 +44,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </svg>
             Add Products
         </a>
-        <a href="/Projects/AuraEdition/admin/pages/analytics.php"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition hover:bg-gray-700 text-decoration-none <?= $currentPage == 'analytics.php' ? 'bg-gray-800' : '' ?>">
-            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M11 19V6m4 13V6m-8 13v-6" />
-            </svg>
-            Analytics
-        </a>
     </nav>
 </div>
 <!--Sidebar-->
