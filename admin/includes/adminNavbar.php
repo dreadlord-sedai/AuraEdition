@@ -26,7 +26,7 @@
                         <img src="/Projects/AuraEdition/admin/assets/images/account.jpg" alt="Account" class="w-full h-full object-cover" />
                     </div>
                     <!-- Account Link -->
-                    <a href="/Projects/AuraEdition/admin/pages/account.php" class="text-white text-decoration-none hover:text-blue-400
+                    <a href="/Projects/AuraEdition/admin/pages/adminAccount.php" class="text-white text-decoration-none hover:text-blue-400
                      font-semibold transition">
                         Account
                     </a>
