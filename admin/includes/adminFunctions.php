@@ -23,3 +23,13 @@ WHERE u.id = ?");
     $stmt->close();
     return $user;
 }
+
+function updateAccount($connection, $user_id, $name, $email, $password, $confirm_password)
+{
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, password = ? WHERE id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("ssssi", $name, $email, $hashedPassword, $user_id);
+    $stmt->execute();
+    $stmt->close();
+}
