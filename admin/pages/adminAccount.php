@@ -50,7 +50,7 @@ if (!$user || $user['role'] !== 'admin') {
 
                  ?>
                 <div>
-                    <form action="/Projects/AuraEdition/admin/actions/handleAccount.php" method="POST" class="flex flex-col gap-3">
+                    <form action="/Projects/AuraEdition/admin/process/handleAccount.php" method="POST" class="flex flex-col gap-3">
                         <div class="flex flex-col gap-3">
                             <div class="flex flex-col gap-2">
                                 <label for="fname" class="text-light"> First Name</label>
