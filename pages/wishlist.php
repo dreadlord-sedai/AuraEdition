@@ -41,8 +41,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                     <p class="text-center">Your wishlist is empty.</p>
                 <?php else : ?>
                     <?php foreach ($cart_items as $item) :
-                        // Calculate the total price. The price and quantity come directly from the joined query.
-                        $total_price += $item['price'] * $item['quantity'];
+                        
                     ?>
                         <div class="cart-item-row flex flex-row justify-between gap-3 items-center rounded-md bg-gray-400 p-4 w-full" data-price="<?= htmlspecialchars($item['price']) ?>">
                             <div class="rounded-sm">
