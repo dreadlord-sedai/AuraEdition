@@ -19,9 +19,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </svg>
             Dashboard
         </a>
-        <a href="/Projects/AuraEdition/admin/pages/vehicles.php"
+        <a href="/Projects/AuraEdition/admin/pages/vehicles.php" 
             class="flex items-center gap-3 px-4 py-2 rounded-lg font-medium focus:outline-none transition hover:bg-gray-700 
-            text-decoration-none <?= $currentPage == 'products.php' ? 'bg-gray-800' : '' ?>">
+            text-decoration-none <?= $currentPage == 'vehicles.php' ? 'bg-gray-800' : '' ?>">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 

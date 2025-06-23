@@ -42,7 +42,7 @@ if (!$user || $user['role'] != "admin") {
                 <!--Search section-->
                 <div class="mb-8 flex flex-col items-center">
                     <!-- Search Bar Centered -->
-                    <form method="GET" action="" class="w-full max-w-md">
+                    <form method="GET" action="" class="w-full max-w-md text-center">
                         <div class="relative">
                             <input
                                 type="text"
@@ -57,22 +57,22 @@ if (!$user || $user['role'] != "admin") {
                                 </svg>
                             </span>
                         </div>
+                        <!-- Filters -->
+                        <div class="flex flex-row gap-4 mt-4 w-full max-w-md mx-auto">
+                            <!-- Status Filter -->
+                            <select name="status" onchange="this.form.submit()" class="w-1/2 px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">All Statuses</option>
+                                <option value="ACTIVE" <?= (($_GET['status'] ?? '') === 'ACTIVE') ? 'selected' : '' ?>>Active</option>
+                                <option value="INACTIVE" <?= (($_GET['status'] ?? '') === 'INACTIVE') ? 'selected' : '' ?>>Inactive</option>
+                            </select>
+                            <!-- Price Filter -->
+                            <select name="price" onchange="this.form.submit()" class="w-1/2 px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Sort by Price</option>
+                                <option value="low" <?= (($_GET['price'] ?? '') === 'low') ? 'selected' : '' ?>>Low to High</option>
+                                <option value="high" <?= (($_GET['price'] ?? '') === 'high') ? 'selected' : '' ?>>High to Low</option>
+                            </select>
+                        </div>
                     </form>
-                    <!-- Filters -->
-                    <div class="flex flex-row gap-4 mt-4 w-full max-w-md">
-                        <!-- Status Filter -->
-                        <select name="status" class="w-1/2 px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Status</option>
-                            <option value="active" <?= (($_GET['status'] ?? '') === 'active') ? 'selected' : '' ?>>Active</option>
-                            <option value="inactive" <?= (($_GET['status'] ?? '') === 'inactive') ? 'selected' : '' ?>>Inactive</option>
-                        </select>
-                        <!-- Price Filter -->
-                        <select name="price" class="w-1/2 px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Price</option>
-                            <option value="low" <?= (($_GET['price'] ?? '') === 'low') ? 'selected' : '' ?>>Low to High</option>
-                            <option value="high" <?= (($_GET['price'] ?? '') === 'high') ? 'selected' : '' ?>>High to Low</option>
-                        </select>
-                    </div>
                 </div>
                 <!--Search section-->
 
@@ -111,8 +111,8 @@ if (!$user || $user['role'] != "admin") {
                                     <td class="px-4 py-2 text-gray-100">$<?= $vehicle['price']; ?></td>
                                     <td class="px-4 py-2 text-gray-100"><?= $vehicle['stock']; ?></td>
                                     <td class="px-4 py-2">
-                                        <a href="#" class="text-blue-400 hover:underline mr-2">Edit</a>
-                                        <a href="#" class="text-red-400 hover:underline">Delete</a>
+                                        <a href="/Projects/AuraEdition/admin/pages/EditProduct.php?id=<?= $vehicle['id'] ?>" class="text-blue-400 hover:underline mr-2">Edit</a>
+                                        <a onclick="deleteProduct(<?= $vehicle['id'] ?>); return false;" class="text-red-400 hover:underline">Delete</a>
                                     </td>
                                 </tr>
                             <?php

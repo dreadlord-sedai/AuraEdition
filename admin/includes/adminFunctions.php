@@ -49,6 +49,7 @@ function updateAddress($connection, $user_id, $address, $city, $state)
 /* Account Functions */
 
 
+/* Display Functions */
 function getRecentOrders($connection)
 {   
     $stmt = $connection->prepare("SELECT * FROM orders ORDER BY orderd_at DESC LIMIT 5");
@@ -60,21 +61,42 @@ function getRecentOrders($connection)
     return $orders;
 }
 
-function getVehicles($connection, $search, $status, $price)
+function getVehicles($connection, $search, $status, $priceSort)
 {
-    $query = "SELECT * FROM vehicles";  
+    $query = "SELECT * FROM vehicles";
+    $whereClauses = [];
+    $params = [];
+    $types = '';
 
-    if ($search) {
-        $query .= " WHERE title LIKE '%$search%'";
+    if (!empty($search)) {
+        $whereClauses[] = "title LIKE ?";
+        $params[] = "%" . $search . "%";
+        $types .= 's';
     }
-    if ($status) {
-        $query .= " WHERE status = '$status'";
+
+    if (!empty($status)) {
+        $whereClauses[] = "status = ?";
+        $params[] = $status;
+        $types .= 's';
     }
-    if ($price) {
-        $query .= " WHERE price = '$price'";
+
+    if (!empty($whereClauses)) {
+        $query .= " WHERE " . implode(" AND ", $whereClauses);
     }
+
+    if ($priceSort === 'low') {
+        $query .= " ORDER BY price ASC";
+    } elseif ($priceSort === 'high') {
+        $query .= " ORDER BY price DESC";
+    }
+
     $stmt = $connection->prepare($query);
-    if (!$stmt) return null;
+    if (!$stmt) return [];
+
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
     $stmt->execute();
     $result = $stmt->get_result();
     $vehicles = $result->fetch_all(MYSQLI_ASSOC);
@@ -93,3 +115,6 @@ function getAllOrders($connection)
     $stmt->close();
     return $orders;
 }
+
+
+/* Display Functions */
