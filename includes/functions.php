@@ -294,6 +294,17 @@ function getPurchasedItemsByUserId($connection, $user_id) {
 
 // Wishlist Functions //
 
+function addToWishlist($connection, $user_id, $vehicle_id) {
+    if (!isset($user_id) || !isset($vehicle_id)) {
+        return false;
+    }
+    $stmt = $connection->prepare("INSERT INTO wishlist_items (user_id, vehicle_id) VALUES (?, ?)");
+    $stmt->bind_param("ii", $user_id, $vehicle_id);
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
+}
+
 
 function getWishlistItemsByUserId($connection, $user_id) {
     if (!isset($user_id)) {
