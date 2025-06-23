@@ -37,7 +37,7 @@ if (!$user || $user['role'] != "admin") {
                 </div>
 
 
-                                <!-- Search section for Orders -->
+                <!-- Search section for Orders -->
                 <div class="mb-8 flex flex-col items-center">
                     <form method="GET" action="" class="w-full max-w-md">
                         <div class="relative">
@@ -69,12 +69,11 @@ if (!$user || $user['role'] != "admin") {
                             type="date"
                             name="date"
                             class="w-1/2 px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value="<?= htmlspecialchars($_GET['date'] ?? '') ?>"
-                        >
+                            value="<?= htmlspecialchars($_GET['date'] ?? '') ?>">
                     </div>
                 </div>
 
-                                <!-- Orders Table -->
+                <!-- Orders Table -->
                 <div class="overflow-x-auto mt-10">
                     <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden">
                         <thead>
@@ -84,11 +83,10 @@ if (!$user || $user['role'] != "admin") {
                                 <th class="px-4 py-2 text-left text-gray-300 font-medium">Order Date</th>
                                 <th class="px-4 py-2 text-left text-gray-300 font-medium">Status</th>
                                 <th class="px-4 py-2 text-left text-gray-300 font-medium">Total Amount</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
+                            <?php
                             $search = $_GET['search'] ?? '';
                             $status = $_GET['status'] ?? '';
                             $date = $_GET['date'] ?? '';
@@ -96,18 +94,27 @@ if (!$user || $user['role'] != "admin") {
                             foreach ($orders as $order):
                                 $user = getUserInfo($connection, $order['user_id']);
                             ?>
-                            <tr class="border-b border-gray-700">
-                                <td class="px-4 py-2 text-gray-100"><?= $order['id']; ?></td>
-                                <td class="px-4 py-2 text-gray-100"><?= $user['fname'] . ' ' . $user['lname']; ?></td>
-                                <td class="px-4 py-2 text-gray-100"><?= $order['orderd_at']; ?></td>
-                                <td class="px-4 py-2">
-                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs"><?= $order['status']; ?></span>
-                                </td>
-                                <td class="px-4 py-2 text-gray-100">$<?= $order['total_price']; ?></td>
-                                <td class="px-4 py-2">
-                                    <a href="#" class="text-blue-400 hover:underline">View Details</a>
-                                </td>
-                            </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="px-4 py-2 text-gray-100"><?= $order['order_id']; ?></td>
+                                    <td class="px-4 py-2 text-gray-100"><?= $user['fname'] . ' ' . $user['lname']; ?></td>
+                                    <td class="px-4 py-2 text-gray-100"><?= $order['orderd_at']; ?></td>
+                                    <td class="px-4 py-2">
+                                        <span class="
+                                    <?php
+                                    if ($order['status'] === 'pending') {
+                                        echo 'bg-yellow-600';
+                                    } else if ($order['status'] === 'shipped') {
+                                        echo 'bg-green-600';
+                                    } else if ($order['status'] === 'delivered') {
+                                        echo 'bg-blue-600';
+                                    } else {
+                                        echo 'bg-gray-600';
+                                    }
+                                    ?>
+                                     text-white px-3 py-1 rounded-full text-xs"><?= $order['status']; ?></span>
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-100">$<?= $order['total_price']; ?></td>
+                                </tr>
                             <?php
                             endforeach;
                             ?>
