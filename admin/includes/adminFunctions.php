@@ -1,6 +1,8 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
 
+/* Account Functions */
+
 function getUserInfo($connection, $user_id)
 {
     $stmt = $connection->prepare("SELECT
@@ -33,3 +35,6 @@ function updateAccount($connection, $user_id, $name, $email, $password, $confirm
     $stmt->execute();
     $stmt->close();
 }
+
+/* Account Functions */
+
