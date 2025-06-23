@@ -41,15 +41,18 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                     <p class="text-center">No Purchases.</p>
                 <?php else : ?>
                     <?php foreach ($purchased_items as $item) :
+                        $order_vehicle = get_vehicle($connection, $item['vehicle_id']);
+                        $order_image = get_vehicle_image($vehicle['id'], $connection);
+
                     ?>
-                        <div class="cart-item-row flex flex-row justify-content-center gap-10 items-center rounded-md bg-gray-400 p-4 w-full" data-price="<?= htmlspecialchars($item['price']) ?>">
+                        <div class="cart-item-row flex flex-row justify-content-center gap-10 items-center rounded-md bg-gray-400 p-4 w-full" ?>">
                             <div class="rounded-sm">
-                                <img src="<?= htmlspecialchars($item['image_path']) ?>" class="img-fluid object-fit-cover aspect-square w-40" alt="<?= htmlspecialchars($item['title']) ?>">
+                                <img src="<?= $order_image ? $order_image : '/Projects/AuraEdition/products/img/default.jpg'?>" class="img-fluid object-fit-cover aspect-square w-40" alt="Product Image">
                             </div>
 
                             <div class="flex flex-col items-center">
                                 <div class="">
-                                    <h5><?= htmlspecialchars($item['title']) ?></h5>
+                                    <h5><?= htmlspecialchars($order_vehicle['title']) ?></h5>
                                 </div>
                                 <div class="mb-2">
                                     <h5>$<?= number_format($item['price']) ?></h5>

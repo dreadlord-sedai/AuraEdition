@@ -273,3 +273,20 @@ function removeFromCart($connection, $cart_item_id) {
     return $success;
 }
 // Cart Functions //
+
+
+function getPurchasedItemsByUserId($connection, $user_id) {
+    if (!isset($user_id)) {
+        return [];
+    }
+    $stmt = $connection->prepare("SELECT id, vehicle_id, quantity, price FROM order_items WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?)");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $purchased_items = [];
+    while ($row = $result->fetch_assoc()) {
+        $purchased_items[] = $row;
+    }
+    $stmt->close();
+    return $purchased_items;
+}
