@@ -334,6 +334,7 @@ function setupCartPageQuantityButtons() {
 /* CART */
 
 
+/* WISHLIST */
 function removeFromWishlist(id) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
@@ -354,3 +355,25 @@ function removeFromWishlist(id) {
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     request.send("id=" + encodeURIComponent(id));
 }
+
+function addToWishlist(vehicleId) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                var response = request.responseText.trim();
+                if (response === "success") {
+                    alert("Vehicle added to wishlist.");
+                } else {
+                    alert("Add to wishlist failed: " + response);
+                }
+            } else {
+                alert("Request failed with status " + request.status);
+            }
+        }
+    }
+    request.open("POST", "/Projects/AuraEdition/process/addToWishlistProcess.php", true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send("vehicle_id=" + encodeURIComponent(vehicleId));
+}
+/* WISHLIST */
