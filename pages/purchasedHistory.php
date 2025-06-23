@@ -80,7 +80,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 </div>
 
                 <div class="flex w-1/2 justify-content-center">
-                    <a href="/Projects/AuraEdition/pages/watchlist.php" class="btn btn-primary w-3/5">WATCHLIST</a>
+                    <a href="/Projects/AuraEdition/pages/wishlist.php" class="btn btn-primary w-3/5">WISHLIST</a>
                 </div>
 
             </div>
