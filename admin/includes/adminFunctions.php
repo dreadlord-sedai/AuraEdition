@@ -82,3 +82,14 @@ function getVehicles($connection, $search, $status, $price)
     return $vehicles;
 }
 
+
+function getAllOrders($connection)
+{
+    $stmt = $connection->prepare("SELECT * FROM orders");
+    if (!$stmt) return null;
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $orders = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $orders;
+}

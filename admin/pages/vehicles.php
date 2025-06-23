@@ -101,7 +101,7 @@ if (!$user || $user['role'] != "admin") {
                                     <td class="px-4 py-2 text-gray-100"><?= $vehicle['id']; ?></td>
                                     <td class="px-4 py-2 text-gray-100"><?= $vehicle['title']; ?></td>
                                     <td class="px-4 py-2">
-                                        <span class= " <? if ($vehicle['status'] === 'INACTIVE') {
+                                        <span class= " <?php if ($vehicle['status'] === 'INACTIVE') {
                                                             echo 'bg-red-600';
                                                         } else if($vehicle['status'] === 'ACTIVE') {
                                                             echo 'bg-green-600';

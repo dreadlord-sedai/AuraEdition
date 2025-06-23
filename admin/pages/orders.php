@@ -33,7 +33,7 @@ if (!$user || $user['role'] != "admin") {
             <!-- Main Content -->
             <div class="p-8 flex flex-col">
                 <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Products</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-light">Orders</h3>
                 </div>
 
 
@@ -88,31 +88,29 @@ if (!$user || $user['role'] != "admin") {
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Example static rows, replace with PHP loop for dynamic data -->
+                            <?php 
+                            $search = $_GET['search'] ?? '';
+                            $status = $_GET['status'] ?? '';
+                            $date = $_GET['date'] ?? '';
+                            $orders = getAllOrders($connection);
+                            foreach ($orders as $order):
+                                $user = getUserInfo($connection, $order['user_id']);
+                            ?>
                             <tr class="border-b border-gray-700">
-                                <td class="px-4 py-2 text-gray-100">#1001</td>
-                                <td class="px-4 py-2 text-gray-100">Ethan Harper</td>
-                                <td class="px-4 py-2 text-gray-100">2024-07-26</td>
+                                <td class="px-4 py-2 text-gray-100"><?= $order['id']; ?></td>
+                                <td class="px-4 py-2 text-gray-100"><?= $user['fname'] . ' ' . $user['lname']; ?></td>
+                                <td class="px-4 py-2 text-gray-100"><?= $order['orderd_at']; ?></td>
                                 <td class="px-4 py-2">
-                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs">Shipped</span>
+                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs"><?= $order['status']; ?></span>
                                 </td>
-                                <td class="px-4 py-2 text-gray-100">$150,000</td>
-                                <td class="px-4 py-2">
-                                    <a href="#" class="text-blue-400 hover:underline">View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-2 text-gray-100">#1002</td>
-                                <td class="px-4 py-2 text-gray-100">Olivia Bennett</td>
-                                <td class="px-4 py-2 text-gray-100">2024-07-25</td>
-                                <td class="px-4 py-2">
-                                    <span class="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs">Processing</span>
-                                </td>
-                                <td class="px-4 py-2 text-gray-100">$200,000</td>
+                                <td class="px-4 py-2 text-gray-100">$<?= $order['total_price']; ?></td>
                                 <td class="px-4 py-2">
                                     <a href="#" class="text-blue-400 hover:underline">View Details</a>
                                 </td>
                             </tr>
+                            <?php
+                            endforeach;
+                            ?>
                         </tbody>
                     </table>
                 </div>
