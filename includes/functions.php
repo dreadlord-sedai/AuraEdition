@@ -298,6 +298,18 @@ function cartExists($connection, $user_id)
     return $result->num_rows > 0;
 }
 
+function createCart($connection, $user_id)
+{
+    if (!isset($user_id)) {
+        return false;
+    }
+    $stmt = $connection->prepare("INSERT INTO carts (user_id) VALUES (?)");
+    $stmt->bind_param("i", $user_id);
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}
+
 
 // Cart Functions //
 
