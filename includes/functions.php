@@ -298,7 +298,8 @@ function getWishlistItemsByUserId($connection, $user_id) {
     if (!isset($user_id)) {
         return [];
     }
-    $stmt = $connection->prepare("SELECT wishlist_item_id, vehicle_id, quantity FROM wishlist_items WHERE wishlist_id IN (SELECT wishlist_id FROM wishlists WHERE user_id = ?)");
+    $stmt = $connection->prepare("SELECT wishlist_item_id, vehicle_id, quantity FROM wishlist_items 
+    WHERE wishlist_id IN (SELECT wishlist_id FROM wishlists WHERE user_id = ?)");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
