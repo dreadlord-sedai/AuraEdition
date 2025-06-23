@@ -311,6 +311,17 @@ function getWishlistItemsByUserId($connection, $user_id) {
     return $wishlist_items;
 }
 
+function removeFromWishlist($connection, $wishlist_item_id) {
+    if (!isset($wishlist_item_id)) {
+        return false;
+    }
+    $stmt = $connection->prepare("DELETE FROM wishlist_items WHERE id = ?");
+    if (!$stmt) return false;
+    $stmt->bind_param("i", $wishlist_item_id);
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}   
 
 
 // Wishlist Functions //
