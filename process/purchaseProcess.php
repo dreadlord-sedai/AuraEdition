@@ -72,9 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $connection->commit();
 
-        // 4. Clear the cart
+        // 4. Clear the  cart
         unset($_SESSION['vehicles']);
         unset($_SESSION['total_price']);
+
+        clearCart($connection, $user_id);
 
         echo "success";
         exit;

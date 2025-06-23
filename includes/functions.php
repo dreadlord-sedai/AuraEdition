@@ -311,6 +311,19 @@ function createCart($connection, $user_id)
 }
 
 
+function clearCart($connection, $user_id)
+{
+    if (!isset($user_id)) {
+        return false;
+    }
+
+    $stmt = $connection->prepare("DELETE FROM cart_items WHERE cart_id IN (SELECT cart_id FROM carts WHERE user_id = ?)");
+    $stmt->bind_param("i", $user_id);
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}
+
 // Cart Functions //
 
 
