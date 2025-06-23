@@ -26,11 +26,11 @@ function get_vehicle_image($vehicle_id, $connection)
     $select_image->bind_param("i", $vehicle_id);
     $select_image->execute();
     $result = $select_image->get_result();
-    
+
     if ($result && $row = $result->fetch_assoc()) {
         return $row['image_path']; // Return the image path
     }
-    
+
     return null; // Return null if no image found
 }
 
@@ -52,7 +52,8 @@ function get_popular_vehicles($connection, $limit = 3)
 }
 
 // Function to fetch all makes and their listing counts
-function getAllMakes(mysqli $connection): array {
+function getAllMakes(mysqli $connection): array
+{
     $sql = "SELECT m.make_id, m.make_name, m.make_image, COUNT(v.id) AS listings_count
             FROM makes m
             LEFT JOIN vehicles v ON m.make_id = v.make_id
@@ -72,7 +73,8 @@ function getAllMakes(mysqli $connection): array {
     return $makes;
 }
 
-function get_all_vehicles($connection) {
+function get_all_vehicles($connection)
+{
     $select_All_listings = $connection->prepare(
         "SELECT id, title, price, description, stock FROM vehicles WHERE status = 'ACTIVE'"
     );
@@ -83,7 +85,8 @@ function get_all_vehicles($connection) {
     return $all_vehicles;
 }
 
-function get_all_recent_vehicles($connection) {
+function get_all_recent_vehicles($connection)
+{
     $select_All_listings = $connection->prepare(
         "SELECT id, title, price, description, stock FROM vehicles WHERE status = 'ACTIVE' ORDER BY created_at DESC LIMIT 3"
     );
@@ -94,7 +97,8 @@ function get_all_recent_vehicles($connection) {
     return $all_vehicles;
 }
 
-function get_vehicle($vehicle_id, $connection) {
+function get_vehicle($vehicle_id, $connection)
+{
     $select_vehicle = $connection->prepare(
         "SELECT id, title, price, description, stock FROM vehicles WHERE id = ? AND status = 'ACTIVE'"
     );
@@ -107,11 +111,12 @@ function get_vehicle($vehicle_id, $connection) {
 }
 
 // Make Functions //
-function getMakeById(mysqli $connection, int $make_id): ?array {
+function getMakeById(mysqli $connection, int $make_id): ?array
+{
     $sql = "SELECT make_id, make_name, make_image 
             FROM makes 
             WHERE make_id = ?";
-    
+
     $stmt = $connection->prepare($sql);
     if ($stmt) {
         $stmt->bind_param("i", $make_id);
@@ -124,7 +129,8 @@ function getMakeById(mysqli $connection, int $make_id): ?array {
     return null;
 }
 
-function getListingsByMake(mysqli $connection, int $make_id): array {
+function getListingsByMake(mysqli $connection, int $make_id): array
+{
     $sql = "SELECT v.id as listing_id, 
                    v.title, 
                    v.price,
@@ -134,10 +140,10 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
             WHERE v.make_id = ? AND v.status = 'ACTIVE'
             GROUP BY v.id, v.title, v.price
             ORDER BY v.created_at DESC;";
-    
+
     $stmt = $connection->prepare($sql);
     $listings = [];
-    
+
     if ($stmt) {
         $stmt->bind_param("i", $make_id);
         $stmt->execute();
@@ -147,7 +153,7 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
         }
         $stmt->close();
     }
-    
+
     return $listings;
 }
 // Make Functions //
@@ -155,7 +161,8 @@ function getListingsByMake(mysqli $connection, int $make_id): array {
 
 // Order Functions //
 
-function fetchOrdersByUserId($connection, $user_id) {
+function fetchOrdersByUserId($connection, $user_id)
+{
     if (!isset($user_id)) {
         header("Location: /Projects/AuraEdition/auth/login.php");
         exit;
@@ -187,7 +194,8 @@ function fetchOrdersByUserId($connection, $user_id) {
     return ['order' => $order, 'order_items' => $order_items];
 }
 
-function fetchUserById($connection, $user_id) {
+function fetchUserById($connection, $user_id)
+{
     $stmt = $connection->prepare("SELECT id, fname, email, address, city, state, zip, phone FROM users WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -198,7 +206,8 @@ function fetchUserById($connection, $user_id) {
 }
 
 
-function getOrderItemsByOrderId($connection, $order_id) {
+function getOrderItemsByOrderId($connection, $order_id)
+{
     $stmt = $connection->prepare("SELECT id, vehicle_id, price FROM order_items WHERE order_id = ?");
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
@@ -217,7 +226,8 @@ function getOrderItemsByOrderId($connection, $order_id) {
 
 // Cart Functions //
 
-function addToCart($connection, $user_id, $vehicle_id, $quantity = 1) {
+function addToCart($connection, $user_id, $vehicle_id, $quantity = 1)
+{
     if (!isset($user_id) || !isset($vehicle_id)) {
         return false;
     }
@@ -230,7 +240,8 @@ function addToCart($connection, $user_id, $vehicle_id, $quantity = 1) {
 }
 
 
-function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
+function getCartItemsByUserId(mysqli $connection, ?int $user_id): array
+{
     if (!isset($user_id)) {
         return []; // Return an empty array if user is not logged in.
     }
@@ -261,7 +272,8 @@ function getCartItemsByUserId(mysqli $connection, ?int $user_id): array {
     return $cart_items;
 }
 
-function removeFromCart($connection, $cart_item_id) {
+function removeFromCart($connection, $cart_item_id)
+{
     if (!isset($cart_item_id)) {
         return false;
     }
@@ -272,10 +284,26 @@ function removeFromCart($connection, $cart_item_id) {
     $stmt->close();
     return $success;
 }
+
+function cartExists($connection, $user_id)
+{
+    if (!isset($user_id)) {
+        return false;
+    }
+    $stmt = $connection->prepare("SELECT cart_id FROM carts WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result->num_rows > 0;
+}
+
+
 // Cart Functions //
 
 
-function getPurchasedItemsByUserId($connection, $user_id) {
+function getPurchasedItemsByUserId($connection, $user_id)
+{
     if (!isset($user_id)) {
         return [];
     }
@@ -294,7 +322,8 @@ function getPurchasedItemsByUserId($connection, $user_id) {
 
 // Wishlist Functions //
 
-function addToWishlist($connection, $user_id, $vehicle_id) {
+function addToWishlist($connection, $user_id, $vehicle_id)
+{
     if (!isset($user_id) || !isset($vehicle_id)) {
         return false;
     }
@@ -306,7 +335,8 @@ function addToWishlist($connection, $user_id, $vehicle_id) {
 }
 
 
-function getWishlistItemsByUserId($connection, $user_id) {
+function getWishlistItemsByUserId($connection, $user_id)
+{
     if (!isset($user_id)) {
         return [];
     }
@@ -322,7 +352,8 @@ function getWishlistItemsByUserId($connection, $user_id) {
     return $wishlist_items;
 }
 
-function removeFromWishlist($connection, $wishlist_item_id) {
+function removeFromWishlist($connection, $wishlist_item_id)
+{
     if (!isset($wishlist_item_id)) {
         return false;
     }

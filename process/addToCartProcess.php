@@ -12,12 +12,16 @@ if (isset($_POST['vehicle_id'])) {
         exit;
     }
 
-    $user_id = $_SESSION['user_id'];
 
-    if (addToCart($connection, $user_id, $vehicle_id)) {
-        echo "success";
+    if (cartExists($connection, $_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+
+        if (addToCart($connection, $user_id, $vehicle_id)) {
+            echo "success";
+        } else {
+            echo "Error: Failed to add vehicle to cart.";
+        }
     } else {
-        echo "Error: Failed to add vehicle to cart.";
+        createCart($connection, $_SESSION['user_id']);
     }
 }
-?>
