@@ -13,7 +13,7 @@ if (isset($_POST['vehicle_id'])) {
     }
 
 
-    if (cartExists($connection, $_SESSION['user_id'])) {
+    if (cartExists($connection, $_SESSION['user_id']) === true) {
         $user_id = $_SESSION['user_id'];
 
         if (addToCart($connection, $user_id, $vehicle_id)) {

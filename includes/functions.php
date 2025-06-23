@@ -307,7 +307,7 @@ function createCart($connection, $user_id)
     $stmt->bind_param("i", $user_id);
     $success = $stmt->execute();
     $stmt->close();
-    return $success;
+    return true;
 }
 
 
