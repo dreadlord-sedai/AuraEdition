@@ -33,9 +33,9 @@ if (!$user || $user['role'] != "admin") {
             <!-- Main Content -->
             <div class="p-8 flex flex-col">
                 <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Products</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-light">Vehicles</h3>
                     <button><a href="/Projects/AuraEdition/admin/pages/addProduct.php"
-                            class="btn btn-primary">Add Product</a></button>
+                            class="btn btn-primary">Add Vehicle</a></button>
                 </div>
 
 
@@ -48,7 +48,7 @@ if (!$user || $user['role'] != "admin") {
                                 type="text"
                                 name="search"
                                 class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Search products..."
+                                placeholder="Search vehicles..."
                                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
                             <span class="absolute left-3 top-2.5 text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -90,7 +90,7 @@ if (!$user || $user['role'] != "admin") {
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Example static rows, replace with PHP loop for dynamic data -->
+                            
                             <tr class="border-b border-gray-700">
                                 <td class="px-4 py-2 text-gray-100">1</td>
                                 <td class="px-4 py-2 text-gray-100">Product A</td>

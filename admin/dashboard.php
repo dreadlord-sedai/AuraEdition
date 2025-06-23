@@ -91,6 +91,7 @@ if (!$user || $user['role'] != "admin") {
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Order ID</th>
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Customer</th>
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Date</th>
+                                    <th class="px-4 py-2 text-left text-gray-300 font-medium">Status</th>
                                     <th class="px-4 py-2 text-left text-gray-300 font-medium">Total</th>
                                 </tr>
                             </thead>
@@ -105,6 +106,7 @@ if (!$user || $user['role'] != "admin") {
                                             <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($order['order_id']); ?></td>
                                             <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($user['email']); ?></td>
                                             <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($order['orderd_at']); ?></td>
+                                            <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($order['status']); ?></td>
                                             <td class="px-4 py-2 text-gray-100"><?= htmlspecialchars($order['total_price']); ?></td>
                                         </tr>
                                 <?php endforeach;
