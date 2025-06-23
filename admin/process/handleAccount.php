@@ -3,7 +3,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php'
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php'; 
 
 if (isset($_POST['update_account'])) {
-    $name = $_POST['name'];
+    $fname = $_POST['name'];
+    $fname = $_POST['lname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
