@@ -36,23 +36,45 @@ if (!$user || $user['role'] != "admin") {
                 <!--Analytics-->
                 <div class="flex flex-row justify-content-center gap-5 align-items-center">
                     <div class=" flex flex-col card-1 bg-gray-400 px-5 py-3 rounded-lg text-start">
-                        <p>Total products</p>
+                        <p>Total Listings</p>
                         <b>
-                            <p>150</p>
+
+                            <p>
+                                <?php
+                                $sql = "SELECT COUNT(*) as total_listings FROM vehicles";
+                                $result = $connection->query($sql);
+                                $row = $result->fetch_assoc();
+                                echo $row['total_listings'];
+                                ?>
+                            </p>
                         </b>
                     </div>
 
                     <div class="card-1 bg-gray-400 px-5 py-3 rounded-lg justify-content-center align-items-center">
-                        <p>Total products</p>
+                        <p>Total orders</p>
                         <b>
-                            <p>150</p>
+                            <p>
+                                <?php
+                                $sql = "SELECT COUNT(*) as total_orders FROM orders";
+                                $result = $connection->query($sql);
+                                $row = $result->fetch_assoc();
+                                echo $row['total_orders'];
+                                ?>
+                            </p>
                         </b>
                     </div>
 
                     <div class="card-1 bg-gray-400 px-5 py-3 rounded-lg justify-content-center align-items-center">
-                        <p>Total products</p>
+                        <p>Total Users</p>
                         <b>
-                            <p>150</p>
+                            <p>
+                                <?php
+                                $sql = "SELECT COUNT(*) as total_users FROM users";
+                                $result = $connection->query($sql);
+                                $row = $result->fetch_assoc();
+                                echo $row['total_users'];
+                                ?>
+                            </p>
                         </b>
                     </div>
                 </div>
