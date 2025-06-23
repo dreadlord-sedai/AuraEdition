@@ -36,12 +36,11 @@ function updateAccount($connection, $user_id, $fname, $lname, $email, $confirm_p
     $stmt->close();
 }
 
-function updateAddress($connection, $user_id, $fname, $lname, $email, $confirm_password)
+function updateAddress($connection, $user_id, $address, $city, $state, $zip)
 {
-    $hashedPassword = password_hash($confirm_password, PASSWORD_DEFAULT);
-    $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, hashed_password = ? WHERE id = ?");
+    $stmt = $connection->prepare("UPDATE user_addresses SET address = ?, city = ?, state = ?, zip = ? WHERE address_user_id = ?");
     if (!$stmt) return null;
-    $stmt->bind_param("ssssi", $fname, $lname, $email, $hashedPassword, $user_id);
+    $stmt->bind_param("ssssi", $address, $city, $state, $zip, $user_id);
     $stmt->execute();
     $stmt->close();
 }
