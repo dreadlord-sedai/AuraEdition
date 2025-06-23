@@ -290,3 +290,26 @@ function getPurchasedItemsByUserId($connection, $user_id) {
     $stmt->close();
     return $purchased_items;
 }
+
+// Wishlist Functions //
+
+
+function getWishlistItemsByUserId($connection, $user_id) {
+    if (!isset($user_id)) {
+        return [];
+    }
+    $stmt = $connection->prepare("SELECT wishlist_item_id, vehicle_id, quantity FROM wishlist_items WHERE wishlist_id IN (SELECT wishlist_id FROM wishlists WHERE user_id = ?)");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $wishlist_items = [];
+    while ($row = $result->fetch_assoc()) {
+        $wishlist_items[] = $row;
+    }
+    $stmt->close();
+    return $wishlist_items;
+}
+
+
+
+// Wishlist Functions //

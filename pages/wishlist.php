@@ -26,19 +26,19 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
     <div class="container-md my-5 main-content">
         <div class="flex flex-col justify-content-center align-items-center gap-10">
 
-            <!-- Cart Card -->
+            <!-- Main Card -->
             <div class=" cart-container flex flex-col w-75 flex-grow gap-3 justify-content-center rounded-lg align-items-center bg-gray-200 p-5">
-                <h4>Cart</h4>
+                <h4>Wishlist</h4>
 
-                <!-- Cart Card -->
+                <!-- Item Card -->
 
                 <?php
                 $user_id = $_SESSION['user_id'] ?? null;
-                $cart_items = getWishlistItemsByUserId($connection, $user_id);
+                $wishlist_items = getWishlistItemsByUserId($connection, $user_id);
 
-                if (empty($cart_items)) :
+                if (empty($wishlist_items)) :
                 ?>
-                    <p class="text-center">Your cart is empty.</p>
+                    <p class="text-center">Your wishlist is empty.</p>
                 <?php else : ?>
                     <?php foreach ($cart_items as $item) :
                         // Calculate the total price. The price and quantity come directly from the joined query.
@@ -61,16 +61,16 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
                             <div class="flex flex-col items-center gap-2">
                                 <button class="btn btn-outline-success" onclick="addToCart(<?= $vehicle['id'] ?>)"
-                                 data-id="<?= $item['vehicle_id'] ?>">Add to Cart</button>
+                                    data-id="<?= $item['vehicle_id'] ?>">Add to Cart</button>
                                 <button class="btn btn-outline-danger" onclick="removeFromWishlist(<?= $item['cart_item_id'] ?>)"
-                                 data-id="<?= $item['cart_item_id'] ?>">Remove</button>
+                                    data-id="<?= $item['cart_item_id'] ?>">Remove</button>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
-
+                <!-- Item Card -->
             </div>
-            <!-- Cart Card -->
+            <!-- Main Card -->
 
             <!-- Buttons -->
             <div class="flex flex-row gap-3 w-full justify-content-evenly p-5 my-4 border-y-1 border-gray-400 ">
