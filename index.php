@@ -129,9 +129,12 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
             <?php foreach ($featured_vehicles as $vehicle): ?>
                 <div class="col-12 col-sm-6 col-md-4 mb-4">
                     <div class="card">
-                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                        <!-- Wishlist Button -->
+                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm"
+                        onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
                             <i class="bi bi-heart mt-1"></i>
                         </button>
+                        <!-- Wishlist Button -->
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
                             <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>
@@ -167,9 +170,12 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
             <?php foreach ($popular_vehicles as $vehicle): ?>
                 <div class="col-12 col-sm-6 col-md-4 mb-4">
                     <div class="card">
-                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                        <!-- Wishlist Button -->
+                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm"
+                        onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
                             <i class="bi bi-heart mt-1"></i>
                         </button>
+                        <!-- Wishlist Button -->
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
                             <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>

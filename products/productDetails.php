@@ -145,7 +145,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 <?php foreach ($recent_vehicles as $vehicle): ?>
                     <div class="col-12 col-sm-6 col-md-4 mb-4">
                         <div class="card">
-                            <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
+                            <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm"
+                            onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
                                 <i class="bi bi-heart mt-1"></i>
                             </button>
                             <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
