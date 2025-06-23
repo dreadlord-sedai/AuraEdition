@@ -60,3 +60,25 @@ function getRecentOrders($connection)
     return $orders;
 }
 
+function getVehicles($connection, $search, $status, $price)
+{
+    $query = "SELECT * FROM vehicles";  
+
+    if ($search) {
+        $query .= " WHERE title LIKE '%$search%'";
+    }
+    if ($status) {
+        $query .= " WHERE status = '$status'";
+    }
+    if ($price) {
+        $query .= " WHERE price = '$price'";
+    }
+    $stmt = $connection->prepare($query);
+    if (!$stmt) return null;
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $vehicles = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $vehicles;
+}
+

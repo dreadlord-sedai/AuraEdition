@@ -90,33 +90,34 @@ if (!$user || $user['role'] != "admin") {
                             </tr>
                         </thead>
                         <tbody>
-                            
-                            <tr class="border-b border-gray-700">
-                                <td class="px-4 py-2 text-gray-100">1</td>
-                                <td class="px-4 py-2 text-gray-100">Product A</td>
-                                <td class="px-4 py-2">
-                                    <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs">Active</span>
-                                </td>
-                                <td class="px-4 py-2 text-gray-100">$100</td>
-                                <td class="px-4 py-2 text-gray-100">50</td>
-                                <td class="px-4 py-2">
-                                    <a href="#" class="text-blue-400 hover:underline mr-2">Edit</a>
-                                    <a href="#" class="text-red-400 hover:underline">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-2 text-gray-100">2</td>
-                                <td class="px-4 py-2 text-gray-100">Product B</td>
-                                <td class="px-4 py-2">
-                                    <span class="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs">Inactive</span>
-                                </td>
-                                <td class="px-4 py-2 text-gray-100">$200</td>
-                                <td class="px-4 py-2 text-gray-100">20</td>
-                                <td class="px-4 py-2">
-                                    <a href="#" class="text-blue-400 hover:underline mr-2">Edit</a>
-                                    <a href="#" class="text-red-400 hover:underline">Delete</a>
-                                </td>
-                            </tr>
+                            <?php
+                            $search = $_GET['search'] ?? '';
+                            $status = $_GET['status'] ?? '';
+                            $price = $_GET['price'] ?? '';
+                            $vehicles = getVehicles($connection, $search, $status, $price);
+                            foreach ($vehicles as $vehicle):
+                            ?>
+                                <tr class="border-b border-gray-700">
+                                    <td class="px-4 py-2 text-gray-100"><?= $vehicle['id']; ?></td>
+                                    <td class="px-4 py-2 text-gray-100"><?= $vehicle['title']; ?></td>
+                                    <td class="px-4 py-2">
+                                        <span class= " <? if ($vehicle['status'] === 'INACTIVE') {
+                                                            echo 'bg-red-600';
+                                                        } else if($vehicle['status'] === 'ACTIVE') {
+                                                            echo 'bg-green-600';
+                                                        } ?>
+                                     text-white px-3 py-1 rounded-full text-xs"><?= $vehicle['status']; ?></span>
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-100">$<?= $vehicle['price']; ?></td>
+                                    <td class="px-4 py-2 text-gray-100"><?= $vehicle['stock']; ?></td>
+                                    <td class="px-4 py-2">
+                                        <a href="#" class="text-blue-400 hover:underline mr-2">Edit</a>
+                                        <a href="#" class="text-red-400 hover:underline">Delete</a>
+                                    </td>
+                                </tr>
+                            <?php
+                            endforeach;
+                            ?>
                         </tbody>
                     </table>
                 </div>
