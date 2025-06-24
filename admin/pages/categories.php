@@ -39,46 +39,65 @@ if (!$user || $user['role'] != "admin") {
                 <!-- Makes Section -->
 
                 <div>
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col gap-3 justify-content-center items-center mb-4">
                         <h4 class="text-2xl font-semibold mb-2 text-light">Vehicle Makes</h4>
-                    <a href="/Projects/AuraEdition/admin/pages/addMake.php" class="btn btn-primary">Add Make</a>
-                </div>
-                 
-                <div class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
-                    <table class="w-full text-left text-gray-300">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-2">Make ID</th>
-                                <th class="px-4 py-2">Make Name</th>
-                                <th class="px-4 py-2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $makes = getAllMakes($connection);
-                            foreach ($makes as $make) {
-                                echo "<tr>";
-                                echo "<td class='px-4 py-2'>" . htmlspecialchars($make['make_id']) . "</td>";
-                                echo "<td class='px-4 py-2'>" . htmlspecialchars($make['make_name']) . "</td>";
-                                echo "<td class='px-4 py-2'>
-                                        <a href='/Projects/AuraEdition/admin/pages/editMake.php?id=" . htmlspecialchars($make['make_id']) . "' class='text-blue-500 hover:underline'>Edit</a> |
-                                        <a href='/Projects/AuraEdition/admin/process/deleteMakeProcess.php?id=" . htmlspecialchars($make['make_id']) . "' class='text-red-500 hover:underline'>Delete</a>
-                                      </td>";
-                                echo "</tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
+                        <!-- Add Make Form -->
+                        <!-- Todo: Add Make Image Form -->
+                        <form method="POST" class="mb-4 flex gap-2">
+                            <input type="text" name="make_name" placeholder="New Make Name" required class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
+                            <button type="submit" name="add_make" onclick="addMake(this)" class="btn btn-primary">Add Make</button>
+                        </form>
 
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
+                        <table class="w-full text-left text-gray-300">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">Make ID</th>
+                                    <th class="px-4 py-2">Make Name</th>
+                                    <th class="px-4 py-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $makes = getAllMakes($connection);
+                                foreach ($makes as $make):
+                                ?>
+                                    <tr>
+                                        <td class='px-4 py-2'><?= htmlspecialchars($make['make_id']) ?></td>
+                                        <td class='px-4 py-2'><?= htmlspecialchars($make['make_name']) ?></td>
+                                        <td class='px-4 py-2'>
+                                            <a href='/Projects/AuraEdition/admin/pages/editMake.php?id=<?= htmlspecialchars($make['make_id']) ?>' class='text-blue-500 hover:underline'>Edit</a> |
+                                            <a onclick="deleteMake(<?= $make['make_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php
+                                endforeach;
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- Makes Section -->
 
                 <!-- Models Section -->
                 <div class="mt-10">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col gap-3 justify-content-center items-center mb-4">
                         <h4 class="text-2xl font-semibold mb-2 text-light">Vehicle Models</h4>
-                        <a href="/Projects/AuraEdition/admin/pages/addModel.php" class="btn btn-primary">Add Model</a>
+
+                        <!-- Add Model Form -->
+                        <form method="POST" class="mb-4 flex gap-2">
+                            <input type="text" name="model_name" placeholder="New Model Name" required class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
+                            <select name="make_id" required class="form-select px-2 py-1 rounded">
+                                <option value="">Select Make</option>
+                                <?php foreach ($makes as $make): ?>
+                                    <option value="<?= htmlspecialchars($make['make_id']) ?>"><?= htmlspecialchars($make['make_name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="submit" name="add_model" class="btn btn-primary">Add Model</button>
+                        </form>
+
                     </div>
 
                     <div class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
@@ -94,17 +113,19 @@ if (!$user || $user['role'] != "admin") {
                             <tbody>
                                 <?php
                                 $models = getAllModels($connection);
-                                foreach ($models as $model) {
-                                    echo "<tr>";
-                                    echo "<td class='px-4 py-2'>" . htmlspecialchars($model['model_id']) . "</td>";
-                                    echo "<td class='px-4 py-2'>" . htmlspecialchars($model['model_name']) . "</td>";
-                                    echo "<td class='px-4 py-2'>" . htmlspecialchars($model['make_name']) . "</td>";
-                                    echo "<td class='px-4 py-2'>
-                                            <a href='/Projects/AuraEdition/admin/pages/editModel.php?id=" . htmlspecialchars($model['model_id']) . "' class='text-blue-500 hover:underline'>Edit</a> |
-                                            <a href='/Projects/AuraEdition/admin/process/deleteModelProcess.php?id=" . htmlspecialchars($model['model_id']) . "' class='text-red-500 hover:underline'>Delete</a>
-                                          </td>";
-                                    echo "</tr>";
-                                }
+                                foreach ($models as $model):
+                                ?>
+                                    <tr>
+                                        <td class='px-4 py-2'><?= htmlspecialchars($model['model_id']) ?></td>
+                                        <td class='px-4 py-2'><?= htmlspecialchars($model['model_name']) ?></td>
+                                        <td class='px-4 py-2'><?= htmlspecialchars($model['make_name']) ?></td>
+                                        <td class='px-4 py-2'>
+                                            <a href='/Projects/AuraEdition/admin/pages/editModel.php?id=<?= htmlspecialchars($model['model_id']) ?>' class='text-blue-500 hover:underline'>Edit</a> |
+                                            <a onclick="deleteModel(<?= $model['model_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php
+                                endforeach;
                                 ?>
                             </tbody>
                         </table>
@@ -112,10 +133,10 @@ if (!$user || $user['role'] != "admin") {
 
 
 
+                </div>
+                <!-- Main Content -->
+
             </div>
-            <!-- Main Content -->
-
         </div>
-    </div>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
