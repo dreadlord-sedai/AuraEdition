@@ -83,7 +83,8 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Vehicle Description -->
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                        <textarea name="description" id="description" rows="4" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"></textarea>
+                        <textarea name="description" id="description" rows="4" required placeholder="Enter product description"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"></textarea>
                     </div>
 
                     <!-- Product Price -->
@@ -95,27 +96,29 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Product Stock -->
                     <div class="mb-4">
                         <label for="stock" class="block text-sm font-medium text-gray-300 mb-1">Stock Quantity</label>
-                        <input type="number" name="stock" id="stock" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                        <input type="number" name="stock" id="stock" required placeholder="Enter stock quantity"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Product Status -->
                     <div class="mb-4">
                         <label for="product_status" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
                         <select name="product_status" id="product_status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="ACTIVE">Active</option>
+                            <option value="INACTIVE">Inactive</option>
                         </select>
                     </div>
 
                     <!-- Product Image -->
                     <div class="mb-6">
                         <label for="image" class="block text-sm font-medium text-gray-300 mb-1">Product Image</label>
-                        <input type="file" name="image" id="image" accept="image/*" class="w-full text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 border border-gray-600">
+                        <input type="file" name="image" id="image" accept="image/*" 
+                        class="w-full text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 border border-gray-600">
                     </div>
 
                     <!-- Submit Button -->
                     <div class="flex justify-end">
-                        <button type="submit" class="btn btn-primary px-6 py-2">Add Vehicle Product</button>
+                        <button type="submit" name="add_product" value="add_product" class="btn btn-primary px-6 py-2">Add Vehicle Product</button>
                     </div>
                 </form>
                 <!--End Add Vehicle Product Form-->
