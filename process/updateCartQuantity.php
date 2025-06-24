@@ -40,13 +40,31 @@ $cart_id = $cart['cart_id'];
 $connection->begin_transaction();
 
 try {
+    // Get the max stock for this cart item
+    $stock_stmt = $connection->prepare("SELECT p.stock FROM cart_items ci JOIN vehicles p ON ci.vehicle_id = p.id WHERE ci.cart_id = ? AND ci.cart_item_id = ?");
+    $stock_stmt->bind_param("ii", $cart_id, $cart_item_id);
+    $stock_stmt->execute();
+    $stock_result = $stock_stmt->get_result();
+    $stock_row = $stock_result->fetch_assoc();
+    $stock_stmt->close();
+    $max_stock = $stock_row['stock'] ?? 1;
+
     if ($action === 'increment') {
-        $stmt = $connection->prepare("UPDATE cart_items SET quantity = quantity + 1 WHERE cart_id = ? AND cart_item_id = ?");
-        $stmt->bind_param("ii", $cart_id, $cart_item_id);
-        $stmt->execute();
+        // Only increment if current quantity is less than stock
+        $qty_stmt = $connection->prepare("SELECT quantity FROM cart_items WHERE cart_id = ? AND cart_item_id = ?");
+        $qty_stmt->bind_param("ii", $cart_id, $cart_item_id);
+        $qty_stmt->execute();
+        $qty_result = $qty_stmt->get_result();
+        $qty_row = $qty_result->fetch_assoc();
+        $qty_stmt->close();
+        $current_qty = $qty_row['quantity'] ?? 1;
+        if ($current_qty < $max_stock) {
+            $stmt = $connection->prepare("UPDATE cart_items SET quantity = quantity + 1 WHERE cart_id = ? AND cart_item_id = ?");
+            $stmt->bind_param("ii", $cart_id, $cart_item_id);
+            $stmt->execute();
+        }
     } elseif ($action === 'decrement') {
         // To prevent quantity from going below 1, we only update if it's greater than 1.
-        // The "Remove" button should be used to delete the item.
         $stmt = $connection->prepare("UPDATE cart_items SET quantity = GREATEST(1, quantity - 1) WHERE cart_id = ? AND cart_item_id = ?");
         $stmt->bind_param("ii", $cart_id, $cart_item_id);
         $stmt->execute();
