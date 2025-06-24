@@ -159,11 +159,10 @@ function uploadProductImage($file, $product_id, $connection) {
             $newFileName = uniqid('product_' . $product_id . '_', true) . '.' . $fileExtension;
             $dest_path = $_SERVER['DOCUMENT_ROOT'] . $uploadFileDir . $newFileName;
             if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                // Update the image path in the database (vehicles table assumed)
                 $imagePath = $uploadFileDir . $newFileName;
                 $stmt = $connection->prepare("INSERT INTO vehicle_images (image_vehicle_id, image_path) VALUES (?, ?)");
                 if ($stmt) {
-                    $stmt->bind_param("si", $imagePath, $product_id);
+                    $stmt->bind_param("is", $product_id, $imagePath);
                     $stmt->execute();
                     $stmt->close();
                 }
