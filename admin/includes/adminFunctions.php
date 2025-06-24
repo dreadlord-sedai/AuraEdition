@@ -212,5 +212,14 @@ function handleProductImageUpload($file, $product_id, $connection) {
     }
     return false; // Failure
 }
+
+function addProduct($connection, $title, $description, $price, $stock, $make, $model)
+{
+    $stmt = $connection->prepare("INSERT INTO vehicles (title, description, price, stock, make_id, model_id) VALUES (?, ?, ?, ?, ?, ?)");
+    if (!$stmt) return null;
+    $stmt->bind_param("ssdiii", $title, $description, $price, $stock, $make, $model);
+    $stmt->execute();
+    $stmt->close();
+}
 /* Product Functions */
 

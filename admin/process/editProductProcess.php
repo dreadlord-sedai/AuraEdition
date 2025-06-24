@@ -11,7 +11,6 @@ if (!$user || $user['role'] != "admin") {
 }
 
 if (isset($_POST['update_product'])) {
-    // Todo: Correct column names
     $product_id = $_POST['product_id'];
     $title = $_POST['title'];
     $description = $_POST['description'];
