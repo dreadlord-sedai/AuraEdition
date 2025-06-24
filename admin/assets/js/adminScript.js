@@ -35,3 +35,25 @@ if (makeSelect && modelSelect) {
             });
     });
 }
+
+
+//DELETE PRODUCT
+function deleteProduct(productId) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        var request = new XMLHttpRequest();
+        request.open('POST', '/Projects/AuraEdition/admin/process/deleteProduct.php', true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        request.send('id=' + encodeURIComponent(productId));
+        request.onreadystatechange = function () {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                if (request.status === 200) {
+                    alert('Product deleted successfully.');
+                    window.location.reload(); // Reload the page to reflect changes
+                } else {
+                    alert('Error deleting product: ' + request.responseText);
+                }
+            }
+        };
+        
+    }
+}
