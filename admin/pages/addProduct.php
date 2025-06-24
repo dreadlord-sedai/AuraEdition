@@ -45,31 +45,38 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Product Title -->
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Product Title</label>
-                        <input type="text" name="title" id="title" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                        <input type="text" name="title" id="title" required placeholder="Enter product title"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Vehicle Make -->
                     <div class="mb-4">
                         <label for="make" class="block text-sm font-medium text-gray-300 mb-1">Make</label>
-                        <select name="make" id="make" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
-                            <option value="">-- Select Make --</option>
-                            <option value="Toyota">Toyota</option>
-                            <option value="Honda">Honda</option>
-                            <option value="Ford">Ford</option>
-                            <option value="BMW">BMW</option>
-                            <!-- Add more makes as needed, or populate dynamically -->
+                        <select name="make" id="make" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
+                        focus:ring-blue-500 border border-gray-600">
+                            
+                                <option>Select Make</option>
+                                <?php
+                                $makes = getAllMakes($connection);
+
+                                // Loop through makes and create options
+                                foreach ($makes as $m):
+                                ?>
+                                    <option value="<?= htmlspecialchars($m['make_id']) ?>"><?= htmlspecialchars($m['make_name']) ?></option>
+                                <?php
+                                endforeach;
+                                ?>
+                            
                         </select>
                     </div>
 
                     <!-- Vehicle Model -->
                     <div class="mb-4">
                         <label for="model" class="block text-sm font-medium text-gray-300 mb-1">Model</label>
-                        <select name="model" id="model" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
-                            <option value="">-- Select Model --</option>
-                            <option value="Camry">Camry (Toyota)</option>
-                            <option value="Civic">Civic (Honda)</option>
-                            <option value="F-150">F-150 (Ford)</option>
-                            <!-- Add more models as needed, ideally populated based on selected make -->
+                        <select name="model" id="model" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
+                        focus:ring-blue-500 border border-gray-600">
+                            <option>Select Model</option>
+                            <!-- Models will be loaded dynamically by JavaScript -->
                         </select>
                     </div>
 
