@@ -112,7 +112,7 @@ if (!$user || $user['role'] != "admin") {
                                     <td class="px-4 py-2 text-gray-100"><?= $vehicle['stock']; ?></td>
                                     <td class="px-4 py-2">
                                         <a href="/Projects/AuraEdition/admin/pages/EditProduct.php?id=<?= $vehicle['id'] ?>" class="text-blue-400 hover:underline mr-2">Edit</a>
-                                        <a onclick="deleteProduct(<?= $vehicle['id'] ?>); return false;" class="text-red-400 hover:underline">Delete</a>
+                                        <a href="javascript:void(0)" onclick="deleteProduct(<?= $vehicle['id'] ?>); return false;" class="text-red-400 hover:underline">Delete</a>
                                     </td>
                                 </tr>
                             <?php

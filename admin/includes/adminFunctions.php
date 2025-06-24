@@ -248,6 +248,24 @@ function updateProductImage($file, $product_id, $connection) {
     return false; // Failure
 }
 
+function deleteProduct($connection, $product_id)
+{
+    $stmt = $connection->prepare("DELETE FROM vehicles WHERE id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function deleteProductImage($connection, $product_id)
+{
+    $stmt = $connection->prepare("DELETE FROM vehicle_images WHERE image_vehicle_id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
 
 /* Product Functions */
 
