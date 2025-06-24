@@ -14,6 +14,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Fetch max stock from DB
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+    $stock_stmt = $connection->prepare("SELECT stock FROM vehicles WHERE id = ?");
+    $stock_stmt->bind_param("i", $vehicle_id);
+    $stock_stmt->execute();
+    $stock_result = $stock_stmt->get_result();
+    $stock_row = $stock_result->fetch_assoc();
+    $stock_stmt->close();
+    $max_stock = $stock_row['stock'] ?? 1;
+    if ($quantity > $max_stock) {
+        $quantity = $max_stock;
+    }
+
     if (!isset($_SESSION['vehicles'])) {
         echo "Error: No vehicles in session";
         exit;
