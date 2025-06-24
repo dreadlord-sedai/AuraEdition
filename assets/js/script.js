@@ -270,7 +270,11 @@ function removeFromCart(id) {
     request.send("id=" + encodeURIComponent(id));
 }
 
-function addToCart(vehicleId) {
+function addToCart(vehicleId, quantity) {
+    // Default quantity to 1 if not provided or invalid
+    if (!quantity || isNaN(quantity) || quantity < 1) {
+        quantity = 1;
+    }
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
@@ -288,7 +292,7 @@ function addToCart(vehicleId) {
     }
     request.open("POST", "/Projects/AuraEdition/process/addToCartProcess.php", true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.send("vehicle_id=" + encodeURIComponent(vehicleId));
+    request.send("vehicle_id=" + encodeURIComponent(vehicleId) + "&quantity=" + encodeURIComponent(quantity));
 }
 
 function setupCartPageQuantityButtons() {
