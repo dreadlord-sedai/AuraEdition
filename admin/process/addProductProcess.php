@@ -21,13 +21,18 @@ if (isset($_POST['update_product'])) {
     // Validate inputs
     if (empty($title) || empty($description) || empty($price) || empty($stock) || empty($make) || empty($model)) {
         $_SESSION['error'] = "All fields are required.";
-        header("Location: /Projects/AuraEdition/admin/pages/editProduct.php?product_id=" . $product_id);
+        header("Location: /Projects/AuraEdition/admin/pages/addProduct.php");
         exit;
     }
 
     addProduct($connection,  $title, $description, $price, $stock, $make, $model);
 }
 
+//get the last inserted product ID
+$product_id = $connection->insert_id;
+
 handleProductImageUpload($_FILES['image'], $product_id, $connection);
+header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
+$_SESSION['success'] = "Product added successfully.";
 
 exit;
