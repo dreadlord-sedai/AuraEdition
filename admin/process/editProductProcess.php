@@ -16,10 +16,18 @@ if (isset($_POST['update_product'])) {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $price = $_POST['price'];
-    $quantity = $_POST['quantity'];
-    $category = $_POST['category'];
+    $stock = $_POST['stock'];
+    $make = $_POST['make'];
+    $model = $_POST['model'];
 
-    updateProduct($connection, $product_id, $title, $description, $price, $quantity, $category);
+    // Validate inputs
+    if (empty($title) || empty($description) || empty($price) || empty($stock) || empty($make) || empty($model)) {
+        $_SESSION['error'] = "All fields are required.";
+        header("Location: /Projects/AuraEdition/admin/pages/editProduct.php?product_id=" . $product_id);
+        exit;
+    }
+
+    updateProduct($connection, $product_id, $title, $description, $price, $stock, $make, $model);
 }
 
 $imageFileName = handleProductImageUpload($_FILES['image']);

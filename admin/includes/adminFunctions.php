@@ -137,15 +137,6 @@ function getAllOrders($connection)
 
 
 /* Product Functions */
-function updateProduct($connection, $product_id, $title, $description, $price, $quantity, $category)
-{
-    $stmt = $connection->prepare("UPDATE vehicles SET title = ?, description = ?, price = ?, quantity = ?, category = ? WHERE id = ?");
-    if (!$stmt) return null;
-    $stmt->bind_param("ssdsssi", $title, $description, $price, $quantity, $category, $product_id);
-    $stmt->execute();
-    $stmt->close();
-}
-
 function getProductInfo($connection, $product_id)
 {
     $stmt = $connection->prepare("SELECT 
@@ -153,7 +144,7 @@ function getProductInfo($connection, $product_id)
     v.title,
     v.description,
     v.price,
-    v.stock AS quantity,
+    v.stock,
     v.status,
     v.make_id,
     v.model_id,
@@ -184,6 +175,22 @@ function getModelsByMake($connection, $make_id)
     return $models;
 
     
+}
+
+function updateProduct($connection, $product_id, $title, $description, $price, $stock, $make, $model)
+{
+    $stmt = $connection->prepare("UPDATE vehicles SET title = ?, description = ?, price = ?, stock = ?, make_id = ?, model_id = ? WHERE id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("ssdii", $title, $description, $price, $stock, $make, $model, $product_id);
+    $stmt->execute();
+    $stmt->close();
+}
+{
+    $stmt = $connection->prepare("UPDATE vehicles SET title = ?, description = ?, price = ?, quantity = ?, category = ? WHERE id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("ssdsssi", $title, $description, $price, $quantity, $category, $product_id);
+    $stmt->execute();
+    $stmt->close();
 }
 
 function handleProductImageUpload($file) {
