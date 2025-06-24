@@ -63,7 +63,9 @@ if (!$user || $user['role'] != "admin") {
                         $description = $product['description'];
                         $price = $product['price'];
                         $quantity = $product['quantity'];
-                        $category = $product['category'];
+                        $make = $product['make_name'];
+                        $model = $product['model_name'];
+                        $status = $product['status'];
                     }
                     ?>
 
@@ -71,15 +73,18 @@ if (!$user || $user['role'] != "admin") {
 
                     <!-- Product Title -->
                     <div class="mb-4">
-                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Product Title</label>
-                        <input type="text" name="title" id="title" required placeholder="Enter product title"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                        <input type="text" name="title" id="title" required placeholder="<?= $title ?>"
+                            value="<?= htmlspecialchars($title) ?>"
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                            focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Vehicle Make -->
                     <div class="mb-4">
                         <label for="make" class="block text-sm font-medium text-gray-300 mb-1">Make</label>
-                        <select name="make" id="make" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                        <select name="make" id="make" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
+                        focus:ring-blue-500 border border-gray-600">
                             <option value="">-- Select Make --</option>
                             <option value="Toyota">Toyota</option>
                             <option value="Honda">Honda</option>
@@ -92,12 +97,21 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Vehicle Model -->
                     <div class="mb-4">
                         <label for="model" class="block text-sm font-medium text-gray-300 mb-1">Model</label>
-                        <select name="model" id="model" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
-                            <option value="">-- Select Model --</option>
-                            <option value="Camry">Camry (Toyota)</option>
-                            <option value="Civic">Civic (Honda)</option>
-                            <option value="F-150">F-150 (Ford)</option>
-                            <!-- Add more models as needed, ideally populated based on selected make -->
+                        <select name="model" id="model" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
+                        focus:ring-blue-500 border border-gray-600">
+
+                            <?php if (!empty($product)): ?>
+                                <option value="<?= htmlspecialchars($model) ?>" selected><?= htmlspecialchars($model) ?></option>
+                                <?php
+                                // Fetch models based on the selected make
+                                $models = getModelsByMake($connection, $product['make_id']);
+                                foreach ($models as $m):
+                                ?>
+                                    <option value="<?= htmlspecialchars($m['model_name']) ?>"><?= htmlspecialchars($m['model_name']) ?></option>
+                                <?php
+                                endforeach;
+                                ?>
+                            <?php endif; ?>
                         </select>
                     </div>
 
@@ -105,27 +119,31 @@ if (!$user || $user['role'] != "admin") {
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
                         <textarea name="description" id="description" rows="4" required placeholder="Enter product description"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"></textarea>
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                            focus:ring-blue-500 border border-gray-600"></textarea>
                     </div>
 
                     <!-- Product Price -->
                     <div class="mb-4">
                         <label for="price" class="block text-sm font-medium text-gray-300 mb-1">Price ($)</label>
                         <input type="number" name="price" id="price" step="0.01" required placeholder="Enter product price"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                            focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Product Stock -->
                     <div class="mb-4">
                         <label for="stock" class="block text-sm font-medium text-gray-300 mb-1">Stock Quantity</label>
                         <input type="number" name="stock" id="stock" required placeholder="Enter product stock quantity"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                            focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Product Status -->
                     <div class="mb-4">
                         <label for="product_status" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
-                        <select name="product_status" id="product_status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                        <select name="product_status" id="product_status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white 
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
@@ -134,7 +152,8 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Product Image -->
                     <div class="mb-6">
                         <label for="image" class="block text-sm font-medium text-gray-300 mb-1">Product Image</label>
-                        <input type="file" name="image" id="image" accept="image/*" class="w-full text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 border border-gray-600">
+                        <input type="file" name="image" id="image" accept="image/*" class="w-full text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg 
+                        file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 border border-gray-600">
                     </div>
 
                     <!-- Submit Button -->

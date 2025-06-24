@@ -156,9 +156,11 @@ function getProductInfo($connection, $product_id)
     v.stock AS quantity,
     v.status,
     v.make_id,
-    m.make_name
+    m.make_name,
+    mo.model_name
     FROM vehicles v
     LEFT JOIN makes m ON v.make_id = m.make_id
+    LEFT JOIN model mo ON v.model_id = mo.model_id
     WHERE v.id = ?");
     if (!$stmt) return null;
     $stmt->bind_param("i", $product_id);
@@ -167,5 +169,17 @@ function getProductInfo($connection, $product_id)
     $product = $result->fetch_assoc();
     $stmt->close();
     return $product;
+}
+
+function getModelsByMake($connection, $make_id)
+{
+    $stmt = $connection->prepare("SELECT model_name FROM model WHERE model_make_id = ?");
+    if (!$stmt) return [];
+    $stmt->bind_param("i", $make_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $models = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $models;
 }
 /* Product Functions */
