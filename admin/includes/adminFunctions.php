@@ -76,15 +76,15 @@ function getRecentOrders($connection)
 
 function getVehicles($connection, $search, $status, $priceSort)
 {
-    $query = "SELECT v.id, v.title, v.status, v.price, v.stock, m.name as make_name 
+    $query = "SELECT v.id, v.title, v.status, v.price, v.stock, m.make_name as make_name 
               FROM vehicles v 
-              LEFT JOIN makes m ON v.make_id = m.id";
+              LEFT JOIN makes m ON v.make_id = m.make_id";
     $whereClauses = [];
     $params = [];
     $types = '';
 
     if (!empty($search)) {
-        $whereClauses[] = "(v.title LIKE ? OR m.name LIKE ?)";
+        $whereClauses[] = "(v.title LIKE ? OR m.make_name LIKE ?)";
         $params[] = "%" . $search . "%";
         $params[] = "%" . $search . "%";
         $types .= 'ss';
@@ -181,14 +181,7 @@ function updateProduct($connection, $product_id, $title, $description, $price, $
 {
     $stmt = $connection->prepare("UPDATE vehicles SET title = ?, description = ?, price = ?, stock = ?, make_id = ?, model_id = ? WHERE id = ?");
     if (!$stmt) return null;
-    $stmt->bind_param("ssdii", $title, $description, $price, $stock, $make, $model, $product_id);
-    $stmt->execute();
-    $stmt->close();
-}
-{
-    $stmt = $connection->prepare("UPDATE vehicles SET title = ?, description = ?, price = ?, quantity = ?, category = ? WHERE id = ?");
-    if (!$stmt) return null;
-    $stmt->bind_param("ssdsssi", $title, $description, $price, $quantity, $category, $product_id);
+    $stmt->bind_param("ssdiiii", $title, $description, $price, $stock, $make, $model, $product_id);
     $stmt->execute();
     $stmt->close();
 }
