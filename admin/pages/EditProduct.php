@@ -33,20 +33,47 @@ if (!$user || $user['role'] != "admin") {
             <!-- Main Content -->
             <div class="p-8 flex flex-col">
                 <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Edit ehicle Product</h3>
-                    
+                    <h3 class="text-2xl font-semibold mb-4 text-light">Edit Vehicle Product</h3>
+
                 </div>
 
                 <!-- Add Vehicle Product Form -->
-                <form action="/Projects/AuraEdition/admin/actions/editProductProcess.php" method="POST" enctype="multipart/form-data" 
-                class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
-                    
+                <form action="/Projects/AuraEdition/admin/actions/editProductProcess.php" method="POST" enctype="multipart/form-data"
+                    class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
+
+                    <?php if (isset($_GET['error'])): ?>
+                        <div class="bg-red-500 text-white p-4 rounded mb-4">
+                            <p class="text-sm"><?php echo htmlspecialchars($_GET['error']); ?></p>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (isset($_GET['success'])): ?>
+                        <div class="bg-green-500 text-white p-4 rounded mb-4">
+                            <p class="text-sm"><?php echo htmlspecialchars($_GET['success']); ?></p>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php
+                    // Fetch product details from the database
+                    $product_id = $_GET['id'];
+                    $product = getProductInfo($connection, $product_id);
+
+                    if (!empty($product)) {
+                        // Populate the form fields with product details
+                        $title = $product['title'];
+                        $description = $product['description'];
+                        $price = $product['price'];
+                        $quantity = $product['quantity'];
+                        $category = $product['category'];
+                    }
+                    ?>
+
+
 
                     <!-- Product Title -->
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Product Title</label>
                         <input type="text" name="title" id="title" required placeholder="Enter product title"
-                        class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Vehicle Make -->
@@ -78,21 +105,21 @@ if (!$user || $user['role'] != "admin") {
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
                         <textarea name="description" id="description" rows="4" required placeholder="Enter product description"
-                        class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"></textarea>
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"></textarea>
                     </div>
 
                     <!-- Product Price -->
                     <div class="mb-4">
                         <label for="price" class="block text-sm font-medium text-gray-300 mb-1">Price ($)</label>
                         <input type="number" name="price" id="price" step="0.01" required placeholder="Enter product price"
-                        class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Product Stock -->
                     <div class="mb-4">
                         <label for="stock" class="block text-sm font-medium text-gray-300 mb-1">Stock Quantity</label>
                         <input type="number" name="stock" id="stock" required placeholder="Enter product stock quantity"
-                        class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
+                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
                     </div>
 
                     <!-- Product Status -->

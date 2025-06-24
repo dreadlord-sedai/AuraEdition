@@ -76,19 +76,22 @@ function getRecentOrders($connection)
 
 function getVehicles($connection, $search, $status, $priceSort)
 {
-    $query = "SELECT * FROM vehicles";
+    $query = "SELECT v.id, v.title, v.status, v.price, v.stock, m.name as make_name 
+              FROM vehicles v 
+              LEFT JOIN makes m ON v.make_id = m.id";
     $whereClauses = [];
     $params = [];
     $types = '';
 
     if (!empty($search)) {
-        $whereClauses[] = "title LIKE ?";
+        $whereClauses[] = "(v.title LIKE ? OR m.name LIKE ?)";
         $params[] = "%" . $search . "%";
-        $types .= 's';
+        $params[] = "%" . $search . "%";
+        $types .= 'ss';
     }
 
     if (!empty($status)) {
-        $whereClauses[] = "status = ?";
+        $whereClauses[] = "v.status = ?";
         $params[] = $status;
         $types .= 's';
     }
@@ -98,9 +101,9 @@ function getVehicles($connection, $search, $status, $priceSort)
     }
 
     if ($priceSort === 'low') {
-        $query .= " ORDER BY price ASC";
+        $query .= " ORDER BY v.price ASC";
     } elseif ($priceSort === 'high') {
-        $query .= " ORDER BY price DESC";
+        $query .= " ORDER BY v.price DESC";
     }
 
     $stmt = $connection->prepare($query);
@@ -141,5 +144,28 @@ function updateProduct($connection, $product_id, $title, $description, $price, $
     $stmt->bind_param("ssdsssi", $title, $description, $price, $quantity, $category, $product_id);
     $stmt->execute();
     $stmt->close();
+}
+
+function getProductInfo($connection, $product_id)
+{
+    $stmt = $connection->prepare("SELECT 
+    v.id,
+    v.title,
+    v.description,
+    v.price,
+    v.stock AS quantity,
+    v.status,
+    v.make_id,
+    m.make_name
+    FROM vehicles v
+    LEFT JOIN makes m ON v.make_id = m.make_id
+    WHERE v.id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $product = $result->fetch_assoc();
+    $stmt->close();
+    return $product;
 }
 /* Product Functions */
