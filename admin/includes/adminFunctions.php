@@ -26,12 +26,25 @@ WHERE u.id = ?");
     return $user;
 }
 
-function updateAccount($connection, $user_id, $fname, $lname, $email, $confirm_password)
+function updateAccount($connection, $user_id, $fname, $lname, $email, $password)
 {
-    $hashedPassword = password_hash($confirm_password, PASSWORD_DEFAULT);
-    $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, hashed_password = ? WHERE id = ?");
-    if (!$stmt) return null;
-    $stmt->bind_param("ssssi", $fname, $lname, $email, $hashedPassword, $user_id);
+    $sql = "UPDATE users SET fname = ?, lname = ?, email = ?";
+    $types = "sss";
+    $params = [$fname, $lname, $email];
+
+    if (!empty($password)) {
+        $sql .= ", hashed_password = ?";
+        $types .= "s";
+        $params[] = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    $sql .= " WHERE id = ?";
+    $types .= "i";
+    $params[] = $user_id;
+
+    $stmt = $connection->prepare($sql);
+    if (!$stmt) return;
+    $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $stmt->close();
 }
@@ -118,3 +131,15 @@ function getAllOrders($connection)
 
 
 /* Display Functions */
+
+
+/* Product Functions */
+function updateProduct($connection, $product_id, $title, $description, $price, $quantity, $category)
+{
+    $stmt = $connection->prepare("UPDATE vehicles SET title = ?, description = ?, price = ?, quantity = ?, category = ? WHERE id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("ssdsssi", $title, $description, $price, $quantity, $category, $product_id);
+    $stmt->execute();
+    $stmt->close();
+}
+/* Product Functions */

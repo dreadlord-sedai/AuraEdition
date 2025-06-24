@@ -17,11 +17,19 @@ if (isset($_POST['update_account'])) {
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Update account information in the database
-    updateAccount($connection, $user['id'], $fname, $lname, $email, $confirm_password);
+    if (!empty($password) && $password !== $confirm_password) {
+        $_SESSION['error'] = "Passwords do not match.";
+        header("Location: /Projects/AuraEdition/admin/pages/adminAccount.php");
+        exit;
+    }
 
+    // Update account information in the database
+    updateAccount($connection, $user['id'], $fname, $lname, $email, $password);
+
+    $_SESSION['success'] = "Account updated successfully.";
     // Redirect back to the admin account page
     header("Location: /Projects/AuraEdition/admin/pages/adminAccount.php");
     exit;
