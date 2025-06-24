@@ -41,7 +41,7 @@ if (makeSelect && modelSelect) {
 function deleteProduct(productId) {
     if (confirm('Are you sure you want to delete this product?')) {
         var request = new XMLHttpRequest();
-        request.open('POST', '/Projects/AuraEdition/admin/process/deleteProduct.php', true);
+        request.open('POST', '/Projects/AuraEdition/admin/process/deleteProductProcess.php', true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         request.send('id=' + encodeURIComponent(productId));
         request.onreadystatechange = function () {
