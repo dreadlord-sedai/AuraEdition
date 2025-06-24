@@ -269,3 +269,19 @@ function deleteProductImage($connection, $product_id)
 
 /* Product Functions */
 
+
+function getAllModels($connection)
+{
+    $stmt = $connection->prepare("SELECT 
+    mo.model_id,
+    mo.model_name,
+    m.make_name
+    FROM model mo
+    LEFT JOIN makes m ON mo.model_make_id = m.make_id");    
+    if (!$stmt) return null;
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $models = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $models;
+}
