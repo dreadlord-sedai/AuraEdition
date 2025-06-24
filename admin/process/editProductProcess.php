@@ -29,7 +29,7 @@ if (isset($_POST['update_product'])) {
     updateProduct($connection, $product_id, $title, $description, $price, $stock, $make, $model);
 }
 
-handleProductImageUpload($_FILES['image'], $product_id, $connection);
+updateProductImage($_FILES['image'], $product_id, $connection);
 
 header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
 exit;

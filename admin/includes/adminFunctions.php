@@ -146,6 +146,33 @@ function addProduct($connection, $title, $description, $price, $stock, $make, $m
     $stmt->execute();
     $stmt->close();
 }
+
+function uploadProductImage($file, $product_id, $connection) {
+    if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $file['tmp_name'];
+        $fileName = $file['name'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+        $allowedfileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        if (in_array($fileExtension, $allowedfileExtensions)) {
+            $uploadFileDir = '/Projects/AuraEdition/products/img/';
+            $newFileName = uniqid('product_' . $product_id . '_', true) . '.' . $fileExtension;
+            $dest_path = $_SERVER['DOCUMENT_ROOT'] . $uploadFileDir . $newFileName;
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                // Update the image path in the database (vehicles table assumed)
+                $imagePath = $uploadFileDir . $newFileName;
+                $stmt = $connection->prepare("INSERT INTO vehicle_images (image_vehicle_id, image_path) VALUES (?, ?)");
+                if ($stmt) {
+                    $stmt->bind_param("si", $imagePath, $product_id);
+                    $stmt->execute();
+                    $stmt->close();
+                }
+                return $imagePath; // Success
+            }
+        }
+    }
+    return false; // Failure
+}
 function getProductInfo($connection, $product_id)
 {
     $stmt = $connection->prepare("SELECT 
@@ -195,7 +222,7 @@ function updateProduct($connection, $product_id, $title, $description, $price, $
     $stmt->close();
 }
 
-function handleProductImageUpload($file, $product_id, $connection) {
+function updateProductImage($file, $product_id, $connection) {
     if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $file['tmp_name'];
         $fileName = $file['name'];

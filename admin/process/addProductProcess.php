@@ -10,7 +10,7 @@ if (!$user || $user['role'] != "admin") {
     exit;
 }
 
-if (isset($_POST['update_product'])) {
+if (isset($_POST['add_product'])) {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $price = $_POST['price'];
@@ -31,7 +31,7 @@ if (isset($_POST['update_product'])) {
 //get the last inserted product ID
 $product_id = $connection->insert_id;
 
-handleProductImageUpload($_FILES['image'], $product_id, $connection);
+uploadProductImage($_FILES['image'], $product_id, $connection);
 header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
 $_SESSION['success'] = "Product added successfully.";
 
