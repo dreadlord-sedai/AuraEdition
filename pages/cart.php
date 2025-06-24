@@ -70,7 +70,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             </div>
 
                             <div class="flex flex-col items-center gap-2">
-                                <button class="btn btn-outline-success" onclick="buyNow(<?= $item['vehicle_id'] ?>)" data-id="<?= $item['vehicle_id'] ?>">Buy Now</button>
+                                <button class="btn btn-outline-success" onclick="buyNow(<?= $item['vehicle_id'] ?>, parseInt(document.getElementById('quantity-<?= htmlspecialchars($item['cart_item_id']); ?>').textContent) || 1)" data-id="<?= $item['vehicle_id'] ?>">Buy Now</button>
                                 <button class="btn btn-outline-danger" onclick="removeFromCart(<?= $item['cart_item_id'] ?>)" data-id="<?= $item['cart_item_id'] ?>">Remove</button>
                             </div>
                         </div>

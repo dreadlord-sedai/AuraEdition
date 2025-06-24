@@ -77,7 +77,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                         bg-white/10 rounded-lg shadow-lg w-64 h-72">
 
                             <button class="btn btn-primary d-flex justify-content-center align-items-center"
-                                onclick="buyNow(<?= $vehicle['id'] ?>, parseInt(document.getElementById('quantity-<?= $vehicle['id'] ?>').value) || 1);" type="submit" name="submit" value="Buy Now">
+                                onclick="buyNow(<?= $vehicle['id'] ?>, parseInt(document.getElementById('quantity-<?= $vehicle['id'] ?>').value) || 1);" 
+                                type="submit" name="submit" value="Buy Now">
                                 Buy Now
                             </button>
 
