@@ -76,7 +76,7 @@ function getAllMakes(mysqli $connection): array
 function get_all_vehicles($connection)
 {
     $select_All_listings = $connection->prepare(
-        "SELECT id, title, price, description, stock FROM vehicles WHERE status = 'ACTIVE'"
+        "SELECT id, title, price, description, stock FROM vehicles WHERE status = 'ACTIVE' ORDER BY created_at DESC"
     );
     $select_All_listings->execute();
     $result = $select_All_listings->get_result();
