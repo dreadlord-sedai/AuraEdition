@@ -107,7 +107,7 @@ if (!$user || $user['role'] != "admin") {
                                 foreach ($models as $m):
                                     if ($m['model_id'] != $product['model_id']):
                                 ?>
-                                    <option value="<?= htmlspecialchars($m['model_id']) ?>"><?= htmlspecialchars($m['model_name']) ?></option>
+                                        <option value="<?= htmlspecialchars($m['model_id']) ?>"><?= htmlspecialchars($m['model_name']) ?></option>
                                 <?php
                                     endif;
                                 endforeach;
@@ -119,7 +119,7 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Vehicle Description -->
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                        <textarea name="description" id="description" rows="4" required placeholder="Enter product description"
+                        <textarea name="description" id="description" rows="4" required placeholder="<?= htmlspecialchars($product['description']) ?>"
                             class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
                             focus:ring-blue-500 border border-gray-600"></textarea>
                     </div>
@@ -135,7 +135,7 @@ if (!$user || $user['role'] != "admin") {
                     <!-- Product Stock -->
                     <div class="mb-4">
                         <label for="stock" class="block text-sm font-medium text-gray-300 mb-1">Stock Quantity</label>
-                        <input type="number" name="stock" id="stock" required placeholder="Enter product stock quantity"
+                        <input type="number" name="stock" id="stock" required placeholder="<?= htmlspecialchars($product['quantity']) ?>"
                             class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
                             focus:ring-blue-500 border border-gray-600">
                     </div>
@@ -145,8 +145,19 @@ if (!$user || $user['role'] != "admin") {
                         <label for="product_status" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
                         <select name="product_status" id="product_status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white 
                         focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                            <?php if (!empty($product)): ?>
+                                <option value="<?= htmlspecialchars($product['status']) ?>" selected><?= htmlspecialchars($product['status']) ?></option>
+                                <?php
+                                $statuses = ['ACTIVE', 'INACTIVE'];
+                                foreach ($statuses as $status):
+                                    if ($status != $product['status']):
+                                ?>
+                                        <option value="<?= htmlspecialchars($status) ?>"><?= htmlspecialchars(ucfirst($status)) ?></option>
+                                <?php
+                                    endif;
+                                endforeach;
+                                ?>
+                            <?php endif; ?>
                         </select>
                     </div>
 
@@ -173,3 +184,8 @@ if (!$user || $user['role'] != "admin") {
     </div>
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
+
+
+</body>
+
+</html>

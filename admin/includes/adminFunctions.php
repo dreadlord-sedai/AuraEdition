@@ -182,5 +182,27 @@ function getModelsByMake($connection, $make_id)
     $models = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     return $models;
+
+    
+}
+
+function handleProductImageUpload($file) {
+    if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $file['tmp_name'];
+        $fileName = $file['name'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+        $allowedfileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        if (in_array($fileExtension, $allowedfileExtensions)) {
+            $uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/products/img/';
+            $newFileName = uniqid() . '.' . $fileExtension;
+            $dest_path = $uploadFileDir . $newFileName;
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                return $newFileName; // Success
+            }
+        }
+    }
+    return false; // Failure
 }
 /* Product Functions */
+

@@ -22,5 +22,10 @@ if (isset($_POST['update_product'])) {
     updateProduct($connection, $product_id, $title, $description, $price, $quantity, $category);
 }
 
+$imageFileName = handleProductImageUpload($_FILES['image']);
+if ($imageFileName) {
+    // Save $imageFileName to the database for this product
+}
+
 header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
 exit;
