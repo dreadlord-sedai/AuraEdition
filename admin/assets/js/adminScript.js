@@ -68,20 +68,20 @@ function deleteProduct(productId) {
 
 /* Category Management */
 
-function addMake() {
-  const makeName = document.getElementById("makeName").value;
+function addMake(event) {
+  event.preventDefault(); // Prevent form from submitting normally
+  const makeName = document.getElementById("make_name").value;
   if (makeName.trim() === "") {
     alert("Please enter a make name.");
-    return;
+    return false;
   }
 
   var request = new XMLHttpRequest();
-
   request.onreadystatechange = function () {
     if (request.readyState === XMLHttpRequest.DONE) {
       if (request.status === 200) {
         alert("Make added successfully.");
-        window.location.reload(); // Reload the page to reflect changes
+        window.location.reload();
       } else {
         alert("Error adding make: " + request.responseText);
       }
@@ -95,6 +95,7 @@ function addMake() {
   );
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send("name=" + encodeURIComponent(makeName));
+  return false; // Prevent default form submission
 }
 
 /* Category Management */

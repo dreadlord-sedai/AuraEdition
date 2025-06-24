@@ -270,6 +270,8 @@ function deleteProductImage($connection, $product_id)
 /* Product Functions */
 
 
+/* Category Functions */
+
 function getAllModels($connection)
 {
     $stmt = $connection->prepare("SELECT 
@@ -285,3 +287,14 @@ function getAllModels($connection)
     $stmt->close();
     return $models;
 }
+
+function addMake($connection, $make_name)
+{
+    $stmt = $connection->prepare("INSERT INTO makes (make_name) VALUES (?)");
+    if (!$stmt) return null;
+    $stmt->bind_param("s", $make_name);
+    $stmt->execute();
+    $stmt->close();
+}
+
+/* Category Functions */

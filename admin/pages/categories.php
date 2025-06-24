@@ -43,9 +43,9 @@ if (!$user || $user['role'] != "admin") {
                         <h4 class="text-2xl font-semibold mb-2 text-light">Vehicle Makes</h4>
                         <!-- Add Make Form -->
                         <!-- Todo: Add Make Image Form -->
-                        <form method="POST" class="mb-4 flex gap-2">
-                            <input type="text" name="make_name" placeholder="New Make Name" required class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
-                            <button type="submit" name="add_make" onclick="addMake(this)" class="btn btn-primary">Add Make</button>
+                        <form class="mb-4 flex gap-2" onsubmit="return addMake(event)">
+                            <input type="text" name="make_name" id="make_name" placeholder="New Make Name" required class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
+                            <button type="submit" class="btn btn-primary">Add Make</button>
                         </form>
 
                     </div>
