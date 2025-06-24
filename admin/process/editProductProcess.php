@@ -30,16 +30,7 @@ if (isset($_POST['update_product'])) {
     updateProduct($connection, $product_id, $title, $description, $price, $stock, $make, $model);
 }
 
-$imageFileName = handleProductImageUpload($_FILES['image']);
-if ($imageFileName) {
-    // Save $imageFileName to the database for this product
-    $product_id = $_POST['product_id'];
-    $stmt = $connection->prepare("UPDATE vehicle_images SET image_path = ? WHERE image_vehicle_id = ? LIMIT 1");
-    if (!$stmt) return;
-    $stmt->bind_param("ss", $imageFileName, $product_id);
-    $stmt->execute();
-    $stmt->close();
-}
+handleProductImageUpload($_FILES['image'], $product_id, $connection);
 
 header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
 exit;

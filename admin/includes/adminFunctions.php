@@ -186,7 +186,7 @@ function updateProduct($connection, $product_id, $title, $description, $price, $
     $stmt->close();
 }
 
-function handleProductImageUpload($file) {
+function handleProductImageUpload($file, $product_id, $connection) {
     if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $file['tmp_name'];
         $fileName = $file['name'];
@@ -194,11 +194,19 @@ function handleProductImageUpload($file) {
         $fileExtension = strtolower(end($fileNameCmps));
         $allowedfileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         if (in_array($fileExtension, $allowedfileExtensions)) {
-            $uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/products/img/';
-            $newFileName = uniqid() . '.' . $fileExtension;
-            $dest_path = $uploadFileDir . $newFileName;
+            $uploadFileDir = '/Projects/AuraEdition/products/img/';
+            $newFileName = uniqid('product_' . $product_id . '_', true) . '.' . $fileExtension;
+            $dest_path = $_SERVER['DOCUMENT_ROOT'] . $uploadFileDir . $newFileName;
             if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                return $newFileName; // Success
+                // Update the image path in the database (vehicles table assumed)
+                $imagePath = $uploadFileDir . $newFileName;
+                $stmt = $connection->prepare("UPDATE vehicle_images SET image_path = ? WHERE image_vehicle_id = ?");
+                if ($stmt) {
+                    $stmt->bind_param("si", $imagePath, $product_id);
+                    $stmt->execute();
+                    $stmt->close();
+                }
+                return $imagePath; // Success
             }
         }
     }
