@@ -57,15 +57,9 @@ if (!$user || $user['role'] != "admin") {
                     $product_id = $_GET['id'];
                     $product = getProductInfo($connection, $product_id);
 
-                    if (!empty($product)) {
-                        // Populate the form fields with product details
-                        $title = $product['title'];
-                        $description = $product['description'];
-                        $price = $product['price'];
-                        $quantity = $product['quantity'];
-                        $make = $product['make_name'];
-                        $model = $product['model_name'];
-                        $status = $product['status'];
+                    if (!$product) {
+                        echo '<div class="bg-red-500 text-white p-4 rounded mb-4">Product not found.</div>';
+                        exit;
                     }
                     ?>
 
@@ -75,7 +69,7 @@ if (!$user || $user['role'] != "admin") {
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
                         <input type="text" name="title" id="title" required placeholder="<?= $title ?>"
-                            value="<?= htmlspecialchars($title) ?>"
+                            value="<?= htmlspecialchars($product['title']) ?>"
                             class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
                             focus:ring-blue-500 border border-gray-600">
                     </div>
@@ -85,12 +79,18 @@ if (!$user || $user['role'] != "admin") {
                         <label for="make" class="block text-sm font-medium text-gray-300 mb-1">Make</label>
                         <select name="make" id="make" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
                         focus:ring-blue-500 border border-gray-600">
-                            <option value="">-- Select Make --</option>
-                            <option value="Toyota">Toyota</option>
-                            <option value="Honda">Honda</option>
-                            <option value="Ford">Ford</option>
-                            <option value="BMW">BMW</option>
-                            <!-- Add more makes as needed, or populate dynamically -->
+                            <?php if (!empty($product)): ?>
+                                <option value="<?= htmlspecialchars($product['make_id']) ?>" selected><?= htmlspecialchars($product['make_name']) ?></option>
+                                <?php
+                                $makes = getAllMakes($connection);
+                                // Loop through makes and create options
+                                foreach ($makes as $m):
+                                ?>
+                                    <option value="<?= htmlspecialchars($m['make_id']) ?>"><?= htmlspecialchars($m['make_name']) ?></option>
+                                <?php
+                                endforeach;
+                                ?>
+                            <?php endif; ?>
                         </select>
                     </div>
 
@@ -99,16 +99,17 @@ if (!$user || $user['role'] != "admin") {
                         <label for="model" class="block text-sm font-medium text-gray-300 mb-1">Model</label>
                         <select name="model" id="model" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
                         focus:ring-blue-500 border border-gray-600">
-
                             <?php if (!empty($product)): ?>
-                                <option value="<?= htmlspecialchars($model) ?>" selected><?= htmlspecialchars($model) ?></option>
+                                <option value="<?= htmlspecialchars($product['model_id']) ?>" selected><?= htmlspecialchars($product['model_name']) ?></option>
                                 <?php
                                 // Fetch models based on the selected make
                                 $models = getModelsByMake($connection, $product['make_id']);
                                 foreach ($models as $m):
+                                    if ($m['model_id'] != $product['model_id']):
                                 ?>
-                                    <option value="<?= htmlspecialchars($m['model_name']) ?>"><?= htmlspecialchars($m['model_name']) ?></option>
+                                    <option value="<?= htmlspecialchars($m['model_id']) ?>"><?= htmlspecialchars($m['model_name']) ?></option>
                                 <?php
+                                    endif;
                                 endforeach;
                                 ?>
                             <?php endif; ?>

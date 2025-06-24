@@ -156,6 +156,7 @@ function getProductInfo($connection, $product_id)
     v.stock AS quantity,
     v.status,
     v.make_id,
+    v.model_id,
     m.make_name,
     mo.model_name
     FROM vehicles v
@@ -173,7 +174,7 @@ function getProductInfo($connection, $product_id)
 
 function getModelsByMake($connection, $make_id)
 {
-    $stmt = $connection->prepare("SELECT model_name FROM model WHERE model_make_id = ?");
+    $stmt = $connection->prepare("SELECT model_name, model_id FROM model WHERE model_make_id = ?");
     if (!$stmt) return [];
     $stmt->bind_param("i", $make_id);
     $stmt->execute();
