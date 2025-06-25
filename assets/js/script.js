@@ -379,47 +379,166 @@ function addToWishlist(vehicleId) {
 
 /* ACCOUNT PAGE */
 function setupAccountPage() {
-    const editBtn = document.getElementById('editPersonalInfo');
-    const cancelBtn = document.getElementById('cancelEdit');
-    const formInputs = document.querySelectorAll('#personalInfoForm input, #personalInfoForm select');
-    const actions = document.getElementById('formActions');
+    const form = document.getElementById('accountForm');
+    if (!form) return;
 
-    if (editBtn) {
-        editBtn.addEventListener('click', () => {
-            formInputs.forEach(inp => {
-                if (inp.tagName === 'SELECT') {
-                    inp.disabled = false;
-                } else {
-                    inp.removeAttribute('readonly');
-                    inp.classList.remove('bg-gray-50');
-                    inp.classList.add('bg-white');
-                }
-            });
-            actions?.classList.remove('hidden');
-            editBtn.classList.add('hidden');
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        const errors = [];
+
+        // Validate email
+        const email = form.querySelector('#email');
+        if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+            errors.push('Please enter a valid email address');
+            email.classList.add('border-red-500');
+            isValid = false;
+        } else {
+            email.classList.remove('border-red-500');
+        }
+
+        // Validate password if changing
+        const currentPassword = form.querySelector('#current_password');
+        const newPassword = form.querySelector('#new_password');
+        const confirmPassword = form.querySelector('#confirm_password');
+        
+        if (newPassword.value) {
+            // If changing password, current password is required
+            if (!currentPassword.value) {
+                errors.push('Current password is required to change your password');
+                currentPassword.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                currentPassword.classList.remove('border-red-500');
+            }
+
+            if (newPassword.value.length < 8 || 
+                !/[A-Z]/.test(newPassword.value) || 
+                !/[0-9]/.test(newPassword.value) || 
+                !/[^A-Za-z0-9]/.test(newPassword.value)) {
+                errors.push('Password must be at least 8 characters with uppercase, number, and special character');
+                newPassword.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                newPassword.classList.remove('border-red-500');
+            }
+
+            if (newPassword.value !== confirmPassword.value) {
+                errors.push('Passwords do not match');
+                confirmPassword.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                confirmPassword.classList.remove('border-red-500');
+            }
+        }
+
+        // Validate required fields
+        const requiredFields = ['fname', 'lname', 'email'];
+        requiredFields.forEach(field => {
+            const element = form.querySelector(`#${field}`);
+            if (!element.value.trim()) {
+                errors.push(`${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
+                element.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                element.classList.remove('border-red-500');
+            }
+        });
+
+        // Display errors
+        const errorContainer = document.getElementById('formErrors');
+        if (errorContainer) {
+            errorContainer.innerHTML = '';
+            if (errors.length > 0) {
+                errors.forEach(error => {
+                    const errorElement = document.createElement('p');
+                    errorElement.className = 'text-red-500 text-sm mt-1';
+                    errorElement.textContent = error;
+                    errorContainer.appendChild(errorElement);
+                });
+            }
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            // Scroll to first error
+            const firstError = form.querySelector('.border-red-500');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+
+    // Real-time password strength indicator
+    const passwordInput = document.getElementById('new_password');
+    const passwordStrength = document.getElementById('passwordStrength');
+    
+    if (passwordInput && passwordStrength) {
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            let messages = [];
+
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            // Update UI based on strength
+            passwordStrength.className = '';
+            passwordStrength.classList.add('text-sm', 'mt-1');
+            
+            if (password.length === 0) {
+                passwordStrength.textContent = '';
+                return;
+            }
+
+            switch(strength) {
+                case 0:
+                case 1:
+                    passwordStrength.classList.add('text-red-500');
+                    passwordStrength.textContent = 'Weak - Add more characters, numbers, and symbols';
+                    break;
+                case 2:
+                    passwordStrength.classList.add('text-yellow-500');
+                    passwordStrength.textContent = 'Moderate - Try adding more complexity';
+                    break;
+                case 3:
+                    passwordStrength.classList.add('text-blue-500');
+                    passwordStrength.textContent = 'Good - Almost there!';
+                    break;
+                case 4:
+                    passwordStrength.classList.add('text-green-500');
+                    passwordStrength.textContent = 'Strong - Great job!';
+                    break;
+            }
         });
     }
 
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', () => {
-            formInputs.forEach(inp => {
-                if (inp.tagName === 'SELECT') {
-                    inp.disabled = true;
-                } else {
-                    inp.setAttribute('readonly', true);
-                    inp.classList.add('bg-gray-50');
-                    inp.classList.remove('bg-white');
+    // Phone number formatting
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let phone = this.value.replace(/\D/g, '');
+            if (phone.length > 10) phone = phone.substring(0, 10);
+            
+            // Format as (XXX) XXX-XXXX
+            let formatted = '';
+            if (phone.length > 0) {
+                formatted = '(' + phone.substring(0, 3);
+                if (phone.length > 3) {
+                    formatted += ') ' + phone.substring(3, 6);
+                    if (phone.length > 6) {
+                        formatted += '-' + phone.substring(6, 10);
+                    }
                 }
-            });
-            actions?.classList.add('hidden');
-            editBtn?.classList.remove('hidden');
+                this.value = formatted;
+            }
         });
     }
 }
 
-// Initialize account page functionality when DOM is loaded
+// Initialize account page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('personalInfoForm')) {
-        setupAccountPage();
-    }
+    setupAccountPage();
 });

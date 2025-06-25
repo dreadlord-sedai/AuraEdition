@@ -9,9 +9,14 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Get user data
+// Get user data with address
 $user_id = $_SESSION['user_id'];
-$stmt = $connection->prepare("SELECT * FROM users WHERE id = ?");
+$stmt = $connection->prepare(
+    "SELECT u.*, ua.address, ua.city, ua.state, ua.zip_code 
+    FROM users u 
+    LEFT JOIN user_addresses ua ON u.id = ua.address_user_id 
+    WHERE u.id = ?"
+);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
