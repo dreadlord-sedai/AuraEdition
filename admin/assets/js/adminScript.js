@@ -98,4 +98,38 @@ function addMake(event) {
   return false; // Prevent default form submission
 }
 
+
+function addModel(event) {
+  event.preventDefault(); // Prevent form from submitting normally
+  const modelName = document.getElementById("model_name").value;
+  const makeId = document.getElementById("make_id").value;
+  if (modelName.trim() === "" || makeId === "") {
+    alert("Please enter a model name and select a make.");
+    return false;
+  }
+
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === XMLHttpRequest.DONE) {
+      if (request.status === 200) {
+        alert("Model added successfully.");
+        window.location.reload();
+      } else {
+        alert("Error adding model: " + request.responseText);
+      }
+    }
+  };
+
+  request.open(
+    "POST",
+    "/Projects/AuraEdition/admin/process/addModelProcess.php",
+    true
+  );
+  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  request.send(
+    "name=" + encodeURIComponent(modelName) + "&make_id=" + encodeURIComponent(makeId)
+  );
+  return false; // Prevent default form submission
+}
+
 /* Category Management */
