@@ -5,10 +5,42 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/a
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
-if (!$user || $user['role'] != "admin") {
+if (!$user || $user['role'] !== 'admin') {
     header("Location: /Projects/AuraEdition/index.php");
-    exit;
+    exit();
 }
+
+// Handle user actions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['delete_user'])) {
+        $userId = (int)$_POST['user_id'];
+        if (deleteUser($connection, $userId)) {
+            $_SESSION['success_message'] = 'User deleted successfully';
+        } else {
+            $_SESSION['error_message'] = 'Failed to delete user';
+        }
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
+    } elseif (isset($_POST['toggle_status'])) {
+        $userId = (int)$_POST['user_id'];
+        $status = $_POST['status'] === 'active' ? 'inactive' : 'active';
+        if (updateUserStatus($connection, $userId, $status)) {
+            $_SESSION['success_message'] = 'User status updated successfully';
+        } else {
+            $_SESSION['error_message'] = 'Failed to update user status';
+        }
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
+    }
+}
+
+// Get search and filter parameters
+$search = $_GET['search'] ?? '';
+$role = $_GET['role'] ?? '';
+$status = $_GET['status'] ?? '';
+
+// Get all users
+$users = getAllUsers($connection);
 ?>
 
 <!DOCTYPE html>
@@ -32,57 +64,100 @@ if (!$user || $user['role'] != "admin") {
             <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
             <!-- Main Content -->
             <div class="p-8 flex flex-col">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Users</h3>
+                <!-- Flash Messages -->
+                <?php if (isset($_SESSION['success_message'])): ?>
+                    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                        <?php echo htmlspecialchars($_SESSION['success_message']); ?>
+                        <?php unset($_SESSION['success_message']); ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['error_message'])): ?>
+                    <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                        <?php echo htmlspecialchars($_SESSION['error_message']); ?>
+                        <?php unset($_SESSION['error_message']); ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <h3 class="text-2xl font-semibold text-white mb-4 md:mb-0">Users Management</h3>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <div class="relative">
+                            <input type="text" id="search" name="search" placeholder="Search users..." 
+                                   class="pl-10 pr-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   value="<?php echo htmlspecialchars($search); ?>">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                        <select name="role" id="role" class="px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">All Roles</option>
+                            <option value="admin" <?php echo $role === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                            <option value="user" <?php echo $role === 'user' ? 'selected' : ''; ?>>User</option>
+                        </select>
+                        <select name="status" id="status" class="px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">All Status</option>
+                            <option value="active" <?php echo $status === 'active' ? 'selected' : ''; ?>>Active</option>
+                            <option value="inactive" <?php echo $status === 'inactive' ? 'selected' : ''; ?>>Inactive</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Users Table -->
-                <div class="overflow-x-auto mt-10">
-                    <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Order ID</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Customer</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Order Date</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Status</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Total Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $search = $_GET['search'] ?? '';
-                            $status = $_GET['status'] ?? '';
-                            $date = $_GET['date'] ?? '';
-                            $orders = getAllOrders($connection);
-                            foreach ($orders as $order):
-                                $user = getUserInfo($connection, $order['user_id']);
-                            ?>
-                                <tr class="border-b border-gray-700">
-                                    <td class="px-4 py-2 text-gray-100"><?= $order['order_id']; ?></td>
-                                    <td class="px-4 py-2 text-gray-100"><?= $user['fname'] . ' ' . $user['lname']; ?></td>
-                                    <td class="px-4 py-2 text-gray-100"><?= $order['orderd_at']; ?></td>
-                                    <td class="px-4 py-2">
-                                        <span class="
-                                    <?php
-                                    if ($order['status'] === 'pending') {
-                                        echo 'bg-yellow-600';
-                                    } else if ($order['status'] === 'shipped') {
-                                        echo 'bg-green-600';
-                                    } else if ($order['status'] === 'delivered') {
-                                        echo 'bg-blue-600';
-                                    } else {
-                                        echo 'bg-gray-600';
-                                    }
-                                    ?>
-                                     text-white px-3 py-1 rounded-full text-xs"><?= $order['status']; ?></span>
-                                    </td>
-                                    <td class="px-4 py-2 text-gray-100">$<?= $order['total_price']; ?></td>
+                <div id="usersTable" class="bg-gray-800 rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">User ID</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
+                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                                 </tr>
-                            <?php
-                            endforeach;
-                            ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="bg-gray-800 divide-y divide-gray-700">
+                                <?php if (empty($users)): ?>
+                                    <tr>
+                                        <td colspan="6" class="px-6 py-4 text-center text-gray-400">No users found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($users as $user): ?>
+                                        <tr class="hover:bg-gray-750">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
+                                                #<?php echo htmlspecialchars($user['id']); ?>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm font-medium text-white">
+                                                    <?php echo htmlspecialchars($user['fname'] . ' ' . $user['lname']); ?>
+                                                </div>
+                                                <?php if (!empty($user['user_date'])): ?>
+                                                <div class="text-xs text-gray-400">
+                                                    Joined <?php echo date('M d, Y', strtotime($user['user_date'])); ?>
+                                                </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                                <?php echo htmlspecialchars($user['email']); ?>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                    <?php echo $user['role'] === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'; ?>">
+                                                    <?php echo ucfirst(htmlspecialchars($user['role'])); ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="edit-user.php?id=<?php echo $user['id']; ?>" class="text-blue-500 hover:text-blue-700 mr-4">Edit</a>
+                                                <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
+                                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                                    <button type="submit" name="delete_user" class="text-red-500 hover:text-red-700">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- Users Table -->
 

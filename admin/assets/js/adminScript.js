@@ -1,13 +1,81 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Sidebar toggle functionality
   const toggleBtn = document.getElementById("sidebarToggle");
-  const sidebar = document.getElementById("adminSidebar"); // Make sure your sidebar has this ID
+  const sidebar = document.getElementById("adminSidebar");
 
   if (toggleBtn && sidebar) {
     toggleBtn.addEventListener("click", function () {
       sidebar.classList.toggle("hidden");
     });
   }
+
+  // Initialize user management functionality if on users page
+  if (document.getElementById('usersTable')) {
+    initializeUserManagement();
+  }
 });
+
+/**
+ * Initialize user management functionality
+ */
+function initializeUserManagement() {
+  const searchInput = document.getElementById('search');
+  const roleSelect = document.getElementById('role');
+  const statusSelect = document.getElementById('status');
+  
+  // Add event listeners for search and filter inputs
+  if (searchInput) searchInput.addEventListener('input', filterUsers);
+  if (roleSelect) roleSelect.addEventListener('change', filterUsers);
+  if (statusSelect) statusSelect.addEventListener('change', filterUsers);
+  
+  // Add event delegation for status toggle and delete buttons
+  document.addEventListener('click', function(event) {
+    // Handle status toggle
+    if (event.target.closest('button[name="toggle_status"]')) {
+      const button = event.target.closest('button[name="toggle_status"]');
+      const form = button.closest('form');
+      const statusInput = form.querySelector('input[name="status"]');
+      
+      // Toggle status for visual feedback before form submission
+      const newStatus = statusInput.value === 'active' ? 'inactive' : 'active';
+      statusInput.value = newStatus;
+      
+      // Update button appearance
+      button.className = `px-2 py-1 text-xs rounded-full font-medium ${
+        newStatus === 'active' 
+          ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+          : 'bg-red-100 text-red-800 hover:bg-red-200'
+      }`;
+      button.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+      
+      // Submit the form
+      form.submit();
+    }
+  });
+}
+
+/**
+ * Filter users based on search and filter inputs
+ */
+function filterUsers() {
+  const searchTerm = document.getElementById('search').value.toLowerCase();
+  const roleFilter = document.getElementById('role').value;
+  const statusFilter = document.getElementById('status').value;
+  const rows = document.querySelectorAll('#usersTable tbody tr');
+  
+  rows.forEach(row => {
+    const name = row.querySelector('td:nth-child(2) .text-sm').textContent.toLowerCase();
+    const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+    const role = row.querySelector('td:nth-child(4) span').textContent.toLowerCase();
+    const status = row.querySelector('td:nth-child(5) button').textContent.toLowerCase();
+    
+    const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+    const matchesRole = !roleFilter || role === roleFilter.toLowerCase();
+    const matchesStatus = !statusFilter || status === statusFilter.toLowerCase();
+    
+    row.style.display = (matchesSearch && matchesRole && matchesStatus) ? '' : 'none';
+  });
+}
 
 // Dynamic Model Dropdown for Edit Product
 const makeSelect = document.getElementById("make");
