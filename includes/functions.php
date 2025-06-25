@@ -355,7 +355,7 @@ function getPurchasedItemsByUserId($connection, $user_id)
  */
 function getUserWithAddress($connection, $user_id) {
     $stmt = $connection->prepare(
-        "SELECT u.*, ua.address, ua.city, ua.state
+        "SELECT u.*, ua.address, ua.city, ua.state, ua.country
         FROM users u 
         LEFT JOIN user_addresses ua ON u.id = ua.address_user_id 
         WHERE u.id = ?"
