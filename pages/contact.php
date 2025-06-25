@@ -28,7 +28,19 @@
         <!-- Contact Section -->
         <div class="container-md justify-content-center align-items-center">
 
-            <form action="/Projects/AuraEdition/process/contactProcess.php" method="POST" class="contact-form col-md-8 mx-auto p-4 bg-light shadow rounded" >
+        <?php if (isset($_GET['status'])): ?>
+            <?php if ($_GET['status'] === 'success'): ?>
+                <div class="w-100 mb-4 p-4 rounded text-white bg-green-500 text-center font-semibold">
+                    Your message has been sent successfully!
+                </div>
+            <?php elseif ($_GET['status'] === 'error'): ?>
+                <div class="w-100 mb-4 p-4 rounded text-white bg-red-500 text-center font-semibold">
+                    There was an error sending your message. Please try again.
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
+            <form action="/Projects/AuraEdition/process/contactProcess.php" method="POST" class="contact-form col-md-8 mx-auto p-4 bg-light shadow rounded">
 
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -45,7 +57,7 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="_replyto" required>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
                     <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
@@ -56,6 +68,7 @@
         <!-- Contact Section -->
 
     </div>
+
 
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
