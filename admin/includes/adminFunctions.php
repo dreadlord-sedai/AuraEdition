@@ -315,4 +315,13 @@ function deleteMake($connection, $make_id)
     $stmt->close();
 }
 
+function deleteModel($connection, $model_id)
+{
+    $stmt = $connection->prepare("DELETE FROM model WHERE model_id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("i", $model_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
 /* Category Functions */
