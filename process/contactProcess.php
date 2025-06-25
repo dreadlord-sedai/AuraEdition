@@ -23,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // SMTP configuration
         $mail->isSMTP();
-        $mail->Host = 'smtp.example.com'; // SMTP server
+        $mail->Host = 'smtp.gmail.com'; // SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'your@email.com'; // SMTP username
-        $mail->Password = 'yourpassword';   // SMTP password
+        $mail->Username = 'dahamigaveshna@gmail.com'; // SMTP username
+        $mail->Password = 'doyl gwt ypdm phwt';   // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Or PHPMailer::ENCRYPTION_SMTPS
         $mail->Port = 587; // 465 for SMTPS
 
         // Recipients
         $mail->setFrom($email, $name);
-        $mail->addAddress('your@email.com', 'Site Admin'); // Your receiving email
+        $mail->addAddress('dahamifabbio@gmail.com', 'Site Admin'); // Your receiving email
 
         // Content
         $mail->isHTML(true);

@@ -51,7 +51,7 @@
                     <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                <button type="submit" name="submit" value="Send Message" class="btn btn-primary w-100">Send Message</button>
         </div>
         <!-- Contact Section -->
 
