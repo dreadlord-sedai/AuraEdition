@@ -61,20 +61,13 @@ $order = $data['order'];
                         <div>
                             <h2 class="text-gray-600 text-sm uppercase tracking-wider mb-2">Bill To</h2>
                             <div class="text-sm">
-                                <p class="font-semibold"><?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
+                                <?php
+                                $user = getUserWithAddress($connection, $user_id);
+                                ?>
+                                <p class="font-semibold"><?php echo htmlspecialchars($user['fname'] ?? '') . ' ' . htmlspecialchars($user['lname'] ?? ''); ?></p>
                                 <p class="text-gray-600"><?php echo htmlspecialchars($user['address'] ?? ''); ?></p>
-                                <p class="text-gray-600"><?php echo htmlspecialchars($user['city'] ?? '') . ', ' . htmlspecialchars($user['state'] ?? '') . ' ' . htmlspecialchars($user['zip'] ?? ''); ?></p>
-                                <p class="text-gray-600 mt-2"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
-                                <p class="text-gray-600"><?php echo htmlspecialchars($user['phone'] ?? ''); ?></p>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="text-gray-600 text-sm uppercase tracking-wider mb-2">Ship To</h2>
-                            <div class="text-sm">
-                                <p class="font-semibold"><?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
-                                <p class="text-gray-600"><?php echo htmlspecialchars($user['address'] ?? ''); ?></p>
-                                <p class="text-gray-600"><?php echo htmlspecialchars($user['city'] ?? '') . ', ' . htmlspecialchars($user['state'] ?? '') . ' ' . htmlspecialchars($user['zip'] ?? ''); ?></p>
-                            </div>
+                                <p class="text-gray-600"><?php echo htmlspecialchars($user['city'] ?? '') . ', ' . htmlspecialchars($user['state'] ?? ''); ?></p>
+                                <p class="text-gray-600 mt-2"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>                            </div>
                         </div>
                     </div>
 
@@ -120,10 +113,6 @@ $order = $data['order'];
                             <div>
                                 <p class="text-gray-600 uppercase tracking-wider mb-1">Payment Method</p>
                                 <p class="font-semibold">Credit Card ending in 1234</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-gray-600 uppercase tracking-wider mb-1">Payment Status</p>
-                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Paid</span>
                             </div>
                         </div>
                     </div>
