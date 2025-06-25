@@ -28,7 +28,7 @@
         <!-- Contact Section -->
         <div class="container-md justify-content-center align-items-center">
 
-            <form action="" method="POST" class="contact-form col-md-8 mx-auto p-4 bg-light shadow rounded">
+            <form action="/Projects/AuraEdition/process/contactProcess.php" method="POST" class="contact-form col-md-8 mx-auto p-4 bg-light shadow rounded" >
 
                 <div class="row mb-3">
                     <div class="col-md-6">
