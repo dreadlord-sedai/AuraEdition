@@ -68,7 +68,7 @@ if (!$user || $user['role'] != "admin") {
                                         <td class='px-4 py-2'><?= htmlspecialchars($make['make_id']) ?></td>
                                         <td class='px-4 py-2'><?= htmlspecialchars($make['make_name']) ?></td>
                                         <td class='px-4 py-2'>
-                                            <a onclick="deleteMake(<?= $make['make_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
+                                            <a href="javascript:void(0)" onclick="deleteMake(<?= $make['make_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
                                         </td>
                                     </tr>
                                 <?php
@@ -120,7 +120,7 @@ if (!$user || $user['role'] != "admin") {
                                         <td class='px-4 py-2'><?= htmlspecialchars($model['model_name']) ?></td>
                                         <td class='px-4 py-2'><?= htmlspecialchars($model['make_name']) ?></td>
                                         <td class='px-4 py-2'>
-                                            <a onclick="deleteModel(<?= $model['model_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
+                                            <a href="javascript:void(0)"  onclick="deleteModel(<?= $model['model_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
                                         </td>
                                     </tr>
                                 <?php
