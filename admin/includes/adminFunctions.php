@@ -325,3 +325,92 @@ function deleteModel($connection, $model_id)
 }
 
 /* Category Functions */
+
+/**
+ * Admin-specific functions
+ */
+
+/**
+ * Get all users with their details
+ * @return array Array of users with their details
+ */
+function getAllUsers($connection) {
+    $sql = "SELECT 
+                u.id, 
+                u.fname, 
+                u.lname, 
+                u.email, 
+                u.role,
+                u.status,
+                u.created_at,
+                ua.address,
+                ua.city,
+                ua.state,
+                ua.country
+            FROM users u
+            LEFT JOIN user_addresses ua ON u.id = ua.address_user_id
+            ORDER BY u.created_at DESC";
+    
+    $stmt = $connection->prepare($sql);
+    if (!$stmt) {
+        error_log("Failed to prepare statement: " . $connection->error);
+        return [];
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $users = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row;
+    }
+    
+    $stmt->close();
+    return $users;
+}
+
+/**
+ * Update user status (active/inactive)
+ * @param int $userId User ID
+ * @param string $status New status ('active' or 'inactive')
+ * @return bool True on success, false on failure
+ */
+function updateUserStatus($connection, $userId, $status) {
+    $sql = "UPDATE users SET status = ? WHERE id = ?";
+    $stmt = $connection->prepare($sql);
+    if (!$stmt) return false;
+    
+    $stmt->bind_param("si", $status, $userId);
+    $result = $stmt->execute();
+    $stmt->close();
+    
+    return $result;
+}
+
+/**
+ * Delete a user
+ * @param int $userId User ID to delete
+ * @return bool True on success, false on failure
+ */
+function deleteUser($connection, $userId) {
+    $connection->begin_transaction();
+    
+    try {
+        // Delete from user_addresses first (due to foreign key constraint)
+        $stmt1 = $connection->prepare("DELETE FROM user_addresses WHERE address_user_id = ?");
+        $stmt1->bind_param("i", $userId);
+        $stmt1->execute();
+        
+        // Then delete the user
+        $stmt2 = $connection->prepare("DELETE FROM users WHERE id = ?");
+        $stmt2->bind_param("i", $userId);
+        $stmt2->execute();
+        
+        $connection->commit();
+        return true;
+    } catch (Exception $e) {
+        $connection->rollback();
+        error_log("Error deleting user: " . $e->getMessage());
+        return false;
+    }
+}
