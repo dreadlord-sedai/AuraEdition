@@ -376,3 +376,50 @@ function addToWishlist(vehicleId) {
     request.send("vehicle_id=" + encodeURIComponent(vehicleId));
 }
 /* WISHLIST */
+
+/* ACCOUNT PAGE */
+function setupAccountPage() {
+    const editBtn = document.getElementById('editPersonalInfo');
+    const cancelBtn = document.getElementById('cancelEdit');
+    const formInputs = document.querySelectorAll('#personalInfoForm input, #personalInfoForm select');
+    const actions = document.getElementById('formActions');
+
+    if (editBtn) {
+        editBtn.addEventListener('click', () => {
+            formInputs.forEach(inp => {
+                if (inp.tagName === 'SELECT') {
+                    inp.disabled = false;
+                } else {
+                    inp.removeAttribute('readonly');
+                    inp.classList.remove('bg-gray-50');
+                    inp.classList.add('bg-white');
+                }
+            });
+            actions?.classList.remove('hidden');
+            editBtn.classList.add('hidden');
+        });
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            formInputs.forEach(inp => {
+                if (inp.tagName === 'SELECT') {
+                    inp.disabled = true;
+                } else {
+                    inp.setAttribute('readonly', true);
+                    inp.classList.add('bg-gray-50');
+                    inp.classList.remove('bg-white');
+                }
+            });
+            actions?.classList.add('hidden');
+            editBtn?.classList.remove('hidden');
+        });
+    }
+}
+
+// Initialize account page functionality when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('personalInfoForm')) {
+        setupAccountPage();
+    }
+});
