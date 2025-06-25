@@ -1,7 +1,33 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+
+// Function to log and display errors
+function handleError($message, $e = null) {
+    error_log($message);
+    if ($e) {
+        $message .= "\nError: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+        error_log($message);
+    }
+    $_SESSION['error'] = $message;
+    header("Location: /Projects/AuraEdition/pages/account.php");
+    exit;
+}
+
+// Log the start of the script
+error_log("--- Starting account update process ---");
+error_log("POST data: " . print_r($_POST, true));
+error_log("SESSION data: " . print_r($_SESSION, true));
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -16,14 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
     $fname = trim($_POST['fname'] ?? '');
     $lname = trim($_POST['lname'] ?? '');
     $email = trim($_POST['email'] ?? '');
-    $phone = trim($_POST['phone'] ?? '');
     $current_password = $_POST['current_password'] ?? '';
     $new_password = $_POST['new_password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
     $address = trim($_POST['address'] ?? '');
     $city = trim($_POST['city'] ?? '');
     $state = trim($_POST['state'] ?? '');
-    $zip_code = trim($_POST['zip_code'] ?? '');
 
     // Basic validation
     if (empty($fname) || empty($lname) || empty($email)) {
@@ -85,32 +109,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
     $connection->begin_transaction();
     
     try {
+        error_log("Starting account update for user ID: " . $user_id);
+        
+        // Verify database connection
+        if ($connection->connect_error) {
+            throw new Exception("Database connection failed: " . $connection->connect_error);
+        }
+        
         // Update user table
         if (!empty($new_password)) {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, phone = ?, hashed_password = ? WHERE id = ?");
-            $stmt->bind_param("sssssi", $fname, $lname, $email, $phone, $hashed_password, $user_id);
+            $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, hashed_password = ? WHERE id = ?");
+            $stmt->bind_param("ssssi", $fname, $lname, $email, $hashed_password, $user_id);
         } else {
-            $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ?, phone = ? WHERE id = ?");
-            $stmt->bind_param("ssssi", $fname, $lname, $email, $phone, $user_id);
+            $stmt = $connection->prepare("UPDATE users SET fname = ?, lname = ?, email = ? WHERE id = ?");
+            $stmt->bind_param("sssi", $fname, $lname, $email, $user_id);
         }
         $stmt->execute();
+        error_log("Updated user table for user ID: " . $user_id);
 
         // Update or insert address
-        $stmt = $connection->prepare("SELECT address_user_id FROM user_addresses WHERE address_user_id = ?");
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
+        // Check if address exists
+        $checkStmt = $connection->prepare("SELECT address_id FROM user_addresses WHERE address_user_id = ?");
+        if (!$checkStmt) {
+            throw new Exception("Prepare failed: " . $connection->error);
+        }
         
-        if ($stmt->get_result()->num_rows > 0) {
+        $checkStmt->bind_param("i", $user_id);
+        if (!$checkStmt->execute()) {
+            throw new Exception("Execute failed: " . $checkStmt->error);
+        }
+        
+        $addressExists = $checkStmt->get_result()->num_rows > 0;
+        $checkStmt->close();
+        
+        // Default country to empty string if not provided
+        $country = '';
+        
+        if ($addressExists) {
             // Update existing address
-            $stmt = $connection->prepare("UPDATE user_addresses SET address = ?, city = ?, state = ?, zip_code = ? WHERE address_user_id = ?");
-            $stmt->bind_param("ssssi", $address, $city, $state, $zip_code, $user_id);
+            error_log("Updating existing address for user ID: " . $user_id);
+            $stmt = $connection->prepare("UPDATE user_addresses SET address = ?, city = ?, state = ?, country = ? WHERE address_user_id = ?");
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . $connection->error);
+            }
+            $stmt->bind_param("ssssi", $address, $city, $state, $country, $user_id);
         } else {
             // Insert new address
-            $stmt = $connection->prepare("INSERT INTO user_addresses (address_user_id, address, city, state, zip_code) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("issss", $user_id, $address, $city, $state, $zip_code);
+            error_log("Creating new address for user ID: " . $user_id);
+            $stmt = $connection->prepare("INSERT INTO user_addresses (address_user_id, address, city, state, country) VALUES (?, ?, ?, ?, ?)");
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . $connection->error);
+            }
+            $stmt->bind_param("issss", $user_id, $address, $city, $state, $country);
         }
-        $stmt->execute();
+        if (!$stmt->execute()) {
+            throw new Exception("Execute failed: " . $stmt->error);
+        }
+        error_log("Successfully " . ($addressExists ? "updated" : "inserted") . " address for user ID: " . $user_id);
 
         // Commit transaction
         $connection->commit();
@@ -118,14 +174,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
         $_SESSION['success'] = "Account updated successfully!";
     } catch (Exception $e) {
         // Rollback transaction on error
-        $connection->rollback();
-        $_SESSION['error'] = "An error occurred while updating your account. Please try again.";
-        error_log("Update account error: " . $e->getMessage());
+        if (isset($connection)) {
+            $connection->rollback();
+        }
+        handleError("An error occurred while updating your account. Please try again.", $e);
     }
 
+    // Log the redirect
+    error_log("Redirecting to account page");
     header("Location: /Projects/AuraEdition/pages/account.php");
     exit;
 } else {
+    // Log invalid request method
+    error_log("Invalid request method: " . $_SERVER['REQUEST_METHOD']);
+    $_SESSION['error'] = "Invalid request method.";
     header("Location: /Projects/AuraEdition/pages/account.php");
     exit;
 }
+
+// Log the end of the script
+error_log("--- End of account update process ---");
