@@ -87,7 +87,7 @@ if (!$user || $user['role'] != "admin") {
                         <h4 class="text-2xl font-semibold mb-2 text-light">Vehicle Models</h4>
 
                         <!-- Add Model Form -->
-                        <form method="POST" class="mb-4 flex gap-2">
+                        <form method="POST" class="mb-4 flex gap-2" onsubmit="return addModel(event)">
                             <input type="text" name="model_name" placeholder="New Model Name" required class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
                             <select name="make_id" required class="form-select px-2 py-1 rounded">
                                 <option value="">Select Make</option>

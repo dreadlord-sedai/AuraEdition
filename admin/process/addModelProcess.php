@@ -11,9 +11,10 @@ if (!$user || $user['role'] != "admin") {
 }
 
 // Process the form submission for adding a make
-if (isset($_POST['name'])) {
-    $make_name = $_POST['name'];
-    addMake($connection, $make_name);
+if (isset($_POST['name'] ) && !empty($_POST['make_id'])) {
+    $model_name = $_POST['name'];
+    $make_id = $_POST['make_id'];
+    addModel($connection, $model_name, $make_id);
     echo "success";
     exit;
 }

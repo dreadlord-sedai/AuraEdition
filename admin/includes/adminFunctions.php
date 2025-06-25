@@ -297,4 +297,13 @@ function addMake($connection, $make_name)
     $stmt->close();
 }
 
+function addModel($connection, $model_name, $make_id)
+{
+    $stmt = $connection->prepare("INSERT INTO model (model_name, model_make_id) VALUES (?, ?)");
+    if (!$stmt) return null;
+    $stmt->bind_param("si", $model_name, $make_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
 /* Category Functions */
