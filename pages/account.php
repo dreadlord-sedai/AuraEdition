@@ -70,7 +70,8 @@ $user = $result->fetch_assoc();
 
             <!-- Account Form -->
             <div class="p-6">
-                <form action="/Projects/AuraEdition/process/updateAccount.php" method="POST" class="space-y-6">
+                <div id="formErrors" class="mb-4"></div>
+                <form id="accountForm" action="/Projects/AuraEdition/process/updateAccount.php" method="POST" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-4">
                             <div>

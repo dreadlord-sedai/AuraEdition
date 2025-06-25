@@ -345,8 +345,30 @@ function getPurchasedItemsByUserId($connection, $user_id)
     return $purchased_items;
 }
 
-// Wishlist Functions //
+// User Functions //
 
+/**
+ * Get user data with address information
+ * @param mysqli $connection Database connection
+ * @param int $user_id User ID
+ * @return array|null User data or null if not found
+ */
+function getUserWithAddress($connection, $user_id) {
+    $stmt = $connection->prepare(
+        "SELECT u.*, ua.address, ua.city, ua.state, ua.zip_code 
+        FROM users u 
+        LEFT JOIN user_addresses ua ON u.id = ua.address_user_id 
+        WHERE u.id = ?"
+    );
+    if (!$stmt) return null;
+    
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+// Wishlist Functions //
 function addToWishlist($connection, $user_id, $vehicle_id)
 {
     if (!isset($user_id) || !isset($vehicle_id)) {
