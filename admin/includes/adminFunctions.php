@@ -327,6 +327,40 @@ function deleteModel($connection, $model_id)
 /* Category Functions */
 
 /**
+ * Toggle user role between admin and user
+ * @param mysqli $connection Database connection
+ * @param int $userId User ID to toggle role for
+ * @return bool True on success, false on failure
+ */
+function toggleUserRole($connection, $userId) {
+    // First check if the role column exists
+    $checkColumn = $connection->query("SHOW COLUMNS FROM users LIKE 'role'");
+    if ($checkColumn->num_rows === 0) {
+        return false; // Role column doesn't exist
+    }
+    
+    // Get current role
+    $stmt = $connection->prepare("SELECT role FROM users WHERE id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 0) {
+        return false; // User not found
+    }
+    
+    $user = $result->fetch_assoc();
+    $newRole = ($user['role'] === 'admin') ? 'user' : 'admin';
+    
+    // Update role
+    $updateStmt = $connection->prepare("UPDATE users SET role = ? WHERE id = ?");
+    $updateStmt->bind_param("si", $newRole, $userId);
+    $success = $updateStmt->execute();
+    
+    return $success;
+}
+
+/**
  * Admin-specific functions
  */
 

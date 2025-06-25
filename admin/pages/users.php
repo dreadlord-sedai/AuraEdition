@@ -19,19 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $_SESSION['error_message'] = 'Failed to delete user';
         }
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit();
-    } elseif (isset($_POST['toggle_status'])) {
+    } elseif (isset($_POST['toggle_role'])) {
         $userId = (int)$_POST['user_id'];
-        $status = $_POST['status'] === 'active' ? 'inactive' : 'active';
-        if (updateUserStatus($connection, $userId, $status)) {
-            $_SESSION['success_message'] = 'User status updated successfully';
+        if (toggleUserRole($connection, $userId)) {
+            $_SESSION['success_message'] = 'User role updated successfully';
         } else {
-            $_SESSION['error_message'] = 'Failed to update user status';
+            $_SESSION['error_message'] = 'Failed to update user role';
         }
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit();
     }
+    
+    // Redirect to prevent form resubmission
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
 }
 
 // Get search and filter parameters
@@ -145,11 +144,18 @@ $users = getAllUsers($connection);
                                                     <?php echo ucfirst(htmlspecialchars($user['role'])); ?>
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="edit-user.php?id=<?php echo $user['id']; ?>" class="text-blue-500 hover:text-blue-700 mr-4">Edit</a>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                                <form method="POST" class="inline">
+                                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                                    <button type="submit" name="toggle_role" class="px-2 py-1 text-xs font-medium rounded <?php echo $user['role'] === 'admin' ? 'bg-purple-100 text-purple-800 hover:bg-purple-200' : 'bg-blue-100 text-blue-800 hover:bg-blue-200'; ?>">
+                                                        Make <?php echo $user['role'] === 'admin' ? 'User' : 'Admin'; ?>
+                                                    </button>
+                                                </form>
                                                 <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
                                                     <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                                    <button type="submit" name="delete_user" class="text-red-500 hover:text-red-700">Delete</button>
+                                                    <button type="submit" name="delete_user" class="px-2 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700">
+                                                        Delete
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
