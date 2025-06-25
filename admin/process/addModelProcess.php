@@ -1,6 +1,6 @@
-<?php 
+<?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php'; 
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 
 // Check if user is logged in and is admin
@@ -11,11 +11,13 @@ if (!$user || $user['role'] != "admin") {
 }
 
 // Process the form submission for adding a make
-if (isset($_POST['name'] ) && !empty($_POST['make_id'])) {
+if (isset($_POST['name']) && !empty($_POST['make_id'])) {
     $model_name = $_POST['name'];
     $make_id = $_POST['make_id'];
-    addModel($connection, $model_name, $make_id);
-    echo "success";
-    exit;
-}
 
+    if (addModel($connection, $model_name, $make_id)) {
+        echo "<script>alert('Model added successfully!');</script>";
+    } else {
+        echo "<script>alert('Failed to add model. Please try again.');</script>";
+    }
+}
