@@ -15,9 +15,8 @@ if (isset($_POST['name']) && !empty($_POST['make_id'])) {
     $model_name = $_POST['name'];
     $make_id = $_POST['make_id'];
 
-    if (addModel($connection, $model_name, $make_id)) {
-        echo "<script>alert('Model added successfully!');</script>";
-    } else {
-        echo "<script>alert('Failed to add model. Please try again.');</script>";
-    }
+    addModel($connection, $model_name, $make_id);
+    echo "success";
+    exit;
+  
 }

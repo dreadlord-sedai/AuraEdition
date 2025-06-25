@@ -90,10 +90,10 @@ if (!$user || $user['role'] != "admin") {
                         <form method="POST" class="mb-4 flex gap-2" onsubmit="return addModel(event)">
                             <input type="text" name="model_name" id="model_name" placeholder="New Model Name" required 
                             class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
-                            <select name="make_id" required class="form-select px-2 py-1 rounded">
+                            <select name="make_id" id="make_id" required class="form-select px-2 py-1 rounded">
                                 <option value="">Select Make</option>
                                 <?php foreach ($makes as $make): ?>
-                                    <option id="make_id" value="<?= htmlspecialchars($make['make_id']) ?>"><?= htmlspecialchars($make['make_name']) ?></option>
+                                    <option value="<?= htmlspecialchars($make['make_id']) ?>"><?= htmlspecialchars($make['make_name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <button type="submit" name="add_model" class="btn btn-primary">Add Model</button>
