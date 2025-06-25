@@ -132,4 +132,30 @@ function addModel(event) {
   return false; // Prevent default form submission
 }
 
+function deleteMake(makeId) {
+  if (confirm("Are you sure you want to delete this make?")) {
+    var request = new XMLHttpRequest();
+    request.open(
+      "POST",
+      "/Projects/AuraEdition/admin/process/deleteMakeProcess.php",
+      true
+    );
+    request.setRequestHeader(
+      "Content-Type",
+      "application/x-www-form-urlencoded"
+    );
+    request.send("id=" + encodeURIComponent(makeId));
+    request.onreadystatechange = function () {
+      if (request.readyState === XMLHttpRequest.DONE) {
+        if (request.status === 200) {
+          alert("Make deleted successfully.");
+          window.location.reload(); // Reload the page to reflect changes
+        } else {
+          alert("Error deleting make: " + request.responseText);
+        }
+      }
+    };
+  }
+}
+
 /* Category Management */

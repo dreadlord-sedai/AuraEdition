@@ -306,4 +306,13 @@ function addModel($connection, $model_name, $make_id)
     $stmt->close();
 }
 
+function deleteMake($connection, $make_id)
+{
+    $stmt = $connection->prepare("DELETE FROM makes WHERE make_id = ?");
+    if (!$stmt) return null;
+    $stmt->bind_param("i", $make_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
 /* Category Functions */

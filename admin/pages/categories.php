@@ -68,7 +68,6 @@ if (!$user || $user['role'] != "admin") {
                                         <td class='px-4 py-2'><?= htmlspecialchars($make['make_id']) ?></td>
                                         <td class='px-4 py-2'><?= htmlspecialchars($make['make_name']) ?></td>
                                         <td class='px-4 py-2'>
-                                            <a href='/Projects/AuraEdition/admin/pages/editMake.php?id=<?= htmlspecialchars($make['make_id']) ?>' class='text-blue-500 hover:underline'>Edit</a> |
                                             <a onclick="deleteMake(<?= $make['make_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
                                         </td>
                                     </tr>
@@ -121,7 +120,6 @@ if (!$user || $user['role'] != "admin") {
                                         <td class='px-4 py-2'><?= htmlspecialchars($model['model_name']) ?></td>
                                         <td class='px-4 py-2'><?= htmlspecialchars($model['make_name']) ?></td>
                                         <td class='px-4 py-2'>
-                                            <a href='/Projects/AuraEdition/admin/pages/editModel.php?id=<?= htmlspecialchars($model['model_id']) ?>' class='text-blue-500 hover:underline'>Edit</a> |
                                             <a onclick="deleteModel(<?= $model['model_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
                                         </td>
                                     </tr>
