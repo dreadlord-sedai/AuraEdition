@@ -11,16 +11,13 @@ if (!isset($_SESSION['user_id'])) {
 
 // Get user data with address
 $user_id = $_SESSION['user_id'];
-$stmt = $connection->prepare(
-    "SELECT u.*, ua.address, ua.city, ua.state, ua.zip_code 
-    FROM users u 
-    LEFT JOIN user_addresses ua ON u.id = ua.address_user_id 
-    WHERE u.id = ?"
-);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$user = getUserWithAddress($connection, $user_id);
+
+if (!$user) {
+    $_SESSION['error'] = 'User not found';
+    header("Location: /Projects/AuraEdition/auth/login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -99,17 +96,6 @@ $user = $result->fetch_assoc();
                                         required>
                                 </div>
                             </div>
-                            <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas fa-phone text-gray-400"></i>
-                                    </div>
-                                    <input type="tel" name="phone" id="phone" value="<?= htmlspecialchars($user['phone'] ?? '') ?>" 
-                                        class="block w-full pl-10 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                                        placeholder="+1 (___) ___-____">
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -169,21 +155,9 @@ $user = $result->fetch_assoc();
                                 </div>
                                 <div>
                                     <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State</label>
-                                    <select name="state" id="state" 
-                                        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
-                                        <option value="" <?= empty($user['state']) ? 'selected' : '' ?>>Select State</option>
-                                        <option value="AL" <?= ($user['state'] ?? '') === 'AL' ? 'selected' : '' ?>>Alabama</option>
-                                        <!-- Add more states as needed -->
-                                        <option value="NY" <?= ($user['state'] ?? '') === 'NY' ? 'selected' : '' ?>>New York</option>
-                                        <option value="CA" <?= ($user['state'] ?? '') === 'CA' ? 'selected' : '' ?>>California</option>
-                                        <!-- Add all 50 states -->
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="zip_code" class="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
-                                    <input type="text" name="zip_code" id="zip_code" value="<?= htmlspecialchars($user['zip_code'] ?? '') ?>" 
+                                    <input type="text" name="state" id="state" value="<?= htmlspecialchars($user['state'] ?? '') ?>" 
                                         class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                                        placeholder="ZIP code">
+                                        placeholder="State">
                                 </div>
                             </div>
                         </div>
