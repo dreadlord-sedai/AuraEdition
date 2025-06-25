@@ -26,13 +26,23 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
             <!-- Display login or logout button based on session status -->
             <?php
             if (isset($_SESSION['user_id'])) {
-                echo '<a href="/Projects/AuraEdition/process/logoutProcess.php" class="text-decoration-none text-white">
-                <button class="border border-red-500 text-red-500 px-4 py-1 rounded hover:bg-red-500 hover:text-white transition d-flex align-items-center">
-                    Logout
-                </button>
-            </a>';
+                echo '<a href="/Projects/AuraEdition/pages/account.php" class="text-decoration-none text-white mr-4">
+                    <button class="border border-blue-500 text-blue-500 px-4 py-1 rounded hover:bg-blue-500 hover:text-white transition d-flex align-items-center">
+                        My Account
+                    </button>
+                </a>
+                <a href="/Projects/AuraEdition/process/logoutProcess.php" class="text-decoration-none text-white">
+                    <button class="border border-red-500 text-red-500 px-4 py-1 rounded hover:bg-red-500 hover:text-white transition d-flex align-items-center">
+                        Logout
+                    </button>
+                </a>';
             } else {
-                echo '<a href="/Projects/AuraEdition/auth/login.php" class="text-decoration-none text-white">
+                echo '<a href="/Projects/AuraEdition/auth/register.php" class="text-decoration-none text-white mr-4">
+                    <button class="border border-green-500 text-green-500 px-4 py-1 rounded hover:bg-green-500 hover:text-white transition d-flex align-items-center">
+                        Register
+                    </button>
+                </a>
+                <a href="/Projects/AuraEdition/auth/login.php" class="text-decoration-none text-white">
                 <button class="border border-green-500 text-green-500 px-4 py-1 rounded hover:bg-green-500 hover:text-white transition d-flex align-items-center">
                     Login
                 </button>
