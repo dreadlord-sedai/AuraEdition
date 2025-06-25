@@ -33,10 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-// Get search and filter parameters
-$search = $_GET['search'] ?? '';
-$role = $_GET['role'] ?? '';
-
 // Get all users
 $users = getAllUsers($connection);
 ?>
