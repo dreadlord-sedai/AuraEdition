@@ -414,3 +414,23 @@ function removeFromWishlist($connection, $wishlist_item_id)
 
 
 // Wishlist Functions //
+
+
+// Pagination Functions //
+function get_vehicles_paginated($connection, $limit, $offset) {
+    $stmt = $connection->prepare("SELECT * FROM vehicles ORDER BY id DESC LIMIT ? OFFSET ? ");
+    $stmt->bind_param("ii", $limit, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $vehicles = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $vehicles;
+}
+
+function get_total_vehicles($connection) {
+    $result = $connection->query("SELECT COUNT(*) as count FROM vehicles");
+    $row = $result->fetch_assoc();
+    return $row['count'];
+}
+
+// Pagination Functions //
