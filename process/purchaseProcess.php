@@ -16,19 +16,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        
+
+
 
         // 1. Get cart items from session
         $vehicles = $_SESSION['vehicles'];
         $total_price = isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
+        $amount = $total_price;
+        if ($amount <= 0) {
+            echo "Error: Total price is zero or negative";
+            exit;
+        }
 
         // 2. Process the payment
         // For this example, we simulate payment success
-        $payment_success = true;
+        // $payment_success = true;
 
-        if (!$payment_success) {
-            echo "Error: Payment failed";
-            exit;
-        }
+        // if (!$payment_success) {
+        //     echo "Error: Payment failed";
+        //     exit;
+        // }
+
+        $order_id = uniqid('order_'); // Generate a unique order ID
+
+        // Generate order ID and amount
+        $merchant_id = "1226262";
+        $merchant_secret = "MTI5OTQ4NjUwNjI0MDgzNjM1MDgxMTkxMDQyOTAwNDg4Mjk5NDgy";
+        $currency = "LKR";
+
+        $hash = strtoupper(
+            md5(
+                $merchant_id .
+                $order_id .
+                number_format($amount, 2, '.', '') .
+                $currency .
+                strtoupper(md5($merchant_secret))
+            )
+        );
 
         // 3. Create order record in database
         // Assuming you have an orders table and order_items table
