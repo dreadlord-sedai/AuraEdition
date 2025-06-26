@@ -3,48 +3,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 
 $Error_message = "";
-
-// Check if the form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the form data and trim whitespace
-    $fname = trim($_POST['fname'] ?? '');
-    $lname = trim($_POST['lname'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    // Validate input
-    if ($fname && $lname && $email && $password) {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $Error_message = "Invalid email format.";
-        } else {
-            // Prepare and execute the SQL statement to check if the email already exists
-            $select_user_id = $connection->prepare("SELECT id FROM users WHERE email = ?");
-            $select_user_id->bind_param("s", $email);
-            $select_user_id->execute();
-            $select_user_id->store_result();
-
-            if ($select_user_id->num_rows > 0) {
-                $Error_message = "Email already exists. Please choose a different email.";
-            } else {
-                // Email does not exist, proceed with registration
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $register_user_query = $connection->prepare("INSERT INTO users (fname, lname, email, hashed_password,registerd_date) VALUES (?, ?, ?, ?, NOW())");
-                $register_user_query->bind_param("ssss", $fname, $lname, $email, $hashed_password);
-                if ($register_user_query->execute()) {
-                    $register_user_query->close();
-                    header("Location: /Projects/AuraEdition/auth/login.php?registered=1");
-                    exit;
-                } else {
-                    $Error_message = "Registration failed. Please try again.";
-                    $register_user_query->close();
-                }
-            }
-            $select_user_id->close();
-        }
-    } else {
-        $Error_message = "Please fill in all fields.";
-    }
-}
 ?>
 
 
@@ -68,14 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 class="text-2xl font-bold mb-4 text-white">Register</h2>
 
                     <!-- Display message-->
-                    <?php if (!empty($Error_message)): ?>
-                    <div class="mb-4 text-center text-red-200 font-semibold  bg-white/20 border border-red-500 rounded px-2 py-1">
-                        <?= htmlspecialchars($Error_message) ?>
+                    <?php if (isset($_GET['error']) && !empty($_GET['error'])): ?>
+                    <div class="mb-4 w-full p-4 rounded text-white bg-red-500 text-center font-semibold">
+                        <?= htmlspecialchars($_GET['error']) ?>
                     </div>
                     <?php endif; ?>
                     <!-- Display message-->
 
-                    <form action="/Projects/AuraEdition/auth/register.php" method="POST">
+                    <form action="/Projects/AuraEdition/auth/registerProcess.php" method="POST">
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div class="">
                                 <label for="fname" class="block text-white text-sm font-bold mb-2">First Name</label>
