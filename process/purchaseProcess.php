@@ -25,22 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Generate PayHere payment parameters
         $order_id = uniqid('order_');
         $merchant_id = "1226262";
-        $merchant_secret = "MTI5OTQ4NjUwNjI0MDgzNjM1MDgxMTkxMDQyOTAwNDg4Mjk5NDgy";
         $currency = "LKR";
-
-        $hash = strtoupper(
-            md5(
-                $merchant_id .
-                $order_id .
-                number_format($amount, 2, '.', '') .
-                $currency .
-                strtoupper(md5($merchant_secret))
-            )
-        );
 
         // Get user info for PayHere
         $user_id = $_SESSION['user_id'];
-        $user = getUserById($connection, $user_id); // You need to implement this function
+        $user = getUserWithAddress($connection, $user_id);
 
         // Return payment data to JS
         echo json_encode([
@@ -55,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "items" => "Vehicle Purchase",
                 "amount" => number_format($amount, 2, '.', ''),
                 "currency" => $currency,
-                "hash" => $hash,
                 "first_name" => $user['fname'],
                 "last_name" => $user['lname'],
                 "email" => $user['email'],
@@ -63,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "address" => $user['address'],
                 "city" => $user['city'],
                 "country" => $user['country'],
-                // Add delivery fields if needed
             ]
         ]);
         exit;
