@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $merchant_secret = 'NTIxMDI1NDMzMzU0NjIzNjk1MTEwNjI1OTg4NjgyMDI3Njg5MTY0'; // Replace with your actual merchant secret for your domain/app
+        $merchant_secret = 'MjgxNzA1MDMzMTk3NzczNDYzMzMyODc4MjcxODUyMjkwNDE2Nzgz'; // Replace with your actual merchant secret for your domain/app
 
         $hash = strtoupper(
             md5(
