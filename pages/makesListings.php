@@ -14,6 +14,13 @@ if (!$make_id) {
 // Get the make details
 $make = getMakeById($connection, $make_id);
 
+// If make not found, redirect or show error
+if (!$make) {
+    echo "<div class='alert alert-danger'>Make not found.</div>";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php";
+    exit();
+}
+
 // Get listings for this specific make
 $listings = getListingsByMake($connection, $make_id);
 ?>
@@ -24,7 +31,7 @@ $listings = getListingsByMake($connection, $make_id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraEdition | <?php echo $make['make_name']; ?> Listings</title>
+    <title>AuraEdition | <?php echo htmlspecialchars($make['make_name']); ?> Listings</title>
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
 </head>
 
