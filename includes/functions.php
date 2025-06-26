@@ -436,18 +436,108 @@ function get_total_vehicles($connection) {
 // Pagination Functions //
 
 function getModels($connection, $make_name = null) {
+    $models = [];
     if ($make_name) {
         $stmt = $connection->prepare("SELECT model_id, model_name FROM model WHERE make_id = (SELECT make_id FROM makes WHERE make_name = ? LIMIT 1)");
         $stmt->bind_param("s", $make_name);
         $stmt->execute();
         $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $models[] = $row;
+        }
+        $stmt->close();
     } else {
         $result = $connection->query("SELECT model_id, model_name FROM model");
+        while ($row = $result->fetch_assoc()) {
+            $models[] = $row;
+        }
     }
-    $models = [];
-    while ($row = $result->fetch_assoc()) {
-        $models[] = $row;
-    }
-    if (isset($stmt)) $stmt->close();
     return $models;
+}
+
+// Get filter/search values
+
+function get_filter_values($connection, $items_per_page, $offset) {
+    $make = $_GET['make'] ?? '';
+$model = $_GET['model'] ?? '';
+$price = $_GET['price'] ?? '';
+$q = $_GET['q'] ?? '';
+
+$where = ["status = 'ACTIVE'"];
+$params = [];
+$types = '';
+
+if ($make) {
+    $where[] = "make_id = (SELECT make_id FROM makes WHERE make_name = ? LIMIT 1)";
+    $params[] = $make;
+    $types .= 's';
+}
+if ($model) {
+    $where[] = "model_id = (SELECT model_id FROM model WHERE model_name = ? LIMIT 1)";
+    $params[] = $model;
+    $types .= 's';
+}
+if ($price) {
+    if ($price == 'under100') {
+        $where[] = "price < 100000";
+    } elseif ($price == '100to250') {
+        $where[] = "price >= 100000 AND price <= 250000";
+    } elseif ($price == 'over250') {
+        $where[] = "price > 250000";
+    }
+}
+if ($q) {
+    $where[] = "(title LIKE ? OR description LIKE ?)";
+    $params[] = "%$q%";
+    $params[] = "%$q%";
+    $types .= 'ss';
+}
+
+$sql = "SELECT * FROM vehicles";
+if ($where) {
+    $sql .= " WHERE " . implode(' AND ', $where);
+}
+$sql .= " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+$params[] = $items_per_page;
+$params[] = $offset;
+$types .= 'ii';
+
+$stmt = $connection->prepare($sql);
+if ($params) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+$All_vehicles = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+// Get total count for pagination (without LIMIT)
+$sql_count = "SELECT COUNT(*) as count FROM vehicles";
+if ($where) {
+    $sql_count .= " WHERE " . implode(' AND ', $where);
+}
+$stmt_count = $connection->prepare($sql_count);
+if ($params && strlen($types) > 2) { // Exclude LIMIT/OFFSET
+    $count_types = substr($types, 0, -2);
+    $count_params = array_slice($params, 0, -2);
+    $stmt_count->bind_param($count_types, ...$count_params);
+}
+$stmt_count->execute();
+$result_count = $stmt_count->get_result();
+$total_vehicles = $result_count->fetch_assoc()['count'] ?? 0;
+$stmt_count->close();
+$total_pages = ceil($total_vehicles / $items_per_page);
+
+$vehicle_images = [];
+foreach ($All_vehicles as $vehicle) {
+    $image = get_vehicle_image($vehicle['id'], $connection);
+    $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+}
+
+return [
+    'All_vehicles' => $All_vehicles,
+    'vehicle_images' => $vehicle_images,
+    'total_vehicles' => $total_vehicles,
+    'total_pages' => $total_pages
+];
 }

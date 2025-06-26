@@ -9,7 +9,7 @@ $q = $_GET['q'] ?? '';
 
 // Fetch all makes
 $makes = getAllMakes($connection);
-
+// Fetch models using the new function
 $models = getModels($connection, $make ?: null);
 ?>
 <nav class="FilterBar navbar navbar-expand-lg bg-light border-bottom mb-4">

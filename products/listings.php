@@ -6,12 +6,12 @@ $items_per_page = 9;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $items_per_page;
 
-// Get total count
-$total_vehicles = get_total_vehicles($connection); // You need to implement this function
-$total_pages = ceil($total_vehicles / $items_per_page);
-
-// Fetch only vehicles for this page
-$All_vehicles = get_vehicles_paginated($connection, $items_per_page, $offset); // You need to implement this function
+// Use the new get_filter_values function
+$filter_results = get_filter_values($connection, $items_per_page, $offset);
+$All_vehicles = $filter_results['All_vehicles'];
+$vehicle_images = $filter_results['vehicle_images'];
+$total_vehicles = $filter_results['total_vehicles'];
+$total_pages = $filter_results['total_pages'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,14 +36,6 @@ $All_vehicles = get_vehicles_paginated($connection, $items_per_page, $offset); /
     <div class="container-md my-5 main-content">
         <h2 class="text-start mb-4">All Listings</h2>
         <div class="row">
-
-            <?php
-            foreach ($All_vehicles as $vehicle) {
-                $image = get_vehicle_image($vehicle['id'], $connection);
-                $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
-            }
-
-            ?>
 
             <!-- Product Cards -->
             <?php foreach ($All_vehicles as $vehicle): ?>
