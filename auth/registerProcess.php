@@ -12,6 +12,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate input
     if ($fname && $lname && $email && $password) {
+        // Password validation: min 8 chars, at least 1 uppercase, 1 number, 1 special char
+        if (strlen($password) < 8 || 
+            !preg_match("/[A-Z]/", $password) || 
+            !preg_match("/[0-9]/", $password) || 
+            !preg_match("/[^A-Za-z0-9]/", $password)) {
+            $Error_message = "Password must be at least 8 characters long and include an uppercase letter, a number, and a special character.";
+            header("Location: /Projects/AuraEdition/auth/register.php?error=" . urlencode($Error_message));
+            exit;
+        }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $Error_message = "Invalid email format.";
             header("Location: /Projects/AuraEdition/auth/register.php?error=" . urlencode($Error_message));
@@ -44,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
                 }
             }
-            $select_user_id->close();
         }
     } else {
         $Error_message = "Please fill in all fields.";
