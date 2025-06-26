@@ -438,7 +438,8 @@ function get_total_vehicles($connection) {
 function getModels($connection, $make_name = null) {
     $models = [];
     if ($make_name) {
-        $stmt = $connection->prepare("SELECT model_id, model_name FROM model WHERE make_id = (SELECT make_id FROM makes WHERE make_name = ? LIMIT 1)");
+        // Use the correct foreign key column name for make in your model table
+        $stmt = $connection->prepare("SELECT model_id, model_name FROM model WHERE model_make_id = (SELECT make_id FROM makes WHERE make_name = ? LIMIT 1)");
         $stmt->bind_param("s", $make_name);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -473,6 +474,7 @@ if ($make) {
     $types .= 's';
 }
 if ($model) {
+    // Use the correct foreign key column name for make in your model table
     $where[] = "model_id = (SELECT model_id FROM model WHERE model_name = ? LIMIT 1)";
     $params[] = $model;
     $types .= 's';

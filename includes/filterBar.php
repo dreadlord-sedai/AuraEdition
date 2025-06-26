@@ -14,7 +14,7 @@ $models = getModels($connection, $make ?: null);
 ?>
 <nav class="FilterBar navbar navbar-expand-lg bg-light border-bottom mb-4">
     <div class="container-md">
-        <form action="" method="GET" class="FilterBar-search row d-flex flex-wrap w-100 gap-2 align-content-around" role="search">
+        <form action="/Projects/AuraEdition/products/listings.php" method="GET" class="FilterBar-search row d-flex flex-wrap w-100 gap-2 align-content-around" role="search">
             <!-- Filter Options -->
             <div class="col d-flex align-items-center gap-2">
                 <button class="btn btn-primary" type="submit">Filter</button>
