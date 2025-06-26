@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Generate PayHere payment parameters
         $order_id = uniqid('order_');
-        $merchant_id = "1226262";
+        $merchant_id = "1224621";
+        $merchant_secret = "MTI5OTQ4NjUwNjI0MDgzNjM1MDgxMTkxMDQyOTAwNDg4Mjk5NDgy";
         $currency = "LKR";
 
         // Get user info for PayHere
@@ -45,26 +46,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Return payment data to JS
+        // Build hash (optional for JS SDK, but you can include it)
+        $hash = strtoupper(
+            md5(
+                $merchant_id .
+                $order_id .
+                number_format($amount, 2, '.', '') .
+                $currency .
+                strtoupper(md5($merchant_secret))
+            )
+        );
+
+        // Build payment array
+        $payment = [
+            "sandbox" => true,
+            "merchant_id" => $merchant_id,
+            "return_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
+            "cancel_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
+            "notify_url" => "http://localhost/Projects/AuraEdition/process/payhereNotify.php",
+            "order_id" => $order_id,
+            "items" => "Vehicle Purchase",
+            "amount" => number_format($amount, 2, '.', ''),
+            "currency" => $currency,
+            "first_name" => $user['fname'],
+            "last_name" => $user['lname'],
+            "email" => $user['email'],
+            "address" => $user['address'],
+            "city" => $user['city'],
+            "country" => $user['country'],
+            "hash" => $hash // Optional for JS SDK
+        ];
+
         echo json_encode([
             "status" => "success",
-            "payment" => [
-                "sandbox" => true,
-                "merchant_id" => $merchant_id,
-                "return_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
-                "cancel_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
-                "notify_url" => "http://localhost/Projects/AuraEdition/process/payhereNotify.php",
-                "order_id" => $order_id,
-                "items" => "Vehicle Purchase",
-                "amount" => number_format($amount, 2, '.', ''),
-                "currency" => $currency,
-                "first_name" => $user['fname'],
-                "last_name" => $user['lname'],
-                "email" => $user['email'],
-                "address" => $user['address'],
-                "city" => $user['city'],
-                "country" => $user['country'],
-            ]
+            "payment" => $payment
         ]);
         exit;
     } catch (Exception $e) {
