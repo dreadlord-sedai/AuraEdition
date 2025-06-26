@@ -6,6 +6,11 @@ $make = $_GET['make'] ?? '';
 $model = $_GET['model'] ?? '';
 $price = $_GET['price'] ?? '';
 $q = $_GET['q'] ?? '';
+
+// Fetch all makes
+$makes = getAllMakes($connection);
+
+$models = getModels($connection, $make ?: null);
 ?>
 <nav class="FilterBar navbar navbar-expand-lg bg-light border-bottom mb-4">
     <div class="container-md">

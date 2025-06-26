@@ -434,3 +434,20 @@ function get_total_vehicles($connection) {
 }
 
 // Pagination Functions //
+
+function getModels($connection, $make_name = null) {
+    if ($make_name) {
+        $stmt = $connection->prepare("SELECT model_id, model_name FROM model WHERE make_id = (SELECT make_id FROM makes WHERE make_name = ? LIMIT 1)");
+        $stmt->bind_param("s", $make_name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    } else {
+        $result = $connection->query("SELECT model_id, model_name FROM model");
+    }
+    $models = [];
+    while ($row = $result->fetch_assoc()) {
+        $models[] = $row;
+    }
+    if (isset($stmt)) $stmt->close();
+    return $models;
+}
