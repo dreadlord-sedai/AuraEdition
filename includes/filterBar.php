@@ -2,15 +2,16 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
 
-$make = $_GET['make'] ?? '';
-$model = $_GET['model'] ?? '';
+// filterBar.php
+$selected_make = $_GET['make'] ?? '';
+$selected_model = $_GET['model'] ?? '';
 $price = $_GET['price'] ?? '';
 $q = $_GET['q'] ?? '';
 
 // Fetch all makes
 $makes = getAllMakes($connection);
 // Fetch models using the new function
-$models = getModels($connection, $make ?: null);
+$models = getModels($connection, $selected_make ?: null);
 ?>
 <nav class="FilterBar navbar navbar-expand-lg bg-light border-bottom mb-4">
     <div class="container-md">
@@ -20,18 +21,18 @@ $models = getModels($connection, $make ?: null);
                 <button class="btn btn-primary" type="submit">Filter</button>
 
                 <select class="form-select me-2" name="make" aria-label="Filter by make">
-                    <option value="" <?= $make == '' ? 'selected' : '' ?>>All Makes</option>
+                    <option value="" <?= $selected_make == '' ? 'selected' : '' ?>>All Makes</option>
                     <?php foreach ($makes as $m): ?>
-                        <option value="<?= htmlspecialchars($m['make_name']) ?>" <?= $make == $m['make_name'] ? 'selected' : '' ?>>
+                        <option value="<?= htmlspecialchars($m['make_name']) ?>" <?= $selected_make == $m['make_name'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($m['make_name']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
 
                 <select class="form-select me-2" name="model" aria-label="Filter by model">
-                    <option value="" <?= $model == '' ? 'selected' : '' ?>>All Models</option>
+                    <option value="" <?= $selected_model == '' ? 'selected' : '' ?>>All Models</option>
                     <?php foreach ($models as $mod): ?>
-                        <option value="<?= htmlspecialchars($mod['model_name']) ?>" <?= $model == $mod['model_name'] ? 'selected' : '' ?>>
+                        <option value="<?= htmlspecialchars($mod['model_name']) ?>" <?= $selected_model == $mod['model_name'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($mod['model_name']) ?>
                         </option>
                     <?php endforeach; ?>
