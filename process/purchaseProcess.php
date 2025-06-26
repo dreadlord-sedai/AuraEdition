@@ -31,6 +31,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = $_SESSION['user_id'];
         $user = getUserWithAddress($connection, $user_id);
 
+        // Defensive check: Make sure $user is valid and has all required fields
+        if (
+            !$user ||
+            empty($user['fname']) ||
+            empty($user['lname']) ||
+            empty($user['email']) ||
+            empty($user['address']) ||
+            empty($user['city']) ||
+            empty($user['country'])
+        ) {
+            echo json_encode(["status" => "error", "message" => "User address details are incomplete."]);
+            exit;
+        }
+
         // Return payment data to JS
         echo json_encode([
             "status" => "success",
@@ -47,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "first_name" => $user['fname'],
                 "last_name" => $user['lname'],
                 "email" => $user['email'],
-                "phone" => $user['phone'],
                 "address" => $user['address'],
                 "city" => $user['city'],
                 "country" => $user['country'],
