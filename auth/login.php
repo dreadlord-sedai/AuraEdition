@@ -51,7 +51,7 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
                     <?php endif; ?>
 
                     <!-- Login form -->
-                    <form action="/Projects/AuraEdition/auth/login.php" method="POST">
+                    <form action="/Projects/AuraEdition/auth/loginProcess.php" method="POST">
                         <div class="mb-4">
                             <label for="email" class="block text-white text-sm font-bold mb-2">Email</label>
                             <input type="email" id="email" name="email" required

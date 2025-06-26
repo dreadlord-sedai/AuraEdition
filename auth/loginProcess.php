@@ -1,5 +1,6 @@
 <?php
-
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
