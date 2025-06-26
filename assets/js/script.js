@@ -194,80 +194,32 @@ function clearCheckout() {
 }
 
 function pay() {
-  // Check if user has Addr
   var request = new XMLHttpRequest();
-
   request.onreadystatechange = function () {
     if (request.readyState == 4) {
-      console.log("Pay response status:", request.status);
-      console.log("Pay response text:", request.responseText);
       if (request.status == 200) {
-        var response = request.responseText.trim();
-        if (response === "success") {
-          // Payment completed. It can be a successful failure.
+        var response = JSON.parse(request.responseText);
+        if (response.status === "success") {
+          var payment = response.payment;
           payhere.onCompleted = function onCompleted(orderId) {
-            console.log("Payment completed. OrderID:" + orderId);
-            // Note: validate the payment and show success or failure page to the customer
+            window.location = "/Projects/AuraEdition/pages/checkout.php?status=success";
           };
-
-          // Payment window closed
           payhere.onDismissed = function onDismissed() {
-            // Note: Prompt user to pay again or show an error page
-            console.log("Payment dismissed");
+            window.location = "/Projects/AuraEdition/pages/checkout.php?status=cancel";
           };
-
-          // Error occurred
           payhere.onError = function onError(error) {
-            // Note: show an error page
-            console.log("Error:" + error);
+            alert("Payment Error: " + error);
           };
-
-          // Put the payment variables here
-          var payment = {
-            sandbox: true,
-            merchant_id: "1226262", // Replace your Merchant ID
-            return_url: "http://localhost/Projects/AuraEdition/pages/checkout.php", // Important
-            cancel_url: "http://localhost/Projects/AuraEdition/pages/checkout.php", // Important
-            notify_url: "http://sample.com/notify",
-            order_id: "",
-            items: "Door bell wireles",
-            amount: "1000.00",
-            currency: "LKR",
-            hash: "45D3CBA93E9F2189BD630ADFE19AA6DC", // *Replace with generated hash retrieved from backend
-            first_name: "Saman",
-            last_name: "Perera",
-            email: "samanp@gmail.com",
-            phone: "0771234567",
-            address: "No.1, Galle Road",
-            city: "Colombo",
-            country: "Sri Lanka",
-            delivery_address: "No. 46, Galle road, Kalutara South",
-            delivery_city: "Kalutara",
-            delivery_country: "Sri Lanka",
-            custom_1: "",
-            custom_2: "",
-          };
-
-          // Show the payhere.js popup, when "PayHere Pay" is clicked
-          document.getElementById("payhere-payment").onclick = function (e) {
-            payhere.startPayment(payment);
-          };
-        } else if (response === "Error: User not logged in") {
-          alert("You must be logged in to complete the payment.");
-          window.location = "/Projects/AuraEdition/auth/login.php";
+          payhere.startPayment(payment);
         } else {
-          alert("Payment Failed! " + response);
+          alert("Payment Failed: " + response.message);
         }
       } else {
         alert("Payment request failed with status " + request.status);
       }
     }
   };
-  request.open(
-    "POST",
-    "/Projects/AuraEdition/process/purchaseProcess.php",
-    true
-  );
+  request.open("POST", "/Projects/AuraEdition/process/purchaseProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send();
 }
