@@ -196,26 +196,33 @@ function clearCheckout() {
 function pay() {
   var request = new XMLHttpRequest();
   request.onreadystatechange = function () {
-    if (request.readyState == 4) {
-      if (request.status == 200) {
-        var response = JSON.parse(request.responseText);
-        if (response.status === "success") {
-          var payment = response.payment;
-          payhere.onCompleted = function onCompleted(orderId) {
-            window.location = "/Projects/AuraEdition/pages/checkout.php?status=success";
-          };
-          payhere.onDismissed = function onDismissed() {
-            window.location = "/Projects/AuraEdition/pages/checkout.php?status=cancel";
-          };
-          payhere.onError = function onError(error) {
-            alert("Payment Error: " + error);
-          };
-          payhere.startPayment(payment);
-        } else {
-          alert("Payment Failed: " + response.message);
-        }
+    if (request.readyState == 4 && request.status == 200) {
+      var obj = JSON.parse(request.responseText);
+
+      if (obj === 1) {
+        alert("Please Log In To Your Account.");
+        window.location = "/Projects/AuraEdition/pages/login.php";
+      } else if (obj === 2) {
+        alert("Please Update Your Address.");
+        window.location = "/Projects/AuraEdition/pages/userProfile.php";
+      } else if (obj.status === "success" && obj.payment) {
+        payhere.onCompleted = function onCompleted(orderId) {
+          window.location = "/Projects/AuraEdition/pages/checkout.php?status=success";
+        };
+        payhere.onDismissed = function onDismissed() {
+          window.location = "/Projects/AuraEdition/pages/checkout.php?status=cancel";
+        };
+        payhere.onError = function onError(error) {
+          alert("Payment Error: " + error);
+        };
+
+        var payment = obj.payment; // <-- Use the payment object directly
+
+        payhere.startPayment(payment);
+      } else if (obj.status === "error") {
+        alert("Payment Failed: " + obj.message);
       } else {
-        alert("Payment request failed with status " + request.status);
+        alert("Unexpected response from server.");
       }
     }
   };

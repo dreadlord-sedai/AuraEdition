@@ -24,8 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Generate PayHere payment parameters
         $order_id = uniqid('order_');
-        $merchant_id = "1224621";
-        $merchant_secret = "MTI5OTQ4NjUwNjI0MDgzNjM1MDgxMTkxMDQyOTAwNDg4Mjk5NDgy";
+        $merchant_id = "1224621"; // Use your actual merchant ID
         $currency = "LKR";
 
         // Get user info for PayHere
@@ -46,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Build hash (optional for JS SDK, but you can include it)
+        $merchant_secret = 'NTIxMDI1NDMzMzU0NjIzNjk1MTEwNjI1OTg4NjgyMDI3Njg5MTY0'; // Replace with your actual merchant secret for your domain/app
+
         $hash = strtoupper(
             md5(
                 $merchant_id .
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             )
         );
 
-        // Build payment array
+        // Build payment array (NO hash)
         $payment = [
             "sandbox" => true,
             "merchant_id" => $merchant_id,
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "address" => $user['address'],
             "city" => $user['city'],
             "country" => $user['country'],
-            "hash" => $hash // Optional for JS SDK
+            "hash" => $hash // <-- Required for PayHere JS SDK
         ];
 
         echo json_encode([
