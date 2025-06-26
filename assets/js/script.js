@@ -161,6 +161,8 @@ function clearCheckout() {
 }
 
 function pay() {
+
+    // Check if user has Addr
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
@@ -175,7 +177,8 @@ function pay() {
                     alert("You must be logged in to complete the payment.");
                     window.location = "/Projects/AuraEdition/auth/login.php";
                 } else {
-                    alert("Payment Failed!");
+
+                    alert("Payment Failed! " + response);
                 }
             } else {
                 alert("Payment request failed with status " + request.status);

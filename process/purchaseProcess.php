@@ -10,6 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        // Check if user has added addresses
+        if (!isset($_SESSION['user_id']) || !hasUserAddresses($connection, $_SESSION['user_id'])) {
+            echo "Error: User has not added addresses";
+            exit;
+        }
+
+
         // 1. Get cart items from session
         $vehicles = $_SESSION['vehicles'];
         $total_price = isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;

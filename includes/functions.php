@@ -221,6 +221,8 @@ function getOrderItemsByOrderId($connection, $order_id)
     return $order_items;
 }
 
+
+
 // Order Functions //
 
 
@@ -547,4 +549,16 @@ function get_filter_values($connection, $items_per_page, $offset)
         'total_vehicles' => $total_vehicles,
         'total_pages' => $total_pages
     ];
+}
+
+
+function hasUserAddresses($connection, $user_id)
+{
+    $stmt = $connection->prepare("SELECT COUNT(*) as count FROM user_addresses WHERE address_user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();    
+    $stmt->close();
+    return $row['count'] > 0;
 }
