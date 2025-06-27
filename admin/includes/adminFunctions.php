@@ -205,6 +205,46 @@ function countAllOrders($connection, $search, $status)
     return $result['total'] ?? 0;
 }
 
+function getTotalListings($connection) {
+    $result = $connection->query("SELECT COUNT(*) as total FROM vehicles");
+    $row = $result->fetch_assoc();
+    return $row['total'] ?? 0;
+}
+
+function getTotalOrders($connection) {
+    $result = $connection->query("SELECT COUNT(*) as total FROM orders");
+    $row = $result->fetch_assoc();
+    return $row['total'] ?? 0;
+}
+
+function getTotalUsers($connection) {
+    $result = $connection->query("SELECT COUNT(*) as total FROM users");
+    $row = $result->fetch_assoc();
+    return $row['total'] ?? 0;
+}
+
+function getSalesDataForChart($connection) {
+    $query = "SELECT 
+                DATE_FORMAT(orderd_at, '%Y-%m') as month, 
+                SUM(total_price) as total_sales
+              FROM orders
+              WHERE orderd_at >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+              GROUP BY month
+              ORDER BY month ASC";
+    
+    $result = $connection->query($query);
+    if (!$result) return ['labels' => [], 'data' => []];
+
+    $labels = [];
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $date = new DateTime($row['month'] . '-01');
+        $labels[] = $date->format('M Y');
+        $data[] = (float)$row['total_sales'];
+    }
+
+    return ['labels' => $labels, 'data' => $data];
+}
 
 /* Display Functions */
 

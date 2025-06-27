@@ -9,6 +9,14 @@ if (!$user || $user['role'] != "admin") {
     header("Location: /Projects/AuraEdition/index.php");
     exit;
 }
+
+// Fetch dynamic data
+$total_listings = getTotalListings($connection);
+$total_orders = getTotalOrders($connection);
+$total_users = getTotalUsers($connection);
+$sales_data = getSalesDataForChart($connection);
+$total_sales_value = array_sum($sales_data['data']);
+
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +27,7 @@ if (!$user || $user['role'] != "admin") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Dashboard</title>
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
@@ -27,7 +36,10 @@ if (!$user || $user['role'] != "admin") {
     <!-- Main Content Area -->
     <div class="ml-64 flex-1 flex flex-col">
         <!-- Navigation Bar -->
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
+        <?php 
+            $breadcrumbs = ['Dashboard' => '/Projects/AuraEdition/admin/dashboard.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+        ?>
         <!-- Main Content -->
         <main class="flex-1 p-8">
             <!-- Page Title -->
@@ -41,134 +53,108 @@ if (!$user || $user['role'] != "admin") {
             <!-- Analytics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                 <!-- Total Listings Card -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-yellow-400/20 transition-shadow duration-300">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-400 text-lg font-semibold">Total Listings</p>
-                            <p class="text-4xl font-bold text-white">
-                                <?php
-                                $sql = "SELECT COUNT(*) as total_listings FROM vehicles";
-                                $result = $connection->query($sql);
-                                $row = $result->fetch_assoc();
-                                echo $row['total_listings'];
-                                ?>
-                            </p>
-                        </div>
-                        <div class="bg-gray-800 p-4 rounded-full">
-                            <i class="fas fa-car text-yellow-400 text-3xl"></i>
-                        </div>
-                    </div>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
+                    <p class="text-gray-400 text-lg font-semibold">Total Listings</p>
+                    <p class="text-4xl font-bold text-white"><?= $total_listings ?></p>
                 </div>
                 <!-- Total Orders Card -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-yellow-400/20 transition-shadow duration-300">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-400 text-lg font-semibold">Total Orders</p>
-                            <p class="text-4xl font-bold text-white">
-                                <?php
-                                $sql = "SELECT COUNT(*) as total_orders FROM orders";
-                                $result = $connection->query($sql);
-                                $row = $result->fetch_assoc();
-                                echo $row['total_orders'];
-                                ?>
-                            </p>
-                        </div>
-                        <div class="bg-gray-800 p-4 rounded-full">
-                            <i class="fas fa-receipt text-yellow-400 text-3xl"></i>
-                        </div>
-                    </div>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
+                    <p class="text-gray-400 text-lg font-semibold">Total Orders</p>
+                    <p class="text-4xl font-bold text-white"><?= $total_orders ?></p>
                 </div>
                 <!-- Total Users Card -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-yellow-400/20 transition-shadow duration-300">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-400 text-lg font-semibold">Total Users</p>
-                            <p class="text-4xl font-bold text-white">
-                                <?php
-                                $sql = "SELECT COUNT(*) as total_users FROM users";
-                                $result = $connection->query($sql);
-                                $row = $result->fetch_assoc();
-                                echo $row['total_users'];
-                                ?>
-                            </p>
-                        </div>
-                        <div class="bg-gray-800 p-4 rounded-full">
-                            <i class="fas fa-users text-yellow-400 text-3xl"></i>
-                        </div>
-                    </div>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
+                    <p class="text-gray-400 text-lg font-semibold">Total Users</p>
+                    <p class="text-4xl font-bold text-white"><?= $total_users ?></p>
                 </div>
             </div>
             <!-- Recent Orders & Sales Overview -->
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <!-- Recent Orders Table -->
                 <div class="xl:col-span-2 bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
-                    <h2 class="text-xl font-bold text-white mb-6">Recent Orders</h2>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-left">
-                            <thead>
-                                <tr class="border-b border-gray-700">
-                                    <th class="px-5 py-3 text-sm font-semibold text-gray-400 uppercase">Order ID</th>
-                                    <th class="px-5 py-3 text-sm font-semibold text-gray-400 uppercase">Customer</th>
-                                    <th class="px-5 py-3 text-sm font-semibold text-gray-400 uppercase">Date</th>
-                                    <th class="px-5 py-3 text-sm font-semibold text-gray-400 uppercase">Status</th>
-                                    <th class="px-5 py-3 text-sm font-semibold text-gray-400 uppercase text-right">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $orders = getRecentOrders($connection);
-                                if ($orders) {
-                                    foreach ($orders as $order):
-                                        $user = getUserInfo($connection, $order['user_id']);
-                                ?>
-                                <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                                    <td class="px-5 py-4 text-gray-200">#<?= htmlspecialchars($order['order_id']); ?></td>
-                                    <td class="px-5 py-4 text-gray-200"><?= htmlspecialchars($user['email']); ?></td>
-                                    <td class="px-5 py-4 text-gray-300"><?= date("M d, Y", strtotime($order['orderd_at'])); ?></td>
-                                    <td class="px-5 py-4">
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-900 text-green-300 border border-green-700"><?= htmlspecialchars($order['status']); ?></span>
-                                    </td>
-                                    <td class="px-5 py-4 text-right font-semibold text-white">$<?= number_format(htmlspecialchars($order['total_price']), 2); ?></td>
-                                </tr>
-                                <?php endforeach;
-                                } ?>
-                            </tbody>
-                        </table>
+                    <h2 class="text-xl font-bold text-white mb-6">Sales Overview</h2>
+                    <div style="height: 350px;">
+                        <canvas id="salesChart"></canvas>
                     </div>
                 </div>
                 <!-- Sales Overview Chart -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
-                    <h2 class="text-xl font-bold text-white mb-4">Sales Overview</h2>
-                    <div class="flex items-baseline mb-4">
-                        <p class="text-3xl font-bold text-white">$1,250,000</p>
-                        <span class="ml-2 text-green-400 font-semibold flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i>15%
-                        </span>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-6">Vs. last 12 months</p>
-                    <div class="w-full h-48 bg-gray-900 rounded-lg p-2">
-                        <svg viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-                            <defs>
-                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#FBBF24;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <polyline
-                                fill="none"
-                                stroke="url(#goldGradient)"
-                                stroke-width="3"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                points="0,60 30,40 60,50 90,20 120,40 150,10 180,50 210,30 240,60 270,20 300,60" />
-                        </svg>
-                    </div>
-                    <div class="flex justify-between text-xs text-gray-500 mt-2 px-1">
-                        <span>Jan</span><span>Mar</span><span>May</span><span>Jul</span><span>Sep</span><span>Nov</span>
-                    </div>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg flex flex-col justify-center">
+                    <h2 class="text-xl font-bold text-white mb-4">Total Revenue</h2>
+                    <p class="text-5xl font-bold text-yellow-400">$<?= number_format($total_sales_value, 2) ?></p>
+                    <p class="text-gray-400 text-sm mt-2">Revenue from last 12 months</p>
                 </div>
             </div>
         </main>
     </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const ctx = document.getElementById('salesChart').getContext('2d');
+
+    const salesLabels = <?= json_encode($sales_data['labels']) ?>;
+    const salesValues = <?= json_encode($sales_data['data']) ?>;
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+    gradient.addColorStop(0, 'rgba(251, 191, 36, 0.6)');
+    gradient.addColorStop(1, 'rgba(251, 191, 36, 0)');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Monthly Sales',
+                data: salesValues,
+                borderColor: '#FBBF24',
+                backgroundColor: gradient,
+                borderWidth: 3,
+                pointBackgroundColor: '#FBBF24',
+                pointBorderColor: '#111827',
+                pointHoverBackgroundColor: '#FFFFFF',
+                pointHoverBorderColor: '#FBBF24',
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { 
+                        color: '#9CA3AF',
+                        callback: function(value) { return '$' + value / 1000 + 'k'; }
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#9CA3AF' }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1F2937',
+                    titleColor: '#FBBF24',
+                    bodyColor: '#E5E7EB',
+                    borderColor: '#FBBF24',
+                    borderWidth: 1,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return 'Sales: $' + context.parsed.y.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
 </body>
 </html>
