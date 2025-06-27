@@ -218,8 +218,6 @@ function pay() {
 
         var payment = obj.payment; // <-- Use the payment object directly
 
-        console.log(payment);
-
         payhere.startPayment(payment);
       } else if (obj.status === "error") {
         alert("Payment Failed: " + obj.message);
