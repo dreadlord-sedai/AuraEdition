@@ -401,13 +401,13 @@ function addToWishlist($connection, $user_id, $vehicle_id)
 }
 
 
-function getWishlistItemsByUserId($connection, $user_id)
+function getWishlistItemsByUserId($connection, $user_id, $limit, $offset)
 {
     if (!isset($user_id)) {
         return [];
     }
-    $stmt = $connection->prepare("SELECT id, vehicle_id FROM wishlist_items WHERE user_id = ?");
-    $stmt->bind_param("i", $user_id);
+    $stmt = $connection->prepare("SELECT id, vehicle_id FROM wishlist_items WHERE user_id = ? ORDER BY id DESC LIMIT ? OFFSET ?");
+    $stmt->bind_param("iii", $user_id, $limit, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $wishlist_items = [];
@@ -416,6 +416,19 @@ function getWishlistItemsByUserId($connection, $user_id)
     }
     $stmt->close();
     return $wishlist_items;
+}
+
+function countWishlistItemsByUserId($connection, $user_id)
+{
+    if (!isset($user_id)) {
+        return 0;
+    }
+    $stmt = $connection->prepare("SELECT COUNT(*) as total FROM wishlist_items WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $result['total'] ?? 0;
 }
 
 function removeFromWishlist($connection, $wishlist_item_id)
