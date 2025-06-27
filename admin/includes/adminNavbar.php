@@ -1,11 +1,16 @@
 <!-- Main navigation bar -->
 <header class="bg-black border-b border-gray-800 shadow-md">
     <div class="flex items-center justify-between px-8 py-4">
-        <!-- Breadcrumbs can be dynamically generated here if needed -->
-        <div class="text-gray-400">
-            <a href="/Projects/AuraEdition/admin/dashboard.php" class="hover:text-yellow-400">Admin</a>
-            <span class="mx-2">/</span>
-            <span class="text-white font-semibold">Dashboard</span>
+        <!-- Home Button + Breadcrumbs -->
+        <div class="flex items-center gap-6">
+            <a href="/Projects/AuraEdition/index.php" class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-yellow-400 transition-colors group" title="Go to site home">
+                <i class="fas fa-home text-xl text-yellow-400 group-hover:text-black"></i>
+            </a>
+            <div class="text-gray-400">
+                <a href="/Projects/AuraEdition/admin/dashboard.php" class="hover:text-yellow-400">Admin</a>
+                <span class="mx-2">/</span>
+                <span class="text-white font-semibold">Dashboard</span>
+            </div>
         </div>
 
         <!-- User profile dropdown -->
