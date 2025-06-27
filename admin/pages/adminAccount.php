@@ -1,8 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
@@ -25,7 +23,7 @@ generate_csrf_token();
 </head>
 
 <body class="bg-gray-900 text-gray-100">
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
     <div class="ml-64 flex-1 flex flex-col">
         <?php 
             $breadcrumbs = ['Account' => '/Projects/AuraEdition/admin/pages/adminAccount.php'];
@@ -54,11 +52,11 @@ generate_csrf_token();
                                 <div>
                                     <label for="fname" class="block text-sm font-semibold text-gray-400 mb-2">First Name</label>
                                     <input type="text" name="fname" id="fname" value="<?= htmlspecialchars($user['fname'] ?? '') ?>" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
-                                </div>
-                                <div>
+                </div>
+                <div>
                                     <label for="lname" class="block text-sm font-semibold text-gray-400 mb-2">Last Name</label>
                                     <input type="text" name="lname" id="lname" value="<?= htmlspecialchars($user['lname'] ?? '') ?>" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
-                                </div>
+                            </div>  
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-semibold text-gray-400 mb-2">Email Address</label>
@@ -79,13 +77,13 @@ generate_csrf_token();
                             <div>
                                 <label for="confirm_password" class="block text-sm font-semibold text-gray-400 mb-2">Confirm New Password</label>
                                 <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm new password" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
-                            </div>
+                            </div>  
                              <div class="pt-4 border-t border-gray-800">
                                 <button type="submit" name="update_account" class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg hover:bg-yellow-500 transition-all shadow-md">Update Password</button>
                             </div>
                         </div>
-                    </div>
-                </form>
+                        </div>
+                    </form>
             </div>
         </main>
     </div>

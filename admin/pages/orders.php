@@ -1,6 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
 
 // Check if user is logged in and is admin
@@ -35,23 +34,23 @@ $orders = getAllOrders($connection, $search, $status, $items_per_page, $offset);
 </head>
 
 <body class="bg-gray-900 text-gray-100">
-    <!-- Sidebar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <!-- Sidebar -->
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
 
-    <!-- Main Content Area -->
+        <!-- Main Content Area -->
     <div class="ml-64 flex-1 flex flex-col">
-        <!-- Navigation Bar -->
+            <!-- Navigation Bar -->
         <?php 
             $breadcrumbs = ['Orders' => '/Projects/AuraEdition/admin/pages/orders.php'];
             include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
         ?>
         
-        <!-- Main Content -->
+            <!-- Main Content -->
         <main class="flex-1 p-8">
             <!-- Page Title -->
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-yellow-400" style="font-family: 'Trajan Pro', serif;">Manage Orders</h1>
-            </div>
+                </div>
 
             <!-- Search and Filters -->
             <div class="bg-black border border-gray-800 rounded-2xl p-6 mb-8">
@@ -83,9 +82,9 @@ $orders = getAllOrders($connection, $search, $status, $items_per_page, $offset);
                         </button>
                     </div>
                 </form>
-            </div>
+                </div>
 
-            <!-- Orders Table -->
+                <!-- Orders Table -->
             <div class="bg-black border border-gray-800 rounded-2xl shadow-lg overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full text-left">
@@ -124,8 +123,8 @@ $orders = getAllOrders($connection, $search, $status, $items_per_page, $offset);
                                 <td class="px-6 py-4 text-right font-semibold text-white">$<?= number_format(htmlspecialchars($order['total_price']), 2); ?></td>
                                 <td class="px-6 py-4 text-center">
                                     <a href="#" class="text-yellow-400 hover:text-yellow-300 font-semibold">View Details</a>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>

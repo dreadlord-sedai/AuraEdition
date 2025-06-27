@@ -1,6 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
 
 // Check if user is logged in and is admin
@@ -32,12 +31,12 @@ $recent_orders = getRecentOrders($connection);
 </head>
 
 <body class="bg-gray-900 text-gray-100">
-    <!-- Sidebar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
-    <!-- Main Content Area -->
+        <!-- Sidebar -->
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <!-- Main Content Area -->
     <div class="ml-64 flex-1 flex flex-col">
-        <!-- Navigation Bar -->
-        <?php 
+            <!-- Navigation Bar -->
+                                <?php
             $breadcrumbs = ['Dashboard' => '/Projects/AuraEdition/admin/dashboard.php'];
             include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
         ?>

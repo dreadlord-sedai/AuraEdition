@@ -46,12 +46,12 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session
                 </a>
                 <a href="/Projects/AuraEdition/auth/login.php" class="hidden md:inline-block">
                     <button class="px-4 py-2 rounded-md bg-yellow-400 text-black hover:bg-yellow-500 font-semibold transition-all duration-300">
-                        Login
-                    </button>
-                </a>';
+                    Login
+                </button>
+            </a>';
             }
             ?>
-            
+
             <!-- Mobile Menu Button -->
             <button class="md:hidden text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>

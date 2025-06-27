@@ -1,8 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
@@ -34,7 +32,7 @@ $makes = getAllMakes($connection);
 </head>
 
 <body class="bg-gray-900 text-gray-100">
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
     <div class="ml-64 flex-1 flex flex-col">
         <?php 
             $breadcrumbs = [
@@ -46,25 +44,25 @@ $makes = getAllMakes($connection);
         <main class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-yellow-400" style="font-family: 'Trajan Pro', serif;">Edit Vehicle</h1>
-            </div>
+                </div>
 
             <?php if ($msg = get_flash('success')): ?>
                 <div class="mb-6 p-4 bg-green-900/80 border border-green-700 text-green-300 rounded-lg shadow-lg"><?= htmlspecialchars($msg) ?></div>
             <?php elseif ($msg = get_flash('error')): ?>
                 <div class="mb-6 p-4 bg-red-900/80 border border-red-700 text-red-300 rounded-lg shadow-lg"><?= htmlspecialchars($msg) ?></div>
-            <?php endif; ?>
+                    <?php endif; ?>
 
             <div class="bg-black border border-gray-800 rounded-2xl p-8 shadow-lg">
                 <form action="/Projects/AuraEdition/admin/process/editProductProcess.php" method="POST" enctype="multipart/form-data" class="space-y-8">
                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']) ?>">
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Left Column -->
                         <div class="space-y-6">
                             <div>
                                 <label for="title" class="block text-sm font-semibold text-gray-400 mb-2">Vehicle Title</label>
                                 <input type="text" name="title" id="title" required value="<?= htmlspecialchars($product['title']) ?>" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
-                            </div>
+                    </div>
 
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
@@ -74,21 +72,21 @@ $makes = getAllMakes($connection);
                                         <?php foreach ($makes as $m): ?>
                                             <option value="<?= htmlspecialchars($m['make_id']) ?>" <?= $m['make_id'] == $product['make_id'] ? 'selected' : '' ?>><?= htmlspecialchars($m['make_name']) ?></option>
                                         <?php endforeach; ?>
-                                    </select>
-                                </div>
+                        </select>
+                    </div>
                                 <div>
                                     <label for="model" class="block text-sm font-semibold text-gray-400 mb-2">Model</label>
                                     <select name="model" id="model" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400" disabled>
                                         <option value="">Select Make First</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
+                        </select>
+                    </div>
+                    </div>
+
                             <div>
                                 <label for="description" class="block text-sm font-semibold text-gray-400 mb-2">Description</label>
                                 <textarea name="description" id="description" rows="6" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400"><?= htmlspecialchars($product['description']) ?></textarea>
                             </div>
-                        </div>
+                    </div>
 
                         <!-- Right Column -->
                         <div class="space-y-6">
@@ -101,15 +99,15 @@ $makes = getAllMakes($connection);
                                     <label for="stock" class="block text-sm font-semibold text-gray-400 mb-2">Stock</label>
                                     <input type="number" name="stock" id="stock" required value="<?= htmlspecialchars($product['stock']) ?>" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
                                 </div>
-                            </div>
+                    </div>
 
                             <div>
                                 <label for="status" class="block text-sm font-semibold text-gray-400 mb-2">Status</label>
                                 <select name="status" id="status" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
                                     <option value="Available" <?= $product['status'] == 'Available' ? 'selected' : '' ?>>Available</option>
                                     <option value="Sold Out" <?= $product['status'] == 'Sold Out' ? 'selected' : '' ?>>Sold Out</option>
-                                </select>
-                            </div>
+                        </select>
+                    </div>
 
                             <div>
                                 <label class="block text-sm font-semibold text-gray-400 mb-2">Update Image (Optional)</label>
@@ -128,7 +126,7 @@ $makes = getAllMakes($connection);
                     </div>
 
                     <div class="pt-5 border-t border-gray-800">
-                        <div class="flex justify-end">
+                    <div class="flex justify-end">
                             <a href="/Projects/AuraEdition/admin/pages/vehicles.php" class="bg-gray-700 text-gray-200 font-semibold py-3 px-6 rounded-lg hover:bg-gray-600 transition-all mr-4">Cancel</a>
                             <button type="submit" name="update_product" class="bg-yellow-400 text-black font-semibold py-3 px-8 rounded-lg hover:bg-yellow-500 transition-all shadow-md">Update Vehicle</button>
                         </div>

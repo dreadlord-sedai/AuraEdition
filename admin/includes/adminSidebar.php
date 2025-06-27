@@ -5,7 +5,7 @@
         <div class="mb-12 text-center">
             <a href="/Projects/AuraEdition/admin/dashboard.php" class="text-3xl font-serif text-yellow-400 tracking-wider" style="font-family: 'Trajan Pro', serif;">AURA</a>
             <p class="text-xs text-gray-500 uppercase tracking-widest">Admin Panel</p>
-        </div>
+    </div>
 
         <!-- Navigation Links -->
         <nav class="flex flex-col space-y-3">

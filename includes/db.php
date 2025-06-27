@@ -1,19 +1,15 @@
 <?php 
-
-$db_host = 'localhost';
-$db_user = 'root';
-$db_pass = 'mysql2006';
-$db_name = 'auraedition';
+// No need to include config.php here, it will be handled by bootstrap.php
 
 // Enable mysqli error reporting for development
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 try {
-    $connection = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-    // Connection successful
+    // Use the constants defined in config/config.php for the connection
+    $connection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 } catch (mysqli_sql_exception $e) {
-    die("Database connection failed: " . $e->getMessage());
+    // A more user-friendly error for production environments
+    // In development, you can still log the full error: error_log($e->getMessage());
+    die("Database connection failed. Please try again later.");
 }
-
-
 ?>
