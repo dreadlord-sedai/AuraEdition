@@ -8,67 +8,56 @@
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
 
-<body>
+<body class="bg-black text-white min-h-screen">
 
-    <!-- Navigation Bar -- -->
+    <!-- Navigation Bar -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
-    <div class="Hero">
-        <img src="../assets/images/contact-hero.png" alt="Hero" class="img-fluid w-100">
-        <div class="position-absolute top-50 align-items-start text-white ms-5 ">
-        </div>
+    <div class="relative w-full h-[40vh] md:h-[60vh] flex items-center justify-start overflow-hidden">
+        <img src="../assets/images/contact-hero.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover z-0">
     </div>
     <!-- Hero Section -->
 
-
-    <div class="container-md my-5 main-content">
-
+    <div class="max-w-2xl mx-auto px-4 my-16">
         <!-- Contact Section -->
-        <div class="container-md justify-content-center align-items-center">
-
         <?php if (isset($_GET['status'])): ?>
             <?php if ($_GET['status'] === 'success'): ?>
-                <div class="w-100 mb-4 p-4 rounded text-white bg-green-500 text-center font-semibold">
+                <div class="w-full mb-6 p-4 rounded text-white bg-green-600 text-center font-semibold shadow-lg border-l-4 border-yellow-400/50">
                     Your message has been sent successfully!
                 </div>
             <?php elseif ($_GET['status'] === 'error'): ?>
-                <div class="w-100 mb-4 p-4 rounded text-white bg-red-500 text-center font-semibold">
+                <div class="w-full mb-6 p-4 rounded text-white bg-red-600 text-center font-semibold shadow-lg border-l-4 border-yellow-400/50">
                     There was an error sending your message. Please try again.
                 </div>
             <?php endif; ?>
         <?php endif; ?>
 
-            <form action="/Projects/AuraEdition/process/contactProcess.php" method="POST" class="contact-form col-md-8 mx-auto p-4 bg-light shadow rounded">
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
-                    </div>
+        <form action="/Projects/AuraEdition/process/contactProcess.php" method="POST" class="p-8 bg-gray-900 rounded-xl shadow-lg border border-yellow-400/20 flex flex-col gap-6">
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex-1">
+                    <label for="first_name" class="block mb-2 text-yellow-400 font-serif" style="font-family: 'Trajan Pro', serif;">First Name</label>
+                    <input type="text" class="w-full bg-black border border-gray-700 text-white rounded-md p-3 focus:ring-yellow-400 focus:border-yellow-400" id="first_name" name="first_name" required>
                 </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="_replyto" required>
+                <div class="flex-1">
+                    <label for="last_name" class="block mb-2 text-yellow-400 font-serif" style="font-family: 'Trajan Pro', serif;">Last Name</label>
+                    <input type="text" class="w-full bg-black border border-gray-700 text-white rounded-md p-3 focus:ring-yellow-400 focus:border-yellow-400" id="last_name" name="last_name" required>
                 </div>
-
-                <div class="mb-3">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                </div>
-
-                <button type="submit" name="submit" value="Send Message" class="btn btn-primary w-100">Send Message</button>
-        </div>
+            </div>
+            <div>
+                <label for="email" class="block mb-2 text-yellow-400 font-serif" style="font-family: 'Trajan Pro', serif;">Email</label>
+                <input type="email" class="w-full bg-black border border-gray-700 text-white rounded-md p-3 focus:ring-yellow-400 focus:border-yellow-400" id="email" name="_replyto" required>
+            </div>
+            <div>
+                <label for="message" class="block mb-2 text-yellow-400 font-serif" style="font-family: 'Trajan Pro', serif;">Message</label>
+                <textarea class="w-full bg-black border border-gray-700 text-white rounded-md p-3 focus:ring-yellow-400 focus:border-yellow-400" id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" name="submit" value="Send Message" class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-md hover:bg-yellow-500 transition-all text-lg tracking-wide">Send Message</button>
+        </form>
         <!-- Contact Section -->
-
     </div>
 
-
-
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+</body>
+</html>
