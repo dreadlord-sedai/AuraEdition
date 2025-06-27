@@ -28,12 +28,13 @@ $page_title = "Dashboard";
 
 <body class="bg-gray-900 text-white" style="font-family: 'Lato', sans-serif;">
     <div class="flex min-h-screen">
-        <?php 
-            $breadcrumbs = ['Dashboard' => '/Projects/AuraEdition/admin/dashboard.php'];
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
-        ?>
-        
-        <?php include_once __DIR__ . '/../templates/content_header.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <div class="flex-1 flex flex-col">
+            <?php 
+                $breadcrumbs = ['Dashboard' => '/Projects/AuraEdition/admin/dashboard.php'];
+                include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+            ?>
+            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/templates/content_header.php'; ?>
 
             <a href="/Projects/AuraEdition/admin/pages/addProduct.php"
                 class="absolute top-8 right-8 px-5 py-2 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500 transition-all shadow-md">
@@ -103,13 +104,15 @@ $page_title = "Dashboard";
                             <?php foreach ($recent_orders as $order): ?>
                                 <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
                                     <div class="flex items-center">
-                                        <img src="<?= BASE_URL . htmlspecialchars($order['image_path']) ?>" alt="User" class="w-10 h-10 rounded-full mr-4 object-cover">
+                                        <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center mr-4">
+                                            <i class="fas fa-user text-yellow-400"></i>
+                                        </div>
                                         <div>
-                                            <p class="font-semibold text-white"><?= htmlspecialchars($order['username']) ?></p>
+                                            <p class="font-semibold text-white"><?= htmlspecialchars($order['fname'] . ' ' . $order['lname']) ?></p>
                                             <p class="text-sm text-gray-400">Order #<?= htmlspecialchars($order['order_id']) ?></p>
                                         </div>
                                     </div>
-                                    <span class="font-bold text-yellow-400">$<?= number_format($order['total_amount'], 2) ?></span>
+                                    <span class="font-bold text-yellow-400">$<?= number_format($order['total_price'], 2) ?></span>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -117,7 +120,8 @@ $page_title = "Dashboard";
                 </div>
             </div>
 
-        <?php include_once __DIR__ . '/../templates/content_footer.php'; ?>
+            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/templates/content_footer.php'; ?>
+        </div>
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
