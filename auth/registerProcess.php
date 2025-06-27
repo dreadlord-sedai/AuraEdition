@@ -1,9 +1,15 @@
 <?php 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        set_flash('error', 'Invalid CSRF token.');
+        header('Location: register.php');
+        exit;
+    }
     // Get the form data and trim whitespace
     $fname = trim($_POST['fname'] ?? '');
     $lname = trim($_POST['lname'] ?? '');
@@ -17,13 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             !preg_match("/[A-Z]/", $password) || 
             !preg_match("/[0-9]/", $password) || 
             !preg_match("/[^A-Za-z0-9]/", $password)) {
-            $Error_message = "Password must be at least 8 characters long and include an uppercase letter, a number, and a special character.";
-            header("Location: /Projects/AuraEdition/auth/register.php?error=" . urlencode($Error_message));
+            set_flash('error', 'Password must be at least 8 characters long and include an uppercase letter, a number, and a special character.');
+            header('Location: register.php');
             exit;
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $Error_message = "Invalid email format.";
-            header("Location: /Projects/AuraEdition/auth/register.php?error=" . urlencode($Error_message));
+            set_flash('error', 'Invalid email format.');
+            header('Location: register.php');
             exit;
         } else {
             // Prepare and execute the SQL statement to check if the email already exists
@@ -33,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $select_user_id->store_result();
 
             if ($select_user_id->num_rows > 0) {
-                $Error_message = "Email already exists. Please choose a different email.";
+                set_flash('error', 'Email already exists. Please choose a different email.');
                 $select_user_id->close();
-                header("Location: /Projects/AuraEdition/auth/register.php?error=" . urlencode($Error_message));
+                header('Location: register.php');
                 exit;
             } else {
                 // Email does not exist, proceed with registration
@@ -44,19 +50,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $register_user_query->bind_param("ssss", $fname, $lname, $email, $hashed_password);
                 if ($register_user_query->execute()) {
                     $register_user_query->close();
-                    header("Location: /Projects/AuraEdition/auth/login.php?registered=1");
+                    set_flash('success', 'Registration successful! You can now log in.');
+                    header('Location: login.php');
                     exit;
                 } else {
-                    $Error_message = "Registration failed. Please try again.";
+                    set_flash('error', 'Registration failed. Please try again.');
                     $register_user_query->close();
-                    header("Location: /Projects/AuraEdition/auth/register.php?error=" . urlencode($Error_message));
+                    header('Location: register.php');
                     exit;
                 }
             }
         }
     } else {
-        $Error_message = "Please fill in all fields.";
-        header("Location: /Projects/AuraEdition/auth/register.php?error=" . urlencode($Error_message));
+        set_flash('error', 'Please fill in all fields.');
+        header('Location: register.php');
         exit;
     }
 }

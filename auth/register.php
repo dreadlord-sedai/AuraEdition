@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 $Error_message = "";
 ?>
@@ -26,14 +27,19 @@ $Error_message = "";
                     <h2 class="text-3xl font-serif text-yellow-400 mb-6 text-center tracking-wide" style="font-family: 'Trajan Pro', serif;">Create Your Account</h2>
 
                     <!-- Display message-->
-                    <?php if (isset($_GET['error']) && !empty($_GET['error'])): ?>
+                    <?php if ($msg = get_flash('error')): ?>
                     <div class="mb-4 w-full p-4 rounded text-yellow-400 bg-red-900/80 border border-yellow-400/30 text-center font-semibold shadow">
-                        <?= htmlspecialchars($_GET['error']) ?>
+                        <?= htmlspecialchars($msg) ?>
+                    </div>
+                    <?php elseif ($msg = get_flash('success')): ?>
+                    <div class="mb-4 w-full p-4 rounded text-green-300 bg-green-900/80 border border-yellow-400/30 text-center font-semibold shadow">
+                        <?= htmlspecialchars($msg) ?>
                     </div>
                     <?php endif; ?>
                     <!-- Display message-->
 
                     <form action="/Projects/AuraEdition/auth/registerProcess.php" method="POST" class="space-y-6">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label for="fname" class="block text-yellow-400 font-serif mb-2" style="font-family: 'Trajan Pro', serif;">First Name</label>

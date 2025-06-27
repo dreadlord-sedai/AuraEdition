@@ -1,13 +1,20 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        set_flash('error', 'Invalid CSRF token.');
+        header('Location: reset_password.php?token=' . urlencode($_POST['token'] ?? ''));
+        exit;
+    }
     $token = $_POST['token'] ?? '';
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
     if ($token && $password && $confirm_password) {
         if ($password !== $confirm_password) {
-            header("Location: reset_password.php?token=" . urlencode($token) . "&error=Passwords do not match.");
+            set_flash('error', 'Passwords do not match.');
+            header('Location: reset_password.php?token=' . urlencode($token));
             exit;
         }
         // Validate token
@@ -24,18 +31,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $update->execute();
             $update->close();
             $stmt->close();
-            header("Location: login.php?password_reset=1");
+            set_flash('success', 'Password reset successful! You can now log in.');
+            header('Location: login.php');
             exit;
         } else {
             $stmt->close();
-            header("Location: reset_password.php?error=Invalid or expired token.");
+            set_flash('error', 'Invalid or expired token.');
+            header('Location: reset_password.php');
             exit;
         }
     } else {
-        header("Location: reset_password.php?error=Please fill in all fields.");
+        set_flash('error', 'Please fill in all fields.');
+        header('Location: reset_password.php?token=' . urlencode($token));
         exit;
     }
 } else {
-    header("Location: reset_password.php?error=Invalid request.");
+    set_flash('error', 'Invalid request.');
+    header('Location: reset_password.php');
     exit;
 } 

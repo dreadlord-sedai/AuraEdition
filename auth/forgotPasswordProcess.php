@@ -8,12 +8,18 @@ require_once __DIR__ . '/../includes/PHPMailer/SMTP.php';
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 // If you have PHPMailer setup, include it here
 // include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/PHPMailer/PHPMailerAutoload.php';
 
 date_default_timezone_set('Asia/Colombo'); // or your preferred timezone
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        set_flash('error', 'Invalid CSRF token.');
+        header('Location: forgot_password.php');
+        exit;
+    }
     $email = trim($_POST['email'] ?? '');
     if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $stmt = $connection->prepare("SELECT id, fname FROM users WHERE email = ?");
@@ -24,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->num_rows > 0) {
             $stmt->bind_result($user_id, $fname);
             $stmt->fetch();
-            $token = bin2hex(random_bytes(32));
+            $token = generate_token(32);
 
             $update = $connection->prepare(
                 "UPDATE users SET password_reset_token = ?, password_reset_expires = (NOW() + INTERVAL 1 HOUR) WHERE id = ?"
@@ -72,10 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt->close();
     }
-    // Always show a generic success message for security
-    header("Location: forgot_password.php?success=If your email exists, a reset link has been sent.");
+    set_flash('success', 'If your email exists, a reset link has been sent.');
+    header('Location: forgot_password.php');
     exit;
 } else {
-    header("Location: forgot_password.php?error=Invalid request.");
+    set_flash('error', 'Invalid request.');
+    header('Location: forgot_password.php');
     exit;
 } 

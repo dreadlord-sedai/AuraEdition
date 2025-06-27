@@ -1,4 +1,5 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,16 +15,17 @@
             <div class="w-full max-w-md">
                 <div class="bg-black/80 backdrop-blur-lg shadow-2xl rounded-xl px-8 pt-8 pb-10 border border-yellow-400/30">
                     <h2 class="text-3xl font-serif text-yellow-400 mb-6 text-center tracking-wide" style="font-family: 'Trajan Pro', serif;">Forgot Password</h2>
-                    <?php if (isset($_GET['success'])): ?>
+                    <?php if ($msg = get_flash('success')): ?>
                         <div class="mb-4 text-center text-green-300 font-semibold bg-green-900/80 border border-yellow-400/30 rounded px-2 py-2 shadow">
-                            <?= htmlspecialchars($_GET['success']) ?>
+                            <?= htmlspecialchars($msg) ?>
                         </div>
-                    <?php elseif (isset($_GET['error'])): ?>
+                    <?php elseif ($msg = get_flash('error')): ?>
                         <div class="mb-4 text-center text-yellow-400 font-semibold bg-red-900/80 border border-yellow-400/30 rounded px-2 py-2 shadow">
-                            <?= htmlspecialchars($_GET['error']) ?>
+                            <?= htmlspecialchars($msg) ?>
                         </div>
                     <?php endif; ?>
                     <form action="/Projects/AuraEdition/auth/forgotPasswordProcess.php" method="POST" class="space-y-6">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
                         <div>
                             <label for="email" class="block text-yellow-400 font-serif mb-2" style="font-family: 'Trajan Pro', serif;">Email</label>
                             <input type="email" id="email" name="email" required
