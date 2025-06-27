@@ -1,145 +1,124 @@
-# AuraEdition - Luxury Vehicle Marketplace
+# AuraEdition 🚗✨
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PHP](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://www.php.net/)
+[![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-blue.svg)](https://www.mysql.com/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.1.8-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
 
-AuraEdition is a premium e-commerce platform for luxury vehicles, built with modern web technologies to provide a seamless shopping experience for car enthusiasts.
+> **A premium e-commerce platform for luxury vehicles.**
+> 
+> Modern, secure, and scalable. Built for car enthusiasts, dealers, and admins.
+
+---
 
 ## 🌟 Features
+- **User Authentication:** Secure registration, login, and profile management
+- **Product Browsing:** Luxury vehicle listings, search, and filters
+- **Shopping Experience:** Cart, checkout, order history
+- **Admin Panel:** Product, user, and order management
+- **Responsive UI:** Tailwind CSS, mobile-first, luxury design
+- **Security:** CSRF, input validation, password hashing, session management
 
-- **User Authentication**
-  - Secure registration and login system
-  - User profile management
-  - Address management with country support
+---
 
-- **Product Browsing**
-  - Luxury vehicle listings with detailed views
-  - Filter and search functionality
-  - Featured and recent listings
+## 🏗️ Architecture Overview
 
-- **Shopping Experience**
-  - Shopping cart functionality
-  - Checkout process
-  - Order history and tracking
+```mermaid
+graph TD;
+  User[User Browser]
+  Admin[Admin Browser]
+  Web[Web Server (PHP)]
+  DB[(MySQL Database)]
+  Assets[Static Assets (CSS/JS/Images)]
 
-- **Admin Panel**
-  - Product management
-  - User management
-  - Order processing
+  User-->|HTTP/HTTPS|Web
+  Admin-->|HTTP/HTTPS|Web
+  Web-->|SQL Queries|DB
+  Web-->|Serves|Assets
+```
 
-## 🛠️ Tech Stack
+---
 
-- **Frontend**
-  - HTML5, CSS3, JavaScript
-  - Tailwind CSS for styling
-  - Responsive design for all devices
-  - Interactive UI components
+## 🚀 Quickstart
 
-- **Backend**
-  - PHP 7.4+
-  - MySQL Database
-  - MVC-like architecture
+### Prerequisites
+- PHP 7.4+
+- MySQL 5.7+
+- Node.js & npm (for Tailwind CSS)
+- Composer (optional)
 
-- **Dependencies**
-  - Tailwind CSS v4.1.8
-  - Bootstrap 5.3.6
-  - Font Awesome 6.5.0
+### Installation
+```bash
+# Clone the repository
+$ git clone https://github.com/yourusername/auraedition.git
+$ cd auraedition
 
-## 📦 Installation
+# Install Node dependencies
+$ npm install
 
-1. **Prerequisites**
-   - PHP 7.4 or higher
-   - MySQL 5.7 or higher
-   - Web server (Apache/Nginx)
-   - Composer (for dependency management)
+# Build Tailwind CSS
+$ npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind-output.css --minify
 
-2. **Setup**
-   ```bash
-   # Clone the repository
-   git clone https://github.com/yourusername/auraedition.git
-   cd auraedition
-   
-   # Install dependencies
-   npm install
-   
-   # Configure database
-   # Copy .env.example to .env and update database credentials
-   cp .env.example .env
-   
-   # Import database schema
-   mysql -u username -p database_name < database/schema.sql
-   
-   # Start development server
-   php -S localhost:8000
-   ```
+# Configure environment variables
+$ cp .env.example .env
+# Edit .env with your DB and SMTP credentials
 
-## 🚀 Usage
+# Import database schema
+$ mysql -u username -p database_name < database/schema.sql
 
-1. **User Registration**
-   - Register a new account
-   - Verify your email
-   - Complete your profile
+# Start development server
+$ php -S localhost:8000
+```
 
-2. **Browsing Vehicles**
-   - View featured vehicles on the homepage
-   - Use filters to find specific models
-   - View detailed vehicle information
+---
 
-3. **Making a Purchase**
-   - Add vehicles to cart
-   - Proceed to checkout
-   - Complete payment (integration required)
-   - Track your orders
+## 📚 Full Documentation
+- **[Comprehensive Docs](docs/README.docs.md)**: Architecture, modules, database, security, developer guide, and API planning.
+- **[Developer Guide](docs/developer_guide.md)**: Onboarding, coding standards, workflow, troubleshooting.
+- **[API Planning](docs/api.md)**: REST API endpoints and examples (future).
+
+---
 
 ## 📂 Project Structure
-
 ```
 AuraEdition/
-├── admin/               # Admin panel files
-├── assets/              # Static assets (CSS, JS, images)
-│   ├── css/            # Compiled CSS
-│   ├── js/             # JavaScript files
-│   └── images/         # Image assets
-├── auth/                # Authentication related files
-├── includes/            # Core PHP includes
-│   ├── db.php          # Database connection
-│   ├── functions.php   # Helper functions
-│   ├── navbar.php      # Navigation component
-│   └── session.php     # Session management
-├── pages/               # Main application pages
-├── process/             # Form processing scripts
-├── products/            # Product related pages
-├── templates/           # Reusable components
-└── index.php            # Entry point
+├── admin/        # Admin panel
+├── assets/       # CSS, JS, images, fonts
+├── auth/         # Authentication
+├── config/       # Configuration
+├── docs/         # Full documentation
+├── includes/     # Core helpers, DB, session
+├── pages/        # User-facing pages
+├── process/      # Form/action handlers
+├── products/     # Product listings, images
+├── templates/    # Reusable components
+└── index.php     # Entry point
 ```
 
-## 🔒 Security
+---
 
-- Prepared statements for database queries
+## 🔒 Security Highlights
+- Prepared statements for all DB queries
 - Input validation and sanitization
-- CSRF protection
-- Secure password hashing
-- Session management
+- CSRF protection on all forms
+- Secure password hashing (bcrypt)
+- Session management and role-based access
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
 
 ## 🤝 Contributing
-
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📧 Contact
+---
 
-For any inquiries, please reach out to:
+## 📧 Contact
 - Email: contact@auraedition.com
 - Website: https://auraedition.com
 
----
-
 <div align="center">
-  Made with ❤️ by AuraEdition Team
+  Made with ❤️ by the AuraEdition Team
 </div>
