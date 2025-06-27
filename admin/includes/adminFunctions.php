@@ -121,15 +121,88 @@ function getVehicles($connection, $search, $status, $priceSort)
 }
 
 
-function getAllOrders($connection)
+function getAllOrders($connection, $search, $status, $limit, $offset)
 {
-    $stmt = $connection->prepare("SELECT * FROM orders");
-    if (!$stmt) return null;
+    $query = "SELECT o.*, u.fname, u.lname 
+              FROM orders o
+              JOIN users u ON o.user_id = u.id";
+    $whereClauses = [];
+    $params = [];
+    $types = '';
+
+    if (!empty($search)) {
+        $whereClauses[] = "(o.order_id LIKE ? OR u.fname LIKE ? OR u.lname LIKE ? OR u.email LIKE ?)";
+        $searchTerm = "%" . $search . "%";
+        $params = array_merge($params, [$searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+        $types .= 'ssss';
+    }
+
+    if (!empty($status)) {
+        $whereClauses[] = "o.status = ?";
+        $params[] = $status;
+        $types .= 's';
+    }
+
+    if (!empty($whereClauses)) {
+        $query .= " WHERE " . implode(" AND ", $whereClauses);
+    }
+
+    $query .= " ORDER BY o.orderd_at DESC LIMIT ? OFFSET ?";
+    $params[] = $limit;
+    $params[] = $offset;
+    $types .= 'ii';
+
+    $stmt = $connection->prepare($query);
+    if (!$stmt) return [];
+
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
     $stmt->execute();
     $result = $stmt->get_result();
     $orders = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     return $orders;
+}
+
+function countAllOrders($connection, $search, $status)
+{
+    $query = "SELECT COUNT(*) as total
+              FROM orders o
+              JOIN users u ON o.user_id = u.id";
+    $whereClauses = [];
+    $params = [];
+    $types = '';
+
+    if (!empty($search)) {
+        $whereClauses[] = "(o.order_id LIKE ? OR u.fname LIKE ? OR u.lname LIKE ? OR u.email LIKE ?)";
+        $searchTerm = "%" . $search . "%";
+        $params = array_merge($params, [$searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+        $types .= 'ssss';
+    }
+
+    if (!empty($status)) {
+        $whereClauses[] = "o.status = ?";
+        $params[] = $status;
+        $types .= 's';
+    }
+
+    if (!empty($whereClauses)) {
+        $query .= " WHERE " . implode(" AND ", $whereClauses);
+    }
+
+    $stmt = $connection->prepare($query);
+    if (!$stmt) return 0;
+
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $result['total'] ?? 0;
 }
 
 

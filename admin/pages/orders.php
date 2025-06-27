@@ -9,6 +9,19 @@ if (!$user || $user['role'] != "admin") {
     header("Location: /Projects/AuraEdition/index.php");
     exit;
 }
+
+// Pagination logic
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+$items_per_page = 10;
+$offset = ($page - 1) * $items_per_page;
+
+$search = $_GET['search'] ?? '';
+$status = $_GET['status'] ?? '';
+
+$total_orders = countAllOrders($connection, $search, $status);
+$total_pages = ceil($total_orders / $items_per_page);
+
+$orders = getAllOrders($connection, $search, $status, $items_per_page, $offset);
 ?>
 
 <!DOCTYPE html>
@@ -88,9 +101,6 @@ if (!$user || $user['role'] != "admin") {
                         </thead>
                         <tbody>
                             <?php
-                            $search = $_GET['search'] ?? '';
-                            $status = $_GET['status'] ?? '';
-                            $orders = getAllOrders($connection, $search, $status);
                             foreach ($orders as $order):
                                 $user = getUserInfo($connection, $order['user_id']);
                                 $status_classes = [
@@ -120,6 +130,43 @@ if (!$user || $user['role'] != "admin") {
                         </tbody>
                     </table>
                 </div>
+                <!-- Pagination -->
+                <?php if ($total_pages > 1): ?>
+                <div class="flex justify-between items-center mt-6 px-6 py-4 bg-black border-t border-gray-800">
+                    <div class="text-sm text-gray-400">
+                        Showing <span class="font-semibold text-white"><?= $offset + 1 ?></span> to <span class="font-semibold text-white"><?= min($offset + $items_per_page, $total_orders) ?></span> of <span class="font-semibold text-white"><?= $total_orders ?></span> results
+                    </div>
+                    <div class="flex items-center">
+                        <?php
+                        $query_params = http_build_query(array_filter(['search' => $search, 'status' => $status]));
+                        $base_url = "/Projects/AuraEdition/admin/pages/orders.php?" . $query_params;
+
+                        // Previous button
+                        if ($page > 1) {
+                            echo '<a href="' . $base_url . '&page=' . ($page - 1) . '" class="px-4 py-2 mx-1 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors">Previous</a>';
+                        } else {
+                            echo '<span class="px-4 py-2 mx-1 bg-gray-800 text-gray-500 rounded-lg cursor-not-allowed">Previous</span>';
+                        }
+
+                        // Page numbers
+                        for ($i = 1; $i <= $total_pages; $i++) {
+                            if ($i == $page) {
+                                echo '<span class="px-4 py-2 mx-1 bg-yellow-400 text-black font-semibold rounded-lg">' . $i . '</span>';
+                            } else {
+                                echo '<a href="' . $base_url . '&page=' . $i . '" class="px-4 py-2 mx-1 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors">' . $i . '</a>';
+                            }
+                        }
+
+                        // Next button
+                        if ($page < $total_pages) {
+                            echo '<a href="' . $base_url . '&page=' . ($page + 1) . '" class="px-4 py-2 mx-1 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors">Next</a>';
+                        } else {
+                            echo '<span class="px-4 py-2 mx-1 bg-gray-800 text-gray-500 rounded-lg cursor-not-allowed">Next</span>';
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?php endif; ?>
             </div>
         </main>
     </div>
