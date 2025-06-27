@@ -23,9 +23,9 @@ $total_pages = $filter_results['total_pages'];
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
 
-<body>
+<body class="bg-black text-white min-h-screen">
 
-    <!-- Navigation Bar -- -->
+    <!-- Navigation Bar -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
@@ -33,66 +33,61 @@ $total_pages = $filter_results['total_pages'];
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/filterBar.php'; ?>
     <!-- Search and Filter Bar -->
 
-    <div class="container-md my-5 main-content">
-        <h2 class="text-start mb-4">All Listings</h2>
-        <div class="row">
-
+    <div class="max-w-7xl mx-auto px-4 my-10">
+        <h2 class="text-3xl font-serif mb-8 text-yellow-400" style="font-family: 'Trajan Pro', serif;">All Listings</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <!-- Product Cards -->
             <?php foreach ($All_vehicles as $vehicle): ?>
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
-                    <div class="card">
-                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm">
-                            <i class="bi bi-heart mt-1"></i>
+                <div class="bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col border border-yellow-400/20 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-yellow-400/10">
+                    <div class="relative">
+                        <button class="absolute top-3 right-3 bg-white/80 hover:bg-yellow-400 rounded-full p-2 shadow transition" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
+                            <i class="bi bi-heart text-xl text-gray-700"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
-                            <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
+                            <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="w-full h-48 object-cover" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
-                            <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
-                            <div class="d-flex gap-2">
-                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
-                                <a onclick="addToCart(<?= $vehicle['id'] ?>)" class="btn btn-primary">Add to Cart</a>
-                            </div>
+                    </div>
+                    <div class="p-4 flex flex-col gap-2 flex-1">
+                        <h5 class="text-lg font-semibold text-white" style="font-family: 'Trajan Pro', serif;"><?= htmlspecialchars($vehicle['title']) ?></h5>
+                        <p class="text-yellow-400 font-bold text-xl">$<?= number_format($vehicle['price']) ?></p>
+                        <div class="flex gap-2 mt-auto">
+                            <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
+                            <button class="flex-1 bg-gray-900 text-white py-2 rounded hover:bg-gray-700 transition font-semibold" onclick="addToCart(<?= $vehicle['id'] ?>)">Add to Cart</button>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
             <!-- Product Cards -->
-
-
-
-            <!-- Pagination -->
-            <nav aria-label="Page navigation" class="PageNavigation">
-                <ul class="pagination justify-content-center gap-2">
-                    <?php if ($page > 1): ?>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-                    <?php if ($page < $total_pages): ?>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </nav>
-            <!-- Pagination -->
-
         </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation" class="mt-12">
+            <ul class="flex justify-center items-center space-x-2">
+                <?php if ($page > 1): ?>
+                    <li>
+                        <a class="px-4 py-2 bg-gray-900 border border-gray-700 text-white rounded-md hover:bg-gray-800" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li>
+                        <a class="px-4 py-2 border border-gray-700 rounded-md <?= $i == $page ? 'bg-yellow-400 text-black' : 'bg-gray-900 text-white hover:bg-gray-800' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+                <?php if ($page < $total_pages): ?>
+                    <li>
+                        <a class="px-4 py-2 bg-gray-900 border border-gray-700 text-white rounded-md hover:bg-gray-800" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+        <!-- Pagination -->
     </div>
-
-
-
 
     <!-- Footer -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+</body>
+</html>
