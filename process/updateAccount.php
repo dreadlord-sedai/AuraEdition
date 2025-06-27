@@ -6,14 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
-
-// Function to handle errors
-function handleError($message) {
-    $_SESSION['error'] = $message;
-    header("Location: /Projects/AuraEdition/pages/account.php");
-    exit;
-}
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -24,6 +17,11 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        set_flash('error', 'Invalid CSRF token. Please try again.');
+        header("Location: /Projects/AuraEdition/pages/account.php");
+        exit;
+    }
     // Get form data
     $fname = trim($_POST['fname'] ?? '');
     $lname = trim($_POST['lname'] ?? '');
@@ -38,27 +36,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
 
     // Basic validation
     if (empty($fname) || empty($lname) || empty($email)) {
-        $_SESSION['error'] = "Please fill in all required fields.";
+        set_flash('error', "Please fill in all required fields.");
         header("Location: /Projects/AuraEdition/pages/account.php");
         exit;
     }
 
     // Email validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $_SESSION['error'] = "Please enter a valid email address.";
+        set_flash('error', "Please enter a valid email address.");
         header("Location: /Projects/AuraEdition/pages/account.php");
         exit;
     }
 
-    // Check if email already exists
+    // Check if email already exists for another user
     $stmt = $connection->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
     $stmt->bind_param("si", $email, $user_id);
     $stmt->execute();
     if ($stmt->get_result()->num_rows > 0) {
-        $_SESSION['error'] = "Email already in use by another account.";
+        set_flash('error', "Email already in use by another account.");
         header("Location: /Projects/AuraEdition/pages/account.php");
         exit;
     }
+    $stmt->close();
 
     // Handle password change if requested
     if (!empty($new_password)) {
@@ -70,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
         $user = $result->fetch_assoc();
         
         if (!password_verify($current_password, $user['hashed_password'])) {
-            $_SESSION['error'] = "Current password is incorrect.";
+            set_flash('error', "Current password is incorrect.");
             header("Location: /Projects/AuraEdition/pages/account.php");
             exit;
         }
@@ -80,13 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
             !preg_match("/[A-Z]/", $new_password) || 
             !preg_match("/[0-9]/", $new_password) || 
             !preg_match("/[^A-Za-z0-9]/", $new_password)) {
-            $_SESSION['error'] = "New password must be at least 8 characters long and include uppercase, number and special character.";
+            set_flash('error', "New password must be at least 8 characters long and include uppercase, number and special character.");
             header("Location: /Projects/AuraEdition/pages/account.php");
             exit;
         }
 
         if ($new_password !== $confirm_password) {
-            $_SESSION['error'] = "New passwords do not match.";
+            set_flash('error', "New passwords do not match.");
             header("Location: /Projects/AuraEdition/pages/account.php");
             exit;
         }
@@ -96,11 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
     $connection->begin_transaction();
     
     try {
-        // Verify database connection
-        if ($connection->connect_error) {
-            throw new Exception("Database connection failed");
-        }
-        
         // Update user table
         if (!empty($new_password)) {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
@@ -111,60 +105,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
             $stmt->bind_param("sssi", $fname, $lname, $email, $user_id);
         }
         $stmt->execute();
+        $stmt->close();
+
+        // Update session with new name/email
+        $_SESSION['fname'] = $fname;
+        $_SESSION['lname'] = $lname;
+        $_SESSION['email'] = $email;
 
         // Update or insert address
-        // Check if address exists
         $checkStmt = $connection->prepare("SELECT address_id FROM user_addresses WHERE address_user_id = ?");
-        if (!$checkStmt) {
-            throw new Exception("Prepare failed: " . $connection->error);
-        }
-        
         $checkStmt->bind_param("i", $user_id);
-        if (!$checkStmt->execute()) {
-            throw new Exception("Execute failed: " . $checkStmt->error);
-        }
-        
+        $checkStmt->execute();
         $addressExists = $checkStmt->get_result()->num_rows > 0;
         $checkStmt->close();
         
-        // Use the country from the form
-        
-        if ($addressExists) {
-            // Update existing address
-
-            $stmt = $connection->prepare("UPDATE user_addresses SET address = ?, city = ?, state = ?, country = ? WHERE address_user_id = ?");
-            if (!$stmt) {
-                throw new Exception("Prepare failed: " . $connection->error);
-            }
-            $stmt->bind_param("ssssi", $address, $city, $state, $country, $user_id);
+        if (empty($address) && empty($city) && empty($state) && empty($country)) {
+            // If all address fields are empty, do nothing or delete existing address if desired
         } else {
-            // Insert new address
-
-            $stmt = $connection->prepare("INSERT INTO user_addresses (address_user_id, address, city, state, country) VALUES (?, ?, ?, ?, ?)");
-            if (!$stmt) {
-                throw new Exception("Prepare failed: " . $connection->error);
+            if ($addressExists) {
+                // Update existing address
+                $stmt = $connection->prepare("UPDATE user_addresses SET address = ?, city = ?, state = ?, country = ? WHERE address_user_id = ?");
+                $stmt->bind_param("ssssi", $address, $city, $state, $country, $user_id);
+            } else {
+                // Insert new address
+                $stmt = $connection->prepare("INSERT INTO user_addresses (address_user_id, address, city, state, country) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("issss", $user_id, $address, $city, $state, $country);
             }
-            $stmt->bind_param("issss", $user_id, $address, $city, $state, $country);
-        }
-        if (!$stmt->execute()) {
-            throw new Exception("Execute failed: " . $stmt->error);
+            $stmt->execute();
+            $stmt->close();
         }
         // Commit transaction
         $connection->commit();
         
-        $_SESSION['success'] = "Account updated successfully!";
+        set_flash('success', "Account updated successfully!");
     } catch (Exception $e) {
-        // Rollback transaction on error
-        if (isset($connection)) {
-            $connection->rollback();
-        }
-        handleError("An error occurred while updating your account. Please try again.");
+        $connection->rollback();
+        // Log the actual error for debugging
+        error_log('Account update failed: ' . $e->getMessage());
+        set_flash('error', "An error occurred while updating your account. Please try again.");
     }
-
     header("Location: /Projects/AuraEdition/pages/account.php");
     exit;
 } else {
-    $_SESSION['error'] = "Invalid request method.";
+    set_flash('error', "Invalid request method.");
     header("Location: /Projects/AuraEdition/pages/account.php");
     exit;
 }

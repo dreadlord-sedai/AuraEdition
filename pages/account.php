@@ -1,7 +1,8 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+// include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -47,16 +48,13 @@ if (!$user) {
 
             <!-- Messages -->
             <div class="px-6 pt-4">
-                <?php if (isset($_SESSION['success'])): ?>
-                    <div class="mb-4 p-3 bg-green-600 border-l-4 border-yellow-400/50 text-white rounded shadow-lg">
-                        <?php 
-                        echo $_SESSION['success']; unset($_SESSION['success']); ?>
+                <?php if ($msg = get_flash('success')): ?>
+                    <div class="mb-4 p-3 bg-green-900/80 border border-yellow-400/30 text-green-300 rounded shadow-lg font-semibold">
+                        <?= htmlspecialchars($msg) ?>
                     </div>
-                <?php endif; ?>
-                <?php if (isset($_SESSION['error'])): ?>
-                    <div class="mb-4 p-3 bg-red-600 border-l-4 border-yellow-400/50 text-white rounded shadow-lg">
-                        <?php 
-                        echo $_SESSION['error']; unset($_SESSION['error']); ?>
+                <?php elseif ($msg = get_flash('error')): ?>
+                    <div class="mb-4 p-3 bg-red-900/80 border border-yellow-400/30 text-yellow-400 rounded shadow-lg font-semibold">
+                        <?= htmlspecialchars($msg) ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -65,6 +63,7 @@ if (!$user) {
             <div class="p-8">
                 <div id="formErrors" class="mb-4"></div>
                 <form id="accountForm" action="/Projects/AuraEdition/process/updateAccount.php" method="POST" class="space-y-8">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-6">
                             <div>
