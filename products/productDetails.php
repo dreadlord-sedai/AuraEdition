@@ -14,137 +14,105 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
 
-<body>
+<body class="bg-black text-white min-h-screen">
 
-    <!-- Navigation Bar -- -->
+    <!-- Navigation Bar -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
-    <div class="container-md my-5 main-content">
-
-        <div>
-
-            <?php
-
-            if (isset($_GET['id'])):
-                $vehicle_id = $_GET['id'];
-                $vehicle = get_vehicle($vehicle_id, $connection);
-
-
-            ?>
-
-                <!--- Product Image Section -->
-                <div class="flex gap-6 justify-center">
-                    <!-- Main Product Image (left, takes half width) -->
-                    <div class="w-1/2 flex items-center justify-center">
-                        <div class="aspect-square w-full bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
-                            <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Main Product" class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                    </div>
-                    <!-- Image Grid (right, 2x2, takes half width) -->
-                    <div class="w-1/2 grid grid-cols-2 grid-rows-2 gap-4">
-                        <div class="aspect-square bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
-                            <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Grid 1" class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                        <div class="aspect-square bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
-                            <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Grid 2" class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                        <div class="aspect-square bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
-                            <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Grid 3" class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                        <div class="aspect-square bg-white/10 rounded-lg shadow-lg flex items-center justify-center">
-                            <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Grid 4" class="object-cover w-full h-full rounded-lg" />
-                        </div>
-                    </div>
+    <div class="max-w-7xl mx-auto px-4 my-10">
+        <?php
+        if (isset($_GET['id'])):
+            $vehicle_id = $_GET['id'];
+            $vehicle = get_vehicle($vehicle_id, $connection);
+        ?>
+        <!-- Product Image & Gallery -->
+        <div class="flex flex-col md:flex-row gap-10 justify-center">
+            <!-- Main Product Image -->
+            <div class="md:w-1/2 flex items-center justify-center">
+                <div class="aspect-square w-full bg-gray-900 rounded-xl shadow-lg flex items-center justify-center border-2 border-yellow-400/20">
+                    <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Main Product" class="object-cover w-full h-full rounded-xl" />
                 </div>
-
-                <!-- Product Details Section -->
-                <div class="flex flex-row justify-between items-center mt-4 mb-20 p-4">
-                    <!-- Product Details -->
-                    <div class="flex flex-col gap-4 w-2/3 text-center justify-center items-start p-2">
-                        <div class="flex flex-row gap-14 justify-start items-center">
-                            <h2 class="text-2xl font-bold "><?= htmlspecialchars($vehicle['title']) ?></h2>
-                            <h3 class="text-gray-500 ">$<?= htmlspecialchars($vehicle['price']) ?></h3>
-                        </div>
-
-                        <p class="text-gray-600 text-start"><?= htmlspecialchars($vehicle['description']) ?></p>
-                    </div>
-                    <!-- Product Details -->
-
-                    <!-- Action Buttons Section -->
-                    <div class="flex flex-col gap-4 w-1/3  text-center justify-center items-center p-2">
-                        <div class="CTA-card flex flex-col gap-4 justify-center items-center p-2
-                        bg-white/10 rounded-lg shadow-lg w-64 h-72">
-
-                            <button class="btn btn-primary d-flex justify-content-center align-items-center"
-                                onclick="buyNow(<?= $vehicle['id'] ?>, parseInt(document.getElementById('quantity-<?= $vehicle['id'] ?>').value) || 1);" 
-                                type="submit" name="submit" value="Buy Now">
-                                Buy Now
-                            </button>
-
-                            <button type="button" class="btn btn-primary"
-                                onclick="addToCart(<?= $vehicle['id'] ?>, parseInt(document.getElementById('quantity-<?= $vehicle['id'] ?>').value) || 1)">
-                                Add to Cart
-                            </button>
-
-                            <div class="flex flex-row gap-2 justify-center items-center">
-                                <label for="quantity-<?= $vehicle['id'] ?>" class="text-gray-600">Quantity:</label>
-                                <input type="number" id="quantity-<?= $vehicle['id'] ?>" name="quantity" min="1" max="<?= $vehicle['stock']; ?>" value="1">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Action Buttons Section -->
+            </div>
+            <!-- Image Grid -->
+            <div class="md:w-1/2 grid grid-cols-2 grid-rows-2 gap-4">
+                <?php for ($i = 1; $i <= 4; $i++): ?>
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center border border-yellow-400/10">
+                    <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Grid <?php echo $i; ?>" class="object-cover w-full h-full rounded-xl" />
                 </div>
+                <?php endfor; ?>
+            </div>
         </div>
-    <?php endif; ?>
 
-    <hr>
-    <!-- Product Details Section -->
+        <!-- Product Details & Actions -->
+        <div class="flex flex-col md:flex-row justify-between items-start mt-8 mb-20 gap-8">
+            <!-- Product Details -->
+            <div class="flex flex-col gap-6 md:w-2/3">
+                <div class="flex flex-row gap-10 items-center">
+                    <h2 class="text-3xl font-bold font-serif text-yellow-400" style="font-family: 'Trajan Pro', serif;"><?= htmlspecialchars($vehicle['title']) ?></h2>
+                    <h3 class="text-yellow-400 text-2xl font-bold">$<?= htmlspecialchars($vehicle['price']) ?></h3>
+                </div>
+                <p class="text-gray-300 text-lg text-left leading-relaxed"><?= htmlspecialchars($vehicle['description']) ?></p>
+            </div>
+            <!-- Product Details -->
 
+            <!-- Action Buttons Section -->
+            <div class="flex flex-col gap-4 md:w-1/3 w-full text-center items-center">
+                <div class="flex flex-col gap-4 justify-center items-center p-6 bg-gray-900 rounded-xl shadow-lg border border-yellow-400/20 w-full max-w-xs">
+                    <button class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-md hover:bg-yellow-500 transition-all text-lg tracking-wide mb-2"
+                        onclick="buyNow(<?= $vehicle['id'] ?>, parseInt(document.getElementById('quantity-<?= $vehicle['id'] ?>').value) || 1);"
+                        type="submit" name="submit" value="Buy Now">
+                        Buy Now
+                    </button>
+                    <button type="button" class="w-full bg-gray-800 text-yellow-400 font-semibold py-3 rounded-md hover:bg-yellow-400 hover:text-black transition-all text-lg tracking-wide mb-2"
+                        onclick="addToCart(<?= $vehicle['id'] ?>, parseInt(document.getElementById('quantity-<?= $vehicle['id'] ?>').value) || 1)">
+                        Add to Cart
+                    </button>
+                    <div class="flex flex-row gap-2 justify-center items-center w-full">
+                        <label for="quantity-<?= $vehicle['id'] ?>" class="text-gray-400">Quantity:</label>
+                        <input type="number" id="quantity-<?= $vehicle['id'] ?>" name="quantity" min="1" max="<?= $vehicle['stock']; ?>" value="1" class="w-20 bg-black border border-gray-700 text-white rounded-md p-2 focus:ring-yellow-400 focus:border-yellow-400">
+                    </div>
+                </div>
+            </div>
+            <!-- Action Buttons Section -->
+        </div>
+        <?php endif; ?>
 
-    <!-- Recent Listings Section -->
-    <div class="container-md my-20">
-        <h2 class="text-start mb-4">Recent Listings</h2>
-        <div class="row">
-
-            <?php
-            $recent_vehicles = get_all_recent_vehicles($connection);
-            foreach ($recent_vehicles as $vehicle) {
-                $image = get_vehicle_image($vehicle['id'], $connection);
-                $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
-            }
-
-            ?>
-
-            <!-- Vehicle card-->
-            <?php foreach ($recent_vehicles as $vehicle): ?>
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
-                    <div class="card">
-                        <button class="wishlist-button btn btn-outline-light position-absolute top-0 end-0 m-2 p-2 rounded-circle shadow-sm"
+        <hr class="border-yellow-400/20 my-12">
+        <!-- Recent Listings Section -->
+        <div class="my-20">
+            <h2 class="text-2xl font-serif mb-8 text-yellow-400" style="font-family: 'Trajan Pro', serif;">Recent Listings</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <?php
+                $recent_vehicles = get_all_recent_vehicles($connection);
+                foreach ($recent_vehicles as $vehicle) {
+                    $image = get_vehicle_image($vehicle['id'], $connection);
+                    $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+                }
+                ?>
+                <?php foreach ($recent_vehicles as $vehicle): ?>
+                    <div class="bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col border border-yellow-400/20 transform transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
+                        <button class="absolute top-3 right-3 bg-white/80 hover:bg-yellow-400 rounded-full p-2 shadow transition"
                             onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
-                            <i class="bi bi-heart mt-1"></i>
+                            <i class="bi bi-heart text-xl text-gray-700"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
-                            <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicle['title']) ?>">
+                            <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="w-full h-48 object-cover" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($vehicle['title']) ?></h5>
-                            <p class="card-text">$<?= number_format($vehicle['price']) ?></p>
-                            <div class="d-flex gap-2">
-                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="btn btn-primary">Buy Now</a>
-                                <a onclick="addToCart(<?= $vehicle['id'] ?>)" class="btn btn-primary">Add to Cart</a>
+                        <div class="p-4 flex flex-col gap-2 flex-1">
+                            <h5 class="text-lg font-semibold text-white" style="font-family: 'Trajan Pro', serif;"><?= htmlspecialchars($vehicle['title']) ?></h5>
+                            <p class="text-yellow-400 font-bold text-xl">$<?= number_format($vehicle['price']) ?></p>
+                            <div class="flex gap-2 mt-auto">
+                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
+                                <button class="flex-1 bg-gray-900 text-white py-2 rounded hover:bg-gray-700 transition font-semibold" onclick="addToCart(<?= $vehicle['id'] ?>)">Add to Cart</button>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-            <!-- Vehicle card-->
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 
-
-
-    </div>
-
-
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+</body>
+</html>
