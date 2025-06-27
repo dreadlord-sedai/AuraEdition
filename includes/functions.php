@@ -329,14 +329,16 @@ function clearCart($connection, $user_id)
 // Cart Functions //
 
 
-function getPurchasedItemsByUserId($connection, $user_id)
+function getPurchasedItemsByUserId($connection, $user_id, $limit, $offset)
 {
     if (!isset($user_id)) {
         return [];
     }
     $stmt = $connection->prepare("SELECT id, vehicle_id, quantity, price FROM order_items 
-    WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?)");
-    $stmt->bind_param("i", $user_id);
+    WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?) 
+    ORDER BY id DESC 
+    LIMIT ? OFFSET ?");
+    $stmt->bind_param("iii", $user_id, $limit, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $purchased_items = [];
@@ -345,6 +347,20 @@ function getPurchasedItemsByUserId($connection, $user_id)
     }
     $stmt->close();
     return $purchased_items;
+}
+
+function countPurchasedItemsByUserId($connection, $user_id)
+{
+    if (!isset($user_id)) {
+        return 0;
+    }
+    $stmt = $connection->prepare("SELECT COUNT(*) as total FROM order_items 
+    WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?)");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $result['total'] ?? 0;
 }
 
 // User Functions //
