@@ -17,46 +17,49 @@ if (!$user || $user['role'] != "admin") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraEdition | Categories</title>
+    <title>AuraEdition | Manage Makes & Models</title>
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
 </head>
 
-<body class="bg-black">
-    <div class="flex">
-        <!-- Sidebar -->
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Sidebar -->
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
 
-        <!-- Main Content Area -->
-        <div class="flex-1 min-h-screen flex flex-col">
-            <!-- Navigation Bar -->
-            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
-            <!-- Main Content -->
-            <div class="p-8 flex flex-col">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Categories</h3>
-                </div>
-
+    <!-- Main Content Area -->
+    <div class="ml-64 flex-1 flex flex-col">
+        <!-- Navigation Bar -->
+        <?php 
+            $breadcrumbs = ['Makes & Models' => '/Projects/AuraEdition/admin/pages/categories.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+        ?>
+        
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <!-- Makes Section -->
-
                 <div>
-                    <div class="flex flex-col gap-3 justify-content-center items-center mb-4">
-                        <h4 class="text-2xl font-semibold mb-2 text-light">Vehicle Makes</h4>
-                        <!-- Add Make Form -->
-                        <!-- Todo: Add Make Image Form -->
-                        <form class="mb-4 flex gap-2" onsubmit="return addMake(event)">
-                            <input type="text" name="make_name" id="make_name" placeholder="New Make Name" required class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
-                            <button type="submit" class="btn btn-primary">Add Make</button>
+                    <h2 class="text-2xl font-bold text-yellow-400 mb-6" style="font-family: 'Trajan Pro', serif;">Manage Makes</h2>
+                    <!-- Add Make Form -->
+                    <div class="bg-black border border-gray-800 rounded-2xl p-6 mb-8">
+                        <form onsubmit="return addMake(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div class="md:col-span-2">
+                                <label for="make_name" class="block text-sm font-semibold text-gray-400 mb-2">Make Name</label>
+                                <input type="text" name="make_name" id="make_name" placeholder="e.g., Rolls-Royce" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition">
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg hover:bg-yellow-500 transition-all shadow-md">Add Make</button>
+                            </div>
                         </form>
-
                     </div>
 
-                    <div class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
-                        <table class="w-full text-left text-gray-300">
+                    <!-- Makes Table -->
+                    <div class="bg-black border border-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <table class="w-full text-left">
                             <thead>
-                                <tr>
-                                    <th class="px-4 py-2">Make ID</th>
-                                    <th class="px-4 py-2">Make Name</th>
-                                    <th class="px-4 py-2">Actions</th>
+                                <tr class="border-b border-gray-700 bg-gray-900/50">
+                                    <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">ID</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">Name</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,50 +67,53 @@ if (!$user || $user['role'] != "admin") {
                                 $makes = getAllMakes($connection);
                                 foreach ($makes as $make):
                                 ?>
-                                    <tr>
-                                        <td class='px-4 py-2'><?= htmlspecialchars($make['make_id']) ?></td>
-                                        <td class='px-4 py-2'><?= htmlspecialchars($make['make_name']) ?></td>
-                                        <td class='px-4 py-2'>
-                                            <a href="javascript:void(0)" onclick="deleteMake(<?= $make['make_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
-                                        </td>
-                                    </tr>
-                                <?php
-                                endforeach;
-                                ?>
+                                <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+                                    <td class='px-6 py-4 font-mono text-gray-300'><?= htmlspecialchars($make['make_id']) ?></td>
+                                    <td class='px-6 py-4 font-semibold text-white'><?= htmlspecialchars($make['make_name']) ?></td>
+                                    <td class='px-6 py-4 text-center'>
+                                        <a href="javascript:void(0)" onclick="deleteMake(<?= $make['make_id'] ?>)" class='text-red-500 hover:text-red-400 font-semibold'>Delete</a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <!-- Makes Section -->
 
                 <!-- Models Section -->
-                <div class="mt-10">
-                    <div class="flex flex-col gap-3 justify-content-center items-center mb-4">
-                        <h4 class="text-2xl font-semibold mb-2 text-light">Vehicle Models</h4>
-
-                        <!-- Add Model Form -->
-                        <form method="POST" class="mb-4 flex gap-2" onsubmit="return addModel(event)">
-                            <input type="text" name="model_name" id="model_name" placeholder="New Model Name" required 
-                            class="form-input px-2 py-1 rounded bg-gray-400 text-gray-900">
-                            <select name="make_id" id="make_id" required class="form-select px-2 py-1 rounded">
-                                <option value="">Select Make</option>
-                                <?php foreach ($makes as $make): ?>
-                                    <option value="<?= htmlspecialchars($make['make_id']) ?>"><?= htmlspecialchars($make['make_name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button type="submit" name="add_model" class="btn btn-primary">Add Model</button>
+                <div>
+                    <h2 class="text-2xl font-bold text-yellow-400 mb-6" style="font-family: 'Trajan Pro', serif;">Manage Models</h2>
+                    <!-- Add Model Form -->
+                    <div class="bg-black border border-gray-800 rounded-2xl p-6 mb-8">
+                        <form method="POST" onsubmit="return addModel(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div class="md:col-span-2">
+                                <label for="model_name" class="block text-sm font-semibold text-gray-400 mb-2">Model Name</label>
+                                <input type="text" name="model_name" id="model_name" placeholder="e.g., Phantom" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition">
+                            </div>
+                             <div>
+                                <label for="make_id" class="block text-sm font-semibold text-gray-400 mb-2">Assign to Make</label>
+                                <select name="make_id" id="make_id" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition">
+                                    <option value="">Select Make</option>
+                                    <?php foreach ($makes as $make): ?>
+                                        <option value="<?= htmlspecialchars($make['make_id']) ?>"><?= htmlspecialchars($make['make_name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                             </div>
+                            <div>
+                                <button type="submit" name="add_model" class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg hover:bg-yellow-500 transition-all shadow-md">Add Model</button>
+                            </div>
                         </form>
-
                     </div>
 
-                    <div class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
-                        <table class="w-full text-left text-gray-300">
+                    <!-- Models Table -->
+                    <div class="bg-black border border-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <table class="w-full text-left">
                             <thead>
-                                <tr>
-                                    <th class="px-4 py-2">Model ID</th>
-                                    <th class="px-4 py-2">Model Name</th>
-                                    <th class="px-4 py-2">Make Name</th>
-                                    <th class="px-4 py-2">Actions</th>
+                                <tr class="border-b border-gray-700 bg-gray-900/50">
+                                    <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">ID</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">Model Name</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">Make</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -115,27 +121,56 @@ if (!$user || $user['role'] != "admin") {
                                 $models = getAllModels($connection);
                                 foreach ($models as $model):
                                 ?>
-                                    <tr>
-                                        <td class='px-4 py-2'><?= htmlspecialchars($model['model_id']) ?></td>
-                                        <td class='px-4 py-2'><?= htmlspecialchars($model['model_name']) ?></td>
-                                        <td class='px-4 py-2'><?= htmlspecialchars($model['make_name']) ?></td>
-                                        <td class='px-4 py-2'>
-                                            <a href="javascript:void(0)"  onclick="deleteModel(<?= $model['model_id'] ?>)" class='text-red-500 hover:underline'>Delete</a>
-                                        </td>
-                                    </tr>
-                                <?php
-                                endforeach;
-                                ?>
+                                <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+                                    <td class='px-6 py-4 font-mono text-gray-300'><?= htmlspecialchars($model['model_id']) ?></td>
+                                    <td class='px-6 py-4 font-semibold text-white'><?= htmlspecialchars($model['model_name']) ?></td>
+                                    <td class='px-6 py-4 text-gray-300'><?= htmlspecialchars($model['make_name']) ?></td>
+                                    <td class='px-6 py-4 text-center'>
+                                        <a href="javascript:void(0)"  onclick="deleteModel(<?= $model['model_id'] ?>)" class='text-red-500 hover:text-red-400 font-semibold'>Delete</a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-
-
-
                 </div>
-                <!-- Main Content -->
-
             </div>
-        </div>
+        </main>
+    </div>
 
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
+    <script>
+        function addMake(event) {
+            event.preventDefault();
+            const makeName = document.getElementById('make_name').value;
+            if (!makeName) return;
+            // You can use Fetch API to send this to a handler
+            console.log('Adding make:', makeName);
+            // Example: window.location.href = `/Projects/AuraEdition/admin/process/handleCategory.php?action=add_make&name=${makeName}`;
+            alert('Add functionality not yet connected.');
+        }
+
+        function deleteMake(id) {
+            if (confirm('Are you sure you want to delete this make? This might affect existing vehicles.')) {
+                // Example: window.location.href = `/Projects/AuraEdition/admin/process/handleCategory.php?action=delete_make&id=${id}`;
+                alert('Delete functionality not yet connected.');
+            }
+        }
+
+        function addModel(event) {
+            event.preventDefault();
+            const modelName = document.getElementById('model_name').value;
+            const makeId = document.getElementById('make_id').value;
+            if (!modelName || !makeId) return;
+            console.log(`Adding model: ${modelName} to make ID: ${makeId}`);
+            alert('Add functionality not yet connected.');
+        }
+
+        function deleteModel(id) {
+            if (confirm('Are you sure you want to delete this model?')) {
+                alert('Delete functionality not yet connected.');
+            }
+        }
+    </script>
+</body>
+
+</html>
