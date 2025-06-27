@@ -6,9 +6,7 @@ require_once __DIR__ . '/../includes/PHPMailer/Exception.php';
 require_once __DIR__ . '/../includes/PHPMailer/PHPMailer.php';
 require_once __DIR__ . '/../includes/PHPMailer/SMTP.php';
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 // If you have PHPMailer setup, include it here
 // include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/PHPMailer/PHPMailerAutoload.php';
 

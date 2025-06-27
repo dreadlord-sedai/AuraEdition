@@ -591,3 +591,64 @@ function hasUserAddresses($connection, $user_id)
     $stmt->close();
     return $row['count'] > 0;
 }
+
+/**
+ * Add a new make to the makes table.
+ * @param mysqli $connection
+ * @param string $make_name
+ * @return bool
+ */
+function addMake($connection, $make_name) {
+    $stmt = $connection->prepare("INSERT INTO makes (make_name) VALUES (?)");
+    if (!$stmt) return false;
+    $stmt->bind_param("s", $make_name);
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
+}
+
+/**
+ * Add a new model to the model table.
+ * @param mysqli $connection
+ * @param string $model_name
+ * @param int $make_id
+ * @return bool
+ */
+function addModel($connection, $model_name, $make_id) {
+    $stmt = $connection->prepare("INSERT INTO model (model_name, model_make_id) VALUES (?, ?)");
+    if (!$stmt) return false;
+    $stmt->bind_param("si", $model_name, $make_id);
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
+}
+
+/**
+ * Delete a make from the makes table.
+ * @param mysqli $connection
+ * @param int $make_id
+ * @return bool
+ */
+function deleteMake($connection, $make_id) {
+    $stmt = $connection->prepare("DELETE FROM makes WHERE make_id = ?");
+    if (!$stmt) return false;
+    $stmt->bind_param("i", $make_id);
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
+}
+
+/**
+ * Delete a model from the model table.
+ * @param mysqli $connection
+ * @param int $model_id
+ * @return bool
+ */
+function deleteModel($connection, $model_id) {
+    $stmt = $connection->prepare("DELETE FROM model WHERE model_id = ?");
+    if (!$stmt) return false;
+    $stmt->bind_param("i", $model_id);
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
+}

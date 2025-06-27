@@ -3,29 +3,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
 
 /* Account Functions */
 
-function getUserInfo($connection, $user_id)
-{
-    $stmt = $connection->prepare("SELECT
-    u.id,
-    u.fname,
-    u.lname,
-    u.email,
-    u.role,
-    ua.address,
-    ua.city,
-    ua.state
-FROM users u
-LEFT JOIN user_addresses ua ON u.id = ua.address_user_id
-WHERE u.id = ?");
-    if (!$stmt) return null;
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-    $stmt->close();
-    return $user;
-}
-
 function updateAccount($connection, $user_id, $fname, $lname, $email, $password)
 {
     $sql = "UPDATE users SET fname = ?, lname = ?, email = ?";
@@ -69,7 +46,7 @@ function updateAddress($connection, $user_id, $address, $city, $state)
  * @return array The user's information array.
  */
 function authorize_admin($connection) {
-    $user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
+    $user = isset($_SESSION['user_id']) ? getUserWithAddress($connection, $_SESSION['user_id']) : null;
     if (!$user || $user['role'] !== 'admin') {
         header("Location: " . BASE_URL . "/index.php");
         exit;
@@ -429,42 +406,6 @@ function getAllModels($connection)
     $models = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     return $models;
-}
-
-function addMake($connection, $make_name)
-{
-    $stmt = $connection->prepare("INSERT INTO makes (make_name) VALUES (?)");
-    if (!$stmt) return null;
-    $stmt->bind_param("s", $make_name);
-    $stmt->execute();
-    $stmt->close();
-}
-
-function addModel($connection, $model_name, $make_id)
-{
-    $stmt = $connection->prepare("INSERT INTO model (model_name, model_make_id) VALUES (?, ?)");
-    if (!$stmt) return null;
-    $stmt->bind_param("si", $model_name, $make_id);
-    $stmt->execute();
-    $stmt->close();
-}
-
-function deleteMake($connection, $make_id)
-{
-    $stmt = $connection->prepare("DELETE FROM makes WHERE make_id = ?");
-    if (!$stmt) return null;
-    $stmt->bind_param("i", $make_id);
-    $stmt->execute();
-    $stmt->close();
-}
-
-function deleteModel($connection, $model_id)
-{
-    $stmt = $connection->prepare("DELETE FROM model WHERE model_id = ?");
-    if (!$stmt) return null;
-    $stmt->bind_param("i", $model_id);
-    $stmt->execute();
-    $stmt->close();
 }
 
 /* Category Functions */

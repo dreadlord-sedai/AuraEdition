@@ -96,7 +96,7 @@ $orders = getAllOrders($connection, $search, $status, $items_per_page, $offset);
                         <tbody>
                             <?php
                             foreach ($orders as $order):
-                                $user = getUserInfo($connection, $order['user_id']);
+                                $user = getUserWithAddress($connection, $order['user_id']);
                                 $status_classes = [
                                     'pending' => 'bg-yellow-900 text-yellow-300 border-yellow-700',
                                     'processing' => 'bg-blue-900 text-blue-300 border-blue-700',

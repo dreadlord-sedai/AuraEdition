@@ -1,5 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

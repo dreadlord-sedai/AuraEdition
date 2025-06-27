@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 ?>
 <!-- Transparent Navigation Bar -->
 <nav class="absolute top-0 left-0 w-full z-30 text-white transition-all duration-300">
