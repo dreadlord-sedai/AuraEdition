@@ -29,8 +29,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
         <!-- Product Image & Gallery -->
         <div class="flex flex-col md:flex-row gap-10 justify-center">
             <!-- Main Product Image -->
-            <div class="md:w-1/2 flex items-center justify-center">
-                <div class="aspect-square w-full bg-gray-900 rounded-xl shadow-lg flex items-center justify-center border-2 border-yellow-400/20">
+            <div class="md:w-1/2 flex items-center justify-center relative">
+                <div class="aspect-square w-full bg-gray-900 rounded-xl shadow-lg flex items-center justify-center border-2 border-yellow-400/20 relative">
+                    <button class="absolute top-4 right-4 w-12 h-12 bg-transparent border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition hover:bg-yellow-400/10" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
+                        <i class="fa-solid fa-heart text-2xl text-yellow-400 transition"></i>
+                    </button>
                     <img src="<?php echo get_vehicle_image($vehicle_id, $connection); ?>" alt="Main Product" class="object-cover w-full h-full rounded-xl" />
                 </div>
             </div>
@@ -91,9 +94,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                 }
                 ?>
                 <?php foreach ($recent_vehicles as $vehicle): ?>
-                    <div class="bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col border border-yellow-400/20 transform transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
-                        <button class="absolute top-3 right-3 w-12 h-12 bg-white/80 hover:bg-yellow-400 border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
-                            <i class="fa-solid fa-heart text-2xl text-yellow-400 group-hover:text-black transition"></i>
+                    <div class="bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col border border-yellow-400/20 transform transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10 relative group">
+                        <button class="absolute top-3 right-3 w-12 h-12 bg-white/80 hover:bg-yellow-400 border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition opacity-0 group-hover:opacity-100" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
+                            <i class="fa-solid fa-heart text-2xl text-yellow-400 transition"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
                             <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="w-full h-48 object-cover" alt="<?= htmlspecialchars($vehicle['title']) ?>">
