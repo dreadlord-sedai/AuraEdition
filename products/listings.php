@@ -38,10 +38,10 @@ $total_pages = $filter_results['total_pages'];
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <!-- Product Cards -->
             <?php foreach ($All_vehicles as $vehicle): ?>
-                <div class="bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col border border-yellow-400/20 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-yellow-400/10">
+                <div class="bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col border border-yellow-400/20 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-yellow-400/10 group">
                     <div class="relative">
-                        <button class="absolute top-3 right-3 bg-white/80 hover:bg-yellow-400 rounded-full p-2 shadow transition" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
-                            <i class="bi bi-heart text-xl text-gray-700"></i>
+                        <button class="absolute top-3 right-3 w-12 h-12 bg-white/80 hover:bg-yellow-400 border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition opacity-0 group-hover:opacity-100" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
+                            <i class="fa-solid fa-heart text-2xl text-yellow-400 transition"></i>
                         </button>
                         <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
                             <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="w-full h-48 object-cover" alt="<?= htmlspecialchars($vehicle['title']) ?>">

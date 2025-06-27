@@ -64,6 +64,9 @@ $listings = getListingsByMake($connection, $make_id);
                                 <a href="/Projects/AuraEdition/products/productDetails.php?id=<?php echo $listing['listing_id']; ?>" class="ml-4 bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500 font-semibold transition-all">View Details</a>
                             </div>
                         </div>
+                        <button class="absolute top-3 right-3 w-12 h-12 bg-white/80 hover:bg-yellow-400 border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition" onclick="addToWishlist(<?= $listing['listing_id'] ?>)" data-id="<?= $listing['listing_id'] ?>">
+                            <i class="fa-solid fa-heart text-2xl text-yellow-400 group-hover:text-black transition"></i>
+                        </button>
                     </div>
                 <?php endforeach; ?>
             <?php else : ?>
