@@ -1,57 +1,48 @@
-<!-- Navigation Bar -->
-<nav class="bg-gray-900 text-white w-full">
+<!-- Main navigation bar -->
+<header class="bg-black border-b border-gray-800 shadow-md">
+    <div class="flex items-center justify-between px-8 py-4">
+        <!-- Breadcrumbs can be dynamically generated here if needed -->
+        <div class="text-gray-400">
+            <a href="/Projects/AuraEdition/admin/dashboard.php" class="hover:text-yellow-400">Admin</a>
+            <span class="mx-2">/</span>
+            <span class="text-white font-semibold">Dashboard</span>
+        </div>
 
-    <div class=" flex flex-row w-full items-center justify-between py-3 px-5">
-        <div class="flex items-center gap-3 flex-row">
-
-            <!-- Sidebar button (Hamburger menu) -->
-            <div>
-                <button id="sidebarToggle" type="button" class="focus:outline-none p-2 rounded hover:bg-gray-700 transition">
-                    <!-- Hamburger icon -->
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Logo -->
-            <a class="logo text-2xl text-white" href="/Projects/AuraEdition/index.php">AuraEdition</a>
-
-            <div>
-                <!-- Account button AND PIC -->
-                <div class="flex items-center gap-3">
-                    <!-- Account Picture (round) -->
-                    <div class="w-15 h-15 rounded-full  flex items-center justify-center overflow-hidden
-                    border-3 bg-gray-800 border-gray-600 ">
-                        <img src="/Projects/AuraEdition/admin/assets/images/account.jpg" alt="Account" class="w-full h-full object-cover" />
-                    </div>
-                    <!-- Account Link -->
-                    <a href="/Projects/AuraEdition/admin/pages/adminAccount.php" class="text-white text-decoration-none hover:text-blue-400
-                     font-semibold transition">
-                        Account
-                    </a>
+        <!-- User profile dropdown -->
+        <div class="relative">
+            <button id="user-menu-button" class="flex items-center focus:outline-none">
+                <span class="text-white font-semibold mr-3"><?= htmlspecialchars($user['fname'] ?? 'Admin') ?></span>
+                <div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center">
+                    <span class="text-black font-bold text-lg"><?= htmlspecialchars(strtoupper(substr($user['fname'] ?? 'A', 0, 1))) ?></span>
                 </div>
-            </div>
+                <i class="fas fa-chevron-down text-white ml-2"></i>
+            </button>
 
-        </div>
-
-
-        <div class="flex items-center">
-            <ul class="flex space-x-6 list-none items-center m-0 p-0">
-                <li><a class="nav-link text-white hover:text-blue-400 transition" href="/Projects/AuraEdition/index.php">Home</a></li>
-            </ul>
-
-            <!-- Display logout button -->
-            <div class="text-decoration-none text-white ml-10">
-                <button type="button" onclick="logout()"
-                    class="border border-red-500 text-red-500 px-4 py-1 rounded
-                         hover:bg-red-500 hover:text-white transition d-flex align-items-center">
-                    Logout
-                </button>
+            <!-- Dropdown menu -->
+            <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-black border border-gray-800 rounded-lg shadow-xl py-2 z-50">
+                <a href="/Projects/AuraEdition/admin/pages/adminAccount.php" class="block px-4 py-2 text-gray-300 hover:bg-gray-900 hover:text-yellow-400">My Account</a>
+                <a href="/Projects/AuraEdition/auth/logout.php" class="block px-4 py-2 text-gray-300 hover:bg-gray-900 hover:text-yellow-400">Sign Out</a>
             </div>
         </div>
-
     </div>
+</header>
 
-</nav>
-<!-- Navigation Bar -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        if(userMenuButton) {
+            userMenuButton.addEventListener('click', function () {
+                userMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (userMenu && !userMenu.classList.contains('hidden') && !userMenuButton.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
