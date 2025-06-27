@@ -8,9 +8,9 @@
 
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
 
-<body>
+<body class="bg-black text-white min-h-screen">
 
-    <!-- Navigation Bar -- -->
+    <!-- Navigation Bar -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
@@ -18,45 +18,38 @@
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/filterBar.php'; ?>
     <!-- Search and Filter Bar -->
 
-    <div class="container-md my-5 main-content">
-        <h2 class="text-start mb-4">Makes</h2>
-        <div class="row">
-
+    <div class="max-w-7xl mx-auto px-4 my-10">
+        <h2 class="text-3xl font-serif mb-8 text-yellow-400" style="font-family: 'Trajan Pro', serif;">Makes</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         <?php
         include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
         include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
         $makes = getAllMakes($connection);
         ?>
-
             <!-- Makes Card -->
             <?php foreach ($makes as $make) : ?>
-            <div class="col-12 col-sm-6 col-md-4 mb-4">
-                <div class="card makes-card  d-flex flex-row align-items-center gap-3">
-                    <img src="<?=$make['make_image']; ?>" class="makesCard-img" alt="Featured Vehicle">
-                    <div class="d-flex flex-column justify-content-center flex-grow-1">
-
-                        <div class="pb-4">
-                            <p class="makesCard-title mb-1"><?=$make['make_name']; ?></p>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="card-text mb-0 text-muted" style="font-size: 0.95rem;"><?= $make['listings_count'] ?> Listings</p>
-                            <a href="/Projects/AuraEdition/pages/makesListings.php?id=<?= $make['make_id'] ?>" class="text-decoration-none">
-                                <button class="makesCard-btn btn btn-outline-light d-flex justify-content-center align-items-center">
+            <div class="bg-gray-900 rounded-xl shadow-lg flex flex-row items-center gap-4 border border-yellow-400/20 p-4 transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
+                <img src="<?=$make['make_image']; ?>" class="w-24 h-24 object-cover rounded-lg" alt="Featured Vehicle">
+                <div class="flex flex-col justify-center flex-grow">
+                    <div class="pb-4">
+                        <p class="text-xl font-serif text-yellow-400 mb-1" style="font-family: 'Trajan Pro', serif;"><?=$make['make_name']; ?></p>
+                    </div>
+                    <div class="flex flex-row justify-between items-center">
+                        <p class="text-gray-400 text-sm mb-0" style="font-size: 0.95rem;"><?= $make['listings_count'] ?> Listings</p>
+                        <a href="/Projects/AuraEdition/pages/makesListings.php?id=<?= $make['make_id'] ?>" class="ml-4">
+                            <button class="flex items-center justify-center w-10 h-10 rounded-full border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all">
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
-                            </a>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
             <?php endforeach; ?>
             <!-- Makes Card -->
-             
         </div>
     </div>
 
-
-
     <!-- Footer -->
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+</body>
+</html>
