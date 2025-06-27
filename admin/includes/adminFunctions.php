@@ -402,53 +402,86 @@ function deleteModel($connection, $model_id)
 
 
 /* Admin User Management Functions */
-function getAllUsers($connection) {
-    // Get all columns from users table to check what exists
-    $usersColumns = [];
-    $columnsResult = $connection->query("SHOW COLUMNS FROM users");
-    if ($columnsResult) {
-        while ($column = $columnsResult->fetch_assoc()) {
-            $usersColumns[] = $column['Field'];
-        }
+function getAllUsers($connection, $search, $role, $limit, $offset) {
+    $sql = "SELECT u.id, u.fname, u.lname, u.email, u.role, u.registerd_date as user_date
+            FROM users u";
+    
+    $whereClauses = [];
+    $params = [];
+    $types = '';
+
+    if (!empty($search)) {
+        $whereClauses[] = "(u.fname LIKE ? OR u.lname LIKE ? OR u.email LIKE ?)";
+        $searchTerm = "%" . $search . "%";
+        $params = array_merge($params, [$searchTerm, $searchTerm, $searchTerm]);
+        $types .= 'sss';
     }
-    
-    $roleColumnExists = in_array('role', $usersColumns);
-    $hasDateColumn = in_array('created_at', $usersColumns) || in_array('registered_at', $usersColumns);
-    
-    $sql = "SELECT 
-                u.id, 
-                u.fname, 
-                u.lname, 
-                u.email, "
-                . ($roleColumnExists ? "u.role, " : "'user' as role, ")
-                . ($hasDateColumn ? "COALESCE(u.created_at, u.registered_at, NOW()) as user_date, " : "NULL as user_date, ")
-                . "ua.address,
-                ua.city,
-                ua.state,
-                ua.country
-            FROM users u
-            LEFT JOIN user_addresses ua ON u.id = ua.address_user_id
-            " . ($hasDateColumn ? "ORDER BY COALESCE(u.created_at, u.registered_at) DESC" : "ORDER BY u.id DESC") . "";
-    
+
+    if (!empty($role)) {
+        $whereClauses[] = "u.role = ?";
+        $params[] = $role;
+        $types .= 's';
+    }
+
+    if (!empty($whereClauses)) {
+        $sql .= " WHERE " . implode(" AND ", $whereClauses);
+    }
+
+    $sql .= " ORDER BY u.registerd_date DESC LIMIT ? OFFSET ?";
+    $params[] = $limit;
+    $params[] = $offset;
+    $types .= 'ii';
+
     $stmt = $connection->prepare($sql);
-    if (!$stmt) {
-        error_log("Failed to prepare statement: " . $connection->error);
-        return [];
+    if (!$stmt) return [];
+    
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
     }
     
     $stmt->execute();
     $result = $stmt->get_result();
-    $users = [];
-    
-    while ($row = $result->fetch_assoc()) {
-        $users[] = $row;
-    }
-    
+    $users = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     return $users;
 }
 
+function countAllUsers($connection, $search, $role) {
+    $sql = "SELECT COUNT(*) as total FROM users u";
 
+    $whereClauses = [];
+    $params = [];
+    $types = '';
+
+    if (!empty($search)) {
+        $whereClauses[] = "(u.fname LIKE ? OR u.lname LIKE ? OR u.email LIKE ?)";
+        $searchTerm = "%" . $search . "%";
+        $params = array_merge($params, [$searchTerm, $searchTerm, $searchTerm]);
+        $types .= 'sss';
+    }
+
+    if (!empty($role)) {
+        $whereClauses[] = "u.role = ?";
+        $params[] = $role;
+        $types .= 's';
+    }
+
+    if (!empty($whereClauses)) {
+        $sql .= " WHERE " . implode(" AND ", $whereClauses);
+    }
+
+    $stmt = $connection->prepare($sql);
+    if (!$stmt) return 0;
+    
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $result['total'] ?? 0;
+}
 
 function deleteUser($connection, $userId) {
     $connection->begin_transaction();

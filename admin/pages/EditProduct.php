@@ -2,6 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
@@ -9,184 +10,184 @@ if (!$user || $user['role'] != "admin") {
     header("Location: /Projects/AuraEdition/index.php");
     exit;
 }
+
+// Fetch product details
+$product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$product = getProductInfo($connection, $product_id);
+
+if (!$product) {
+    set_flash('error', 'Product not found.');
+    header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
+    exit;
+}
+
+$makes = getAllMakes($connection);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraEdition | Edit Product</title>
+    <title>AuraEdition | Edit Vehicle</title>
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
 </head>
 
-<body class="bg-black">
-    <div class="flex">
-        <!-- Sidebar -->
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+<body class="bg-gray-900 text-gray-100">
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+    <div class="ml-64 flex-1 flex flex-col">
+        <?php 
+            $breadcrumbs = [
+                'Vehicles' => '/Projects/AuraEdition/admin/pages/vehicles.php',
+                'Edit Vehicle' => '#'
+            ];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+        ?>
+        <main class="flex-1 p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-yellow-400" style="font-family: 'Trajan Pro', serif;">Edit Vehicle</h1>
+            </div>
 
-        <!-- Main Content Area -->
-        <div class="flex-1 min-h-screen flex flex-col">
-            <!-- Navigation Bar -->
-            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
-            <!-- Main Content -->
-            <div class="p-8 flex flex-col">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Edit Vehicle Product</h3>
+            <?php if ($msg = get_flash('success')): ?>
+                <div class="mb-6 p-4 bg-green-900/80 border border-green-700 text-green-300 rounded-lg shadow-lg"><?= htmlspecialchars($msg) ?></div>
+            <?php elseif ($msg = get_flash('error')): ?>
+                <div class="mb-6 p-4 bg-red-900/80 border border-red-700 text-red-300 rounded-lg shadow-lg"><?= htmlspecialchars($msg) ?></div>
+            <?php endif; ?>
 
-                </div>
-
-                <!-- Add Vehicle Product Form -->
-                <form action="/Projects/AuraEdition/admin/process/editProductProcess.php" method="POST" enctype="multipart/form-data"
-                    class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto border border-gray-700">
-
-                    <?php if (isset($_GET['error'])): ?>
-                        <div class="bg-red-500 text-white p-4 rounded mb-4">
-                            <p class="text-sm"><?php echo htmlspecialchars($_GET['error']); ?></p>
-                        </div>
-                    <?php endif; ?>
-                    <?php if (isset($_GET['success'])): ?>
-                        <div class="bg-green-500 text-white p-4 rounded mb-4">
-                            <p class="text-sm"><?php echo htmlspecialchars($_GET['success']); ?></p>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php
-                    // Fetch product details from the database
-                    $product_id = $_GET['id'];
-                    $product = getProductInfo($connection, $product_id);
-
-                    if (!$product) {
-                        echo '<div class="bg-red-500 text-white p-4 rounded mb-4">Product not found.</div>';
-                        exit;
-                    }
-                    ?>
+            <div class="bg-black border border-gray-800 rounded-2xl p-8 shadow-lg">
+                <form action="/Projects/AuraEdition/admin/process/editProductProcess.php" method="POST" enctype="multipart/form-data" class="space-y-8">
                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']) ?>">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <div>
+                                <label for="title" class="block text-sm font-semibold text-gray-400 mb-2">Vehicle Title</label>
+                                <input type="text" name="title" id="title" required value="<?= htmlspecialchars($product['title']) ?>" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
+                            </div>
 
-                    <!-- Product Title -->
-                    <div class="mb-4">
-                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
-                        <input type="text" name="title" id="title" required 
-                            value="<?= htmlspecialchars($product['title']) ?>"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
-                            focus:ring-blue-500 border border-gray-600">
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label for="make" class="block text-sm font-semibold text-gray-400 mb-2">Make</label>
+                                    <select name="make" id="make" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
+                                        <option value="">Select Make</option>
+                                        <?php foreach ($makes as $m): ?>
+                                            <option value="<?= htmlspecialchars($m['make_id']) ?>" <?= $m['make_id'] == $product['make_id'] ? 'selected' : '' ?>><?= htmlspecialchars($m['make_name']) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="model" class="block text-sm font-semibold text-gray-400 mb-2">Model</label>
+                                    <select name="model" id="model" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400" disabled>
+                                        <option value="">Select Make First</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="description" class="block text-sm font-semibold text-gray-400 mb-2">Description</label>
+                                <textarea name="description" id="description" rows="6" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400"><?= htmlspecialchars($product['description']) ?></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label for="price" class="block text-sm font-semibold text-gray-400 mb-2">Price ($)</label>
+                                    <input type="number" name="price" id="price" step="0.01" required value="<?= htmlspecialchars($product['price']) ?>" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
+                                </div>
+                                <div>
+                                    <label for="stock" class="block text-sm font-semibold text-gray-400 mb-2">Stock</label>
+                                    <input type="number" name="stock" id="stock" required value="<?= htmlspecialchars($product['stock']) ?>" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="status" class="block text-sm font-semibold text-gray-400 mb-2">Status</label>
+                                <select name="status" id="status" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400">
+                                    <option value="Available" <?= $product['status'] == 'Available' ? 'selected' : '' ?>>Available</option>
+                                    <option value="Sold Out" <?= $product['status'] == 'Sold Out' ? 'selected' : '' ?>>Sold Out</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-400 mb-2">Update Image (Optional)</label>
+                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-700 border-dashed rounded-md">
+                                    <div class="space-y-1 text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                                        <div class="flex text-sm text-gray-500">
+                                            <label for="image" class="relative cursor-pointer bg-gray-800 rounded-md font-medium text-yellow-400 hover:text-yellow-300"><input id="image" name="image" type="file" class="sr-only" accept="image/*"></label>
+                                            <p class="pl-1">or drag and drop</p>
+                                        </div>
+                                        <p class="text-xs text-gray-600">Leave empty to keep current image</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Vehicle Make -->
-                    <div class="mb-4">
-                        <label for="make" class="block text-sm font-medium text-gray-300 mb-1">Make</label>
-                        <select name="make" id="make" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
-                        focus:ring-blue-500 border border-gray-600">
-                            <?php if (!empty($product)): ?>
-                                <option value="<?= htmlspecialchars($product['make_id']) ?>" selected><?= htmlspecialchars($product['make_name']) ?></option>
-                                <?php
-                                $makes = getAllMakes($connection);
-                                // Loop through makes and create options
-                                foreach ($makes as $m):
-                                ?>
-                                    <option value="<?= htmlspecialchars($m['make_id']) ?>"><?= htmlspecialchars($m['make_name']) ?></option>
-                                <?php
-                                endforeach;
-                                ?>
-                            <?php endif; ?>
-                        </select>
-                    </div>
-
-                    <!-- Vehicle Model -->
-                    <div class="mb-4">
-                        <label for="model" class="block text-sm font-medium text-gray-300 mb-1">Model</label>
-                        <select name="model" id="model" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 
-                        focus:ring-blue-500 border border-gray-600">
-                            <?php if (!empty($product)): ?>
-                                <option value="<?= htmlspecialchars($product['model_id']) ?>" selected><?= htmlspecialchars($product['model_name']) ?></option>
-                                <?php
-                                // Fetch models based on the selected make
-                                $models = getModelsByMake($connection, $product['make_id']);
-                                foreach ($models as $m):
-                                    if ($m['model_id'] != $product['model_id']):
-                                ?>
-                                        <option value="<?= htmlspecialchars($m['model_id']) ?>"><?= htmlspecialchars($m['model_name']) ?></option>
-                                <?php
-                                    endif;
-                                endforeach;
-                                ?>
-                            <?php endif; ?>
-                        </select>
-                    </div>
-
-                    <!-- Vehicle Description -->
-                    <div class="mb-4">
-                        <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                        <textarea name="description" id="description" rows="4" required
-                            placeholder="<?= isset($product['description']) ? htmlspecialchars($product['description']) : 'Enter product description' ?>"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
-                            focus:ring-blue-500 border border-gray-600"><?= isset($product['description']) ? htmlspecialchars($product['description']) : '' ?></textarea>
-                    </div>
-
-                    <!-- Product Price -->
-                    <div class="mb-4">
-                        <label for="price" class="block text-sm font-medium text-gray-300 mb-1">Price ($)</label>
-                        <input type="number" name="price" id="price" step="0.01" required 
-                        value="<?= htmlspecialchars($product['price']) ?>"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
-                            focus:ring-blue-500 border border-gray-600">
-                    </div>
-
-                    <!-- Product Stock -->
-                    <div class="mb-4">
-                        <label for="stock" class="block text-sm font-medium text-gray-300 mb-1">Stock Quantity</label>
-                        <input type="number" name="stock" id="stock" required value="<?= htmlspecialchars($product['stock']) ?>"
-                            class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 
-                            focus:ring-blue-500 border border-gray-600">
-                    </div>
-
-                    <!-- Product Status -->
-                    <div class="mb-4">
-                        <label for="product_status" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
-                        <select name="product_status" id="product_status" required class="w-full px-3 py-2 rounded-lg bg-gray-700 text-white 
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600">
-                            <?php if (!empty($product)): ?>
-                                <option value="<?= htmlspecialchars($product['status']) ?>" selected><?= htmlspecialchars($product['status']) ?></option>
-                                <?php
-                                $statuses = ['ACTIVE', 'INACTIVE'];
-                                foreach ($statuses as $status):
-                                    if ($status != $product['status']):
-                                ?>
-                                        <option value="<?= htmlspecialchars($status) ?>"><?= htmlspecialchars(ucfirst($status)) ?></option>
-                                <?php
-                                    endif;
-                                endforeach;
-                                ?>
-                            <?php endif; ?>
-                        </select>
-                    </div>
-
-                    <!-- Product Image -->
-                    <div class="mb-6">
-                        <label for="image" class="block text-sm font-medium text-gray-300 mb-1">Product Image</label>
-                        <input type="file" name="image" id="image" accept="image/*" class="w-full text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg 
-                        file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 border border-gray-600">
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="flex justify-end">
-                        <button type="submit" name="update_product" value="update_product" class="btn btn-primary px-6 py-2">Update Vehicle Product</button>
+                    <div class="pt-5 border-t border-gray-800">
+                        <div class="flex justify-end">
+                            <a href="/Projects/AuraEdition/admin/pages/vehicles.php" class="bg-gray-700 text-gray-200 font-semibold py-3 px-6 rounded-lg hover:bg-gray-600 transition-all mr-4">Cancel</a>
+                            <button type="submit" name="update_product" class="bg-yellow-400 text-black font-semibold py-3 px-8 rounded-lg hover:bg-yellow-500 transition-all shadow-md">Update Vehicle</button>
+                        </div>
                     </div>
                 </form>
-                <!--End Add Vehicle Product Form-->
-
-
-
             </div>
-            <!-- Main Content -->
-
-        </div>
+        </main>
     </div>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const makeSelect = document.getElementById('make');
+        const modelSelect = document.getElementById('model');
+        const initialMakeId = '<?= $product['make_id'] ?>';
+        const initialModelId = '<?= $product['model_id'] ?>';
 
+        function fetchModels(makeId, selectedModelId = null) {
+            modelSelect.innerHTML = '<option>Loading...</option>';
+            modelSelect.disabled = true;
 
+            if (makeId) {
+                fetch(`/Projects/AuraEdition/admin/pages/get_models.php?make_id=${makeId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        modelSelect.innerHTML = '<option value="">Select Model</option>';
+                        if(data.length > 0) {
+                            data.forEach(model => {
+                                const option = document.createElement('option');
+                                option.value = model.model_id;
+                                option.textContent = model.model_name;
+                                if (model.model_id == selectedModelId) {
+                                    option.selected = true;
+                                }
+                                modelSelect.appendChild(option);
+                            });
+                            modelSelect.disabled = false;
+                        } else {
+                            modelSelect.innerHTML = '<option value="">No models found</option>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching models:', error);
+                        modelSelect.innerHTML = '<option value="">Error loading</option>';
+                    });
+            } else {
+                modelSelect.innerHTML = '<option value="">Select Make First</option>';
+            }
+        }
+
+        // Fetch models for the initial make on page load
+        if (initialMakeId) {
+            fetchModels(initialMakeId, initialModelId);
+        }
+
+        // Add event listener for make changes
+        makeSelect.addEventListener('change', function() {
+            fetchModels(this.value);
+        });
+    });
+    </script>
 </body>
-
 </html>
