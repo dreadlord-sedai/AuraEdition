@@ -47,15 +47,7 @@ if (!$user) {
 
             <!-- Messages -->
             <div class="px-6 pt-4">
-                <?php if ($msg = get_flash('success')): ?>
-                    <div class="mb-4 p-3 bg-green-900/80 border border-yellow-400/30 text-green-300 rounded shadow-lg font-semibold">
-                        <?= htmlspecialchars($msg) ?>
-                    </div>
-                <?php elseif ($msg = get_flash('error')): ?>
-                    <div class="mb-4 p-3 bg-red-900/80 border border-yellow-400/30 text-yellow-400 rounded shadow-lg font-semibold">
-                        <?= htmlspecialchars($msg) ?>
-                    </div>
-                <?php endif; ?>
+                <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/flash_messages.php'; ?>
             </div>
 
             <!-- Account Form -->
