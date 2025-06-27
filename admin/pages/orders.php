@@ -17,115 +17,111 @@ if (!$user || $user['role'] != "admin") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraEdition | Orders</title>
+    <title>AuraEdition | Manage Orders</title>
     <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
 </head>
 
-<body class="bg-black">
-    <div class="flex">
-        <!-- Sidebar -->
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Sidebar -->
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
 
-        <!-- Main Content Area -->
-        <div class="flex-1 min-h-screen flex flex-col">
-            <!-- Navigation Bar -->
-            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
-            <!-- Main Content -->
-            <div class="p-8 flex flex-col">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-2xl font-semibold mb-4 text-light">Orders</h3>
-                </div>
+    <!-- Main Content Area -->
+    <div class="ml-64 flex-1 flex flex-col">
+        <!-- Navigation Bar -->
+        <?php 
+            $breadcrumbs = ['Orders' => '/Projects/AuraEdition/admin/pages/orders.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+        ?>
+        
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <!-- Page Title -->
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-yellow-400" style="font-family: 'Trajan Pro', serif;">Manage Orders</h1>
+            </div>
 
-
-                <!-- Search section for Orders -->
-                <div class="mb-8 flex flex-col items-center">
-                    <form method="GET" action="" class="w-full max-w-md">
+            <!-- Search and Filters -->
+            <div class="bg-black border border-gray-800 rounded-2xl p-6 mb-8">
+                <form method="GET" action="" class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                    <div class="md:col-span-2">
+                        <label for="search" class="block text-sm font-semibold text-gray-400 mb-2">Search Orders</label>
                         <div class="relative">
-                            <input
-                                type="text"
-                                name="search"
-                                class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Search orders by customer, ID, or status..."
+                            <i class="fas fa-search absolute left-4 top-3.5 text-gray-500"></i>
+                            <input type="text" name="search" id="search"
+                                class="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+                                placeholder="Search by customer, ID, status..."
                                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-                            <span class="absolute left-3 top-2.5 text-gray-400">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <circle cx="11" cy="11" r="8" />
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                                </svg>
-                            </span>
                         </div>
-                    </form>
-                    <!-- Filters -->
-                    <div class="flex flex-row gap-4 mt-4 w-full max-w-md">
-                        <!-- Status Filter -->
-                        <select name="status" class="w-1/2 px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-semibold text-gray-400 mb-2">Status</label>
+                        <select name="status" id="status" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition">
                             <option value="">All Statuses</option>
+                            <option value="pending" <?= (($_GET['status'] ?? '') === 'pending') ? 'selected' : '' ?>>Pending</option>
                             <option value="processing" <?= (($_GET['status'] ?? '') === 'processing') ? 'selected' : '' ?>>Processing</option>
                             <option value="shipped" <?= (($_GET['status'] ?? '') === 'shipped') ? 'selected' : '' ?>>Shipped</option>
                             <option value="delivered" <?= (($_GET['status'] ?? '') === 'delivered') ? 'selected' : '' ?>>Delivered</option>
+                            <option value="cancelled" <?= (($_GET['status'] ?? '') === 'cancelled') ? 'selected' : '' ?>>Cancelled</option>
                         </select>
-                        <!-- Date Filter -->
-                        <input
-                            type="date"
-                            name="date"
-                            class="w-1/2 px-3 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value="<?= htmlspecialchars($_GET['date'] ?? '') ?>">
                     </div>
-                </div>
+                    <div>
+                        <button type="submit" class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg hover:bg-yellow-500 transition-all shadow-md">
+                            Filter Orders
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-                <!-- Orders Table -->
-                <div class="overflow-x-auto mt-10">
-                    <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden">
+            <!-- Orders Table -->
+            <div class="bg-black border border-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-left">
                         <thead>
-                            <tr>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Order ID</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Customer</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Order Date</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Status</th>
-                                <th class="px-4 py-2 text-left text-gray-300 font-medium">Total Amount</th>
+                            <tr class="border-b border-gray-700 bg-gray-900/50">
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">Order ID</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">Customer</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">Date</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase">Status</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase text-right">Total</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300 uppercase text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $search = $_GET['search'] ?? '';
                             $status = $_GET['status'] ?? '';
-                            $date = $_GET['date'] ?? '';
-                            $orders = getAllOrders($connection);
+                            $orders = getAllOrders($connection, $search, $status);
                             foreach ($orders as $order):
                                 $user = getUserInfo($connection, $order['user_id']);
+                                $status_classes = [
+                                    'pending' => 'bg-yellow-900 text-yellow-300 border-yellow-700',
+                                    'processing' => 'bg-blue-900 text-blue-300 border-blue-700',
+                                    'shipped' => 'bg-indigo-900 text-indigo-300 border-indigo-700',
+                                    'delivered' => 'bg-green-900 text-green-300 border-green-700',
+                                    'cancelled' => 'bg-red-900 text-red-300 border-red-700',
+                                ];
+                                $status_class = $status_classes[$order['status']] ?? 'bg-gray-700 text-gray-200 border-gray-600';
                             ?>
-                                <tr class="border-b border-gray-700">
-                                    <td class="px-4 py-2 text-gray-100"><?= $order['order_id']; ?></td>
-                                    <td class="px-4 py-2 text-gray-100"><?= $user['fname'] . ' ' . $user['lname']; ?></td>
-                                    <td class="px-4 py-2 text-gray-100"><?= $order['orderd_at']; ?></td>
-                                    <td class="px-4 py-2">
-                                        <span class="
-                                    <?php
-                                    if ($order['status'] === 'pending') {
-                                        echo 'bg-yellow-600';
-                                    } else if ($order['status'] === 'shipped') {
-                                        echo 'bg-green-600';
-                                    } else if ($order['status'] === 'delivered') {
-                                        echo 'bg-blue-600';
-                                    } else {
-                                        echo 'bg-gray-600';
-                                    }
-                                    ?>
-                                     text-white px-3 py-1 rounded-full text-xs"><?= $order['status']; ?></span>
-                                    </td>
-                                    <td class="px-4 py-2 text-gray-100">$<?= $order['total_price']; ?></td>
-                                </tr>
-                            <?php
-                            endforeach;
-                            ?>
+                            <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+                                <td class="px-6 py-4 text-gray-200 font-mono">#<?= htmlspecialchars($order['order_id']); ?></td>
+                                <td class="px-6 py-4 text-white font-semibold"><?= htmlspecialchars($user['fname'] . ' ' . $user['lname']); ?></td>
+                                <td class="px-6 py-4 text-gray-300"><?= date("M d, Y", strtotime($order['orderd_at'])); ?></td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full border <?= $status_class ?>">
+                                        <?= htmlspecialchars(ucfirst($order['status'])); ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right font-semibold text-white">$<?= number_format(htmlspecialchars($order['total_price']), 2); ?></td>
+                                <td class="px-6 py-4 text-center">
+                                    <a href="#" class="text-yellow-400 hover:text-yellow-300 font-semibold">View Details</a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-
             </div>
-            <!-- Main Content -->
-
-        </div>
+        </main>
     </div>
-
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
+</body>
+</html>
