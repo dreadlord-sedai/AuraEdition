@@ -23,10 +23,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
-    <div class="relative w-full h-[350px] md:h-[500px] flex items-center justify-center overflow-hidden bg-black">
-        <img src="./assets/images/hero-img.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover z-0" style="opacity:0.7;">
-        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30 z-10 pointer-events-none"></div>
-        <div class="relative z-20 flex flex-col gap-4 left-0 md:left-10 px-4 md:px-0">
+    <div class="relative w-full h-[500px] md:h-[700px] flex items-center justify-start overflow-hidden bg-cover bg-center" style="background-image: url('./assets/images/hero-img.png');">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent"></div>
+        <div class="relative z-10 flex flex-col gap-4 px-4 md:px-10">
             <h1 class="text-4xl md:text-6xl font-bold font-serif text-yellow-400 drop-shadow-lg tracking-wide" style="font-family: 'Trajan Pro', serif;">AuraEdition</h1>
             <p class="text-lg md:text-2xl max-w-xl text-gray-100 drop-shadow font-light" style="font-family: 'Inter', Arial, sans-serif;">Explore 31,000+ luxury cars, supercars and exotic cars for sale worldwide in one simple search</p>
         </div>
@@ -39,40 +38,40 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
         <div class="max-w-6xl mx-auto my-12 px-4">
             <h2 class="text-2xl font-semibold mb-6 text-yellow-400 font-serif tracking-wide" style="font-family: 'Trajan Pro', serif;">Popular Makes</h2>
             <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-1.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-2.jpg" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-3.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-4.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-5.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-6.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-7.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-8.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-9.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-10.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-11.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <div class="aspect-square bg-gradient-to-br from-black via-gray-900 to-gray-800 rounded-xl shadow-lg flex items-center justify-center p-4 border border-yellow-400/30">
+                <div class="aspect-square bg-gray-900 rounded-xl shadow-lg flex items-center justify-center p-4 border border-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:bg-gray-800 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10">
                     <img src="./assets/images/make-12.png" alt="car_brand" class="w-3/4 h-3/4 object-contain">
                 </div>
             </div>
