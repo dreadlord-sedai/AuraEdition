@@ -11,11 +11,12 @@ if (!$user || $user['role'] != "admin") {
 }
 
 // Fetch dynamic data
+$total_revenue = getTotalRevenue($connection);
 $total_listings = getTotalListings($connection);
 $total_orders = getTotalOrders($connection);
 $total_users = getTotalUsers($connection);
 $sales_data = getSalesDataForChart($connection);
-$total_sales_value = array_sum($sales_data['data']);
+$recent_orders = getRecentOrders($connection);
 
 ?>
 
@@ -51,37 +52,62 @@ $total_sales_value = array_sum($sales_data['data']);
                 </a>
             </div>
             <!-- Analytics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-                <!-- Total Listings Card -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
-                    <p class="text-gray-400 text-lg font-semibold">Total Listings</p>
-                    <p class="text-4xl font-bold text-white"><?= $total_listings ?></p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-lg font-semibold">Total Revenue</p>
+                        <p class="text-4xl font-bold text-white">$<?= number_format($total_revenue, 2) ?></p>
+                    </div>
+                    <i class="fas fa-dollar-sign text-yellow-400 text-4xl opacity-50"></i>
                 </div>
-                <!-- Total Orders Card -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
-                    <p class="text-gray-400 text-lg font-semibold">Total Orders</p>
-                    <p class="text-4xl font-bold text-white"><?= $total_orders ?></p>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-lg font-semibold">Total Listings</p>
+                        <p class="text-4xl font-bold text-white"><?= $total_listings ?></p>
+                    </div>
+                    <i class="fas fa-car text-yellow-400 text-4xl opacity-50"></i>
                 </div>
-                <!-- Total Users Card -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
-                    <p class="text-gray-400 text-lg font-semibold">Total Users</p>
-                    <p class="text-4xl font-bold text-white"><?= $total_users ?></p>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-lg font-semibold">Total Orders</p>
+                        <p class="text-4xl font-bold text-white"><?= $total_orders ?></p>
+                    </div>
+                    <i class="fas fa-receipt text-yellow-400 text-4xl opacity-50"></i>
+                </div>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-lg font-semibold">Total Users</p>
+                        <p class="text-4xl font-bold text-white"><?= $total_users ?></p>
+                    </div>
+                    <i class="fas fa-users text-yellow-400 text-4xl opacity-50"></i>
                 </div>
             </div>
             <!-- Recent Orders & Sales Overview -->
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <!-- Recent Orders Table -->
                 <div class="xl:col-span-2 bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
-                    <h2 class="text-xl font-bold text-white mb-6">Sales Overview</h2>
+                    <h2 class="text-xl font-bold text-white mb-6">Sales Overview (Last 12 Months)</h2>
                     <div style="height: 350px;">
                         <canvas id="salesChart"></canvas>
                     </div>
                 </div>
                 <!-- Sales Overview Chart -->
-                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg flex flex-col justify-center">
-                    <h2 class="text-xl font-bold text-white mb-4">Total Revenue</h2>
-                    <p class="text-5xl font-bold text-yellow-400">$<?= number_format($total_sales_value, 2) ?></p>
-                    <p class="text-gray-400 text-sm mt-2">Revenue from last 12 months</p>
+                <div class="bg-black border border-gray-800 rounded-2xl p-6 shadow-lg">
+                    <h2 class="text-xl font-bold text-white mb-6">Recent Orders</h2>
+                    <div class="space-y-4">
+                        <?php foreach($recent_orders as $order): ?>
+                        <div class="flex items-center justify-between pb-4 border-b border-gray-800 last:border-b-0">
+                            <div>
+                                <p class="font-semibold text-white"><?= htmlspecialchars($order['fname'] . ' ' . $order['lname']) ?></p>
+                                <p class="text-sm text-gray-400">Order #<?= htmlspecialchars($order['order_id']) ?></p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-yellow-400">$<?= number_format($order['total_price'], 2) ?></p>
+                                <p class="text-sm text-gray-500"><?= date("M d, Y", strtotime($order['orderd_at'])) ?></p>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
         </main>
@@ -127,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     grid: { color: 'rgba(255, 255, 255, 0.1)' },
                     ticks: { 
                         color: '#9CA3AF',
-                        callback: function(value) { return '$' + value / 1000 + 'k'; }
+                        callback: function(value) { return '$' + Math.round(value / 1000) + 'k'; }
                     }
                 },
                 x: {

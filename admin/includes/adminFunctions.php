@@ -64,9 +64,15 @@ function updateAddress($connection, $user_id, $address, $city, $state)
 
 /* Display Functions */
 function getRecentOrders($connection)
-{   
-    $stmt = $connection->prepare("SELECT * FROM orders ORDER BY orderd_at DESC LIMIT 5");
-    if (!$stmt) return null;
+{
+    $stmt = $connection->prepare("
+        SELECT o.*, u.fname, u.lname 
+        FROM orders o
+        JOIN users u ON o.user_id = u.id
+        ORDER BY o.orderd_at DESC 
+        LIMIT 5
+    ");
+    if (!$stmt) return [];
     $stmt->execute();
     $result = $stmt->get_result();
     $orders = $result->fetch_all(MYSQLI_ASSOC);
@@ -221,6 +227,12 @@ function getTotalUsers($connection) {
     $result = $connection->query("SELECT COUNT(*) as total FROM users");
     $row = $result->fetch_assoc();
     return $row['total'] ?? 0;
+}
+
+function getTotalRevenue($connection) {
+    $result = $connection->query("SELECT SUM(total_price) as total_revenue FROM orders");
+    $row = $result->fetch_assoc();
+    return $row['total_revenue'] ?? 0;
 }
 
 function getSalesDataForChart($connection) {
