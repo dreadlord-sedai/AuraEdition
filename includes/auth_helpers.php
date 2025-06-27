@@ -16,6 +16,9 @@ function generate_csrf_token() {
 function validate_csrf_token($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
+function verify_csrf_token($token) {
+    return validate_csrf_token($token);
+}
 
 // Flash Messaging
 function set_flash($type, $message) {
