@@ -31,52 +31,47 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
         <img src="/Projects/AuraEdition/assets/images/sign.jpg" class="w-full h-screen object-cover" alt="Sign Image">
 
         <!-- Centered login card -->
-        <div class="absolute inset-0 flex justify-center items-center">
+        <div class="absolute inset-0 flex justify-center items-center bg-black/60">
             <div class="w-full max-w-md">
-                <div class="bg-black/40 backdrop-blur shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    <h2 class="text-2xl font-bold mb-4 text-white">Login</h2>
+                <div class="bg-black/80 backdrop-blur-lg shadow-2xl rounded-xl px-8 pt-8 pb-10 border border-yellow-400/30">
+                    <h2 class="text-3xl font-serif text-yellow-400 mb-6 text-center tracking-wide" style="font-family: 'Trajan Pro', serif;">Login</h2>
 
                     <!-- Display error message if any -->
                     <?php if (!empty($Error_message)): ?>
-                        <div class="mb-4 text-center text-red-200 font-semibold bg-white/20 border border-red-500 rounded px-2 py-1">
+                        <div class="mb-4 text-center text-yellow-400 font-semibold bg-red-900/80 border border-yellow-400/30 rounded px-2 py-2 shadow">
                             <?= htmlspecialchars($Error_message) ?>
                         </div>
                     <?php endif; ?>
 
                     <!-- Display success message if any -->
                     <?php if (!empty($Success_message)): ?>
-                        <div class="mb-4 text-center text-green-200 font-semibold bg-white/20 border border-green-500 rounded px-2 py-1">
+                        <div class="mb-4 text-center text-green-300 font-semibold bg-green-900/80 border border-yellow-400/30 rounded px-2 py-2 shadow">
                             <?= htmlspecialchars($Success_message) ?>
                         </div>
                     <?php endif; ?>
 
                     <!-- Login form -->
-                    <form action="/Projects/AuraEdition/auth/loginProcess.php" method="POST">
-                        <div class="mb-4">
-                            <label for="email" class="block text-white text-sm font-bold mb-2">Email</label>
+                    <form action="/Projects/AuraEdition/auth/loginProcess.php" method="POST" class="space-y-6">
+                        <div>
+                            <label for="email" class="block text-yellow-400 font-serif mb-2" style="font-family: 'Trajan Pro', serif;">Email</label>
                             <input type="email" id="email" name="email" required
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline">
+                                class="w-full px-4 py-3 bg-black border border-gray-700 text-white rounded-lg focus:ring-yellow-400 focus:border-yellow-400 transition-all duration-200">
                         </div>
-                        <div class="mb-2">
-                            <label for="password" class="block text-white text-sm font-bold mb-2">Password</label>
+                        <div>
+                            <label for="password" class="block text-yellow-400 font-serif mb-2" style="font-family: 'Trajan Pro', serif;">Password</label>
                             <input type="password" id="password" name="password" required
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline">
+                                class="w-full px-4 py-3 bg-black border border-gray-700 text-white rounded-lg focus:ring-yellow-400 focus:border-yellow-400 transition-all duration-200">
                         </div>
                         <div class="mb-6 text-right">
                             <a href="/Projects/AuraEdition/auth/forgot_password.php"
-                                class="text-blue-300 hover:text-blue-400 text-sm">Forgot your password?</a>
+                                class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold transition">Forgot your password?</a>
                         </div>
-                        <div class="flex flex-col gap-3">
+                        <div class="flex flex-col gap-3 mt-6">
                             <button type="submit"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Login
-                            </button>
-                            <a href="/Projects/AuraEdition/auth/register.php"
-                                class="w-full">
+                                class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg hover:bg-yellow-500 transition-all text-lg tracking-wide shadow">Login</button>
+                            <a href="/Projects/AuraEdition/auth/register.php" class="w-full">
                                 <button type="button"
-                                    class="w-full bg-gray-100 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded border border-blue-500 focus:outline-none focus:shadow-outline">
-                                    Register
-                                </button>
+                                    class="w-full bg-gray-900 text-yellow-400 border border-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all text-lg font-semibold py-3 mt-2 shadow">Register</button>
                             </a>
                         </div>
                     </form>
@@ -84,9 +79,6 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
             </div>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/Projects/AuraEdition/assets/js/script.js"></script>
 </body>
 
