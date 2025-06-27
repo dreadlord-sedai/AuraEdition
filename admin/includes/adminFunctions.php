@@ -58,6 +58,24 @@ function updateAddress($connection, $user_id, $address, $city, $state)
     $stmt->close();
 }
 
+/**
+ * Ensures the current user is an authenticated admin.
+ *
+ * This function checks for a valid admin session. If the user is not an
+ * admin, it redirects them to the main site index and terminates script execution.
+ * It also returns the user's info if the check passes, simplifying variable assignment.
+ *
+ * @param mysqli $connection The database connection object.
+ * @return array The user's information array.
+ */
+function authorize_admin($connection) {
+    $user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
+    if (!$user || $user['role'] !== 'admin') {
+        header("Location: " . BASE_URL . "/index.php");
+        exit;
+    }
+    return $user;
+}
 
 /* Account Functions */
 

@@ -2,12 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
 
-// Check if user is logged in and is admin
-$user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
-if (!$user || $user['role'] != "admin") {
-    header("Location: /Projects/AuraEdition/index.php");
-    exit;
-}
+$user = authorize_admin($connection);
 
 // Fetch product details
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;

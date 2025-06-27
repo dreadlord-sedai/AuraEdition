@@ -2,11 +2,8 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
 
-$current_user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
-if (!$current_user || $current_user['role'] !== 'admin') {
-    header("Location: /Projects/AuraEdition/index.php");
-    exit();
-}
+$current_user = authorize_admin($connection);
+
 // Handle user actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete_user'])) {

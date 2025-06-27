@@ -2,12 +2,13 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
 
-// Check if user is logged in and is admin
-$user = isset($_SESSION['user_id']) ? getUserInfo($connection, $_SESSION['user_id']) : null;
-if (!$user || $user['role'] != "admin") {
-    header("Location: /Projects/AuraEdition/index.php");
-    exit;
-}
+$user = authorize_admin($connection);
+
+// Get all vehicles
+$search = $_GET['search'] ?? '';
+$status = $_GET['status'] ?? '';
+$price_sort = $_GET['price'] ?? ''; // Renamed to avoid conflict
+$vehicles = getVehicles($connection, $search, $status, $price_sort);
 ?>
 
 <!DOCTYPE html>
@@ -91,10 +92,6 @@ if (!$user || $user['role'] != "admin") {
                         </thead>
                         <tbody>
                             <?php
-                            $search = $_GET['search'] ?? '';
-                            $status = $_GET['status'] ?? '';
-                            $price_sort = $_GET['price'] ?? ''; // Renamed to avoid conflict
-                            $vehicles = getVehicles($connection, $search, $status, $price_sort);
                             foreach ($vehicles as $vehicle):
                             ?>
                             <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
