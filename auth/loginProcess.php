@@ -1,17 +1,22 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        set_flash('error', 'Invalid CSRF token.');
+        header('Location: login.php');
+        exit;
+    }
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-
     if ($email && $password) {
-        // Validate email format
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $Error_message = "Invalid email format.";
+            set_flash('error', 'Invalid email format.');
+            header('Location: login.php');
+            exit;
         } else {
             // Prepare a statement to select user by email
             $select_user_query = $connection->prepare(
@@ -21,14 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $select_user_query->execute();
             $select_user_query->store_result();
 
-
             if ($select_user_query->num_rows > 0) {
-
                 $select_user_query->bind_result($id, $fname, $lname, $db_email, $hashed_password, $role);
                 $select_user_query->fetch();
 
                 // Verify the password using password_verify
                 if (password_verify($password, $hashed_password)) {
+                    session_regenerate_id(true);
                     $_SESSION['user_id'] = $id;
                     $_SESSION['fname'] = $fname;
                     $_SESSION['lname'] = $lname;
@@ -40,17 +44,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header("Location: /Projects/AuraEdition/index.php");
                     exit;
                 } else {
-                    // Password is incorrect
-                    $Error_message = "Incorrect password. Please try again.";
+                    set_flash('error', 'Incorrect email or password.');
+                    $select_user_query->close();
+                    header('Location: login.php');
+                    exit;
                 }
             } else {
-                // No user found with this email
-                $Error_message = "Email not found. Please register first.";
+                set_flash('error', 'Incorrect email or password.');
+                $select_user_query->close();
+                header('Location: login.php');
+                exit;
             }
-            $select_user_query->close();
         }
     } else {
-        // One or both fields are empty
-        $Error_message = "Please fill in all fields.";
+        set_flash('error', 'Please fill in all fields.');
+        header('Location: login.php');
+        exit;
     }
 }

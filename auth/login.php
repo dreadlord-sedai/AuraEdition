@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
 
 $Error_message = "";
 $Success_message = "";
@@ -37,21 +38,19 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
                     <h2 class="text-3xl font-serif text-yellow-400 mb-6 text-center tracking-wide" style="font-family: 'Trajan Pro', serif;">Login</h2>
 
                     <!-- Display error message if any -->
-                    <?php if (!empty($Error_message)): ?>
+                    <?php if ($msg = get_flash('error')): ?>
                         <div class="mb-4 text-center text-yellow-400 font-semibold bg-red-900/80 border border-yellow-400/30 rounded px-2 py-2 shadow">
-                            <?= htmlspecialchars($Error_message) ?>
+                            <?= htmlspecialchars($msg) ?>
                         </div>
-                    <?php endif; ?>
-
-                    <!-- Display success message if any -->
-                    <?php if (!empty($Success_message)): ?>
+                    <?php elseif ($msg = get_flash('success')): ?>
                         <div class="mb-4 text-center text-green-300 font-semibold bg-green-900/80 border border-yellow-400/30 rounded px-2 py-2 shadow">
-                            <?= htmlspecialchars($Success_message) ?>
+                            <?= htmlspecialchars($msg) ?>
                         </div>
                     <?php endif; ?>
 
                     <!-- Login form -->
                     <form action="/Projects/AuraEdition/auth/loginProcess.php" method="POST" class="space-y-6">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
                         <div>
                             <label for="email" class="block text-yellow-400 font-serif mb-2" style="font-family: 'Trajan Pro', serif;">Email</label>
                             <input type="email" id="email" name="email" required
