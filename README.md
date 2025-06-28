@@ -11,6 +11,8 @@
 
 ## 🌐 Live Demo
 **Visit the live application:** [https://auraedition.wuaze.com](https://auraedition.wuaze.com)
+</br>
+(Some Features might not work due to free server limitations)
 
 ## Screenshots
 <details>
