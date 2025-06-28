@@ -9,9 +9,55 @@
 > 
 > Modern, secure, and scalable. Built for car enthusiasts, dealers, and admins.
 
----
+## Screenshots
+<details>
+  <summary>Click to view screenshots</summary>
+  
+  ### Home Page
+  <img src="screenshots/home-page.png" alt="Home Page" width="700">
+  
+  ### Product Listings
+  <img src="screenshots/product-listings.png" alt="Product Listings" width="700"> 
+  
+  ### Product Details
+  <img src="screenshots/product-details.png" alt="Product Details" width="700">
+  
+  ### Shopping Cart
+  <img src="screenshots/shopping-cart.png" alt="Shopping Cart" width="700">
 
-## 🌟 Features
+  ### Checkout Page
+  <img src="screenshots/checkout.png" alt="Checkout Page" width="700"> 
+  
+  ### Admin Dashboard
+  <img src="screenshots/admin-dashboard.png" alt="Admin Dashboard" width="700">
+  
+  ### Product Management
+  <img src="screenshots/product-management.png" alt="Product Management" width="700">
+
+  ### User Account
+  <img src="screenshots/user-account.png" alt="User Account" width="700">
+  
+  ### Order History
+  <img src="screenshots/order-history.png" alt="Order History" width="700">
+</details>
+
+## Table of Contents
+- [AuraEdition](#auraedition-)
+  - [Screenshots](#screenshots)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Technologies Used](#technologies-used)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
+
+## Introduction
+AuraEdition is a premium e-commerce platform specifically designed for luxury vehicle sales. It provides a modern, secure, and scalable solution for car dealers, enthusiasts, and administrators. The platform features a comprehensive admin panel, user authentication, shopping cart functionality, and a responsive design built with Tailwind CSS.
+
+## Features
 
 ### 🛒 E-commerce Core
 - **Product Catalog**: Luxury vehicle listings with search, filters, and pagination
@@ -45,51 +91,27 @@
 - **Session Management**: Secure user sessions
 - **SQL Injection Prevention**: Prepared statements throughout
 
----
+## Technologies Used
 
-## 🏗️ System Architecture
+- **PHP 7.4+**: Backend server-side scripting with procedural programming
+- **MySQL 5.7+**: Relational database management with InnoDB engine
+- **HTML5**: Semantic markup for web pages
+- **CSS3**: Advanced styling with Tailwind CSS framework
+- **JavaScript (ES6+)**: Client-side interactivity and AJAX requests
+- **Tailwind CSS**: Utility-first CSS framework for modern UI design
+- **Font Awesome**: Icon library for UI elements
+- **Chart.js**: JavaScript charting library for admin analytics
+- **PHPMailer**: Email functionality for password reset and notifications
 
-### Technology Stack
-- **Backend**: PHP 7.4+ with procedural programming
-- **Database**: MySQL 5.7+ with InnoDB engine
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Styling**: Tailwind CSS for utility-first design
-- **Icons**: Font Awesome for UI elements
-- **Charts**: Chart.js for admin analytics
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=php,mysql,html,css,js,tailwind,bootstrap,git,github,vscode" />
+  </a>
+</p>
 
-### Application Structure
-```
-AuraEdition/
-├── 📁 admin/              # Admin panel (dashboard, management)
-├── 📁 assets/             # Static resources (CSS, JS, images, fonts)
-├── 📁 auth/               # Authentication system
-├── 📁 config/             # Configuration files
-├── 📁 docs/               # Comprehensive documentation
-├── 📁 includes/           # Core PHP functions and helpers
-├── 📁 pages/              # User-facing pages
-├── 📁 process/            # Form handlers and AJAX endpoints
-├── 📁 products/           # Product listings and details
-├── 📁 templates/          # Reusable UI components
-└── 📄 index.php           # Main entry point
-```
+## Installation
 
-### Data Flow Architecture
-```mermaid
-graph TD;
-    User[👤 User Browser] -->|HTTP Requests| Web[🌐 Web Server]
-    Admin[👨‍💼 Admin Browser] -->|HTTP Requests| Web
-    Web -->|Include| Bootstrap[🚀 Bootstrap.php]
-    Bootstrap -->|Load| Config[⚙️ Config]
-    Bootstrap -->|Connect| DB[(🗄️ MySQL Database)]
-    Bootstrap -->|Load| Functions[🔧 Functions.php]
-    Web -->|Serve| Assets[📁 Static Assets]
-    Web -->|Process| Auth[🔐 Authentication]
-    Web -->|Handle| Process[⚡ Process Scripts]
-```
-
----
-
-## 🚀 Quick Start Guide
+To get a local copy up and running, follow these steps:
 
 ### Prerequisites
 - **Web Server**: Apache/Nginx with PHP support
@@ -100,23 +122,24 @@ graph TD;
 
 ### Installation Steps
 
-1. **Clone the Repository**
-   ```bash
+1. **Clone the repository**:
+   ```sh
    git clone https://github.com/yourusername/auraedition.git
    cd auraedition
    ```
 
-2. **Install Dependencies**
-   ```bash
-   # Install Node.js dependencies for Tailwind CSS
+2. **Install Node.js dependencies**:
+   ```sh
    npm install
-   
-   # Build Tailwind CSS
+   ```
+
+3. **Build Tailwind CSS**:
+   ```sh
    npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind-output.css --minify
    ```
 
-3. **Configure Database**
-   ```bash
+4. **Configure Database**:
+   ```sh
    # Create database
    mysql -u root -p
    CREATE DATABASE auraedition;
@@ -125,8 +148,8 @@ graph TD;
    mysql -u root -p auraedition < database/schema.sql
    ```
 
-4. **Configure Application**
-   ```bash
+5. **Configure Application**:
+   ```sh
    # Edit database configuration
    nano config/config.php
    
@@ -137,20 +160,38 @@ graph TD;
    define('DB_NAME', 'auraedition');
    ```
 
-5. **Set Permissions**
-   ```bash
+6. **Set Permissions**:
+   ```sh
    # Ensure upload directories are writable
    chmod 755 products/img/
    chmod 755 admin/assets/images/
    ```
 
-6. **Start Development Server**
-   ```bash
+7. **Start Development Server**:
+   ```sh
    # Using PHP built-in server
    php -S localhost:8000
    
    # Or configure your web server (Apache/Nginx)
    ```
+
+## Usage
+
+### For Users
+1. **Browse Products**: Visit the home page to see featured vehicles
+2. **Search & Filter**: Use the search bar and filters to find specific vehicles
+3. **Add to Cart**: Click "Add to Cart" on any vehicle to add it to your shopping cart
+4. **Manage Wishlist**: Save vehicles to your wishlist for later viewing
+5. **Checkout**: Complete your purchase through the secure checkout process
+6. **Track Orders**: View your order history and track current orders
+
+### For Administrators
+1. **Access Admin Panel**: Login with admin credentials at `/admin/`
+2. **Dashboard Overview**: View sales analytics and key metrics
+3. **Manage Products**: Add, edit, or delete vehicle listings
+4. **Handle Orders**: Process and update order statuses
+5. **User Management**: Administer user accounts and roles
+6. **Category Management**: Manage vehicle makes and models
 
 ### Environment Configuration
 
@@ -160,30 +201,28 @@ The application uses a centralized configuration system:
 - **`includes/bootstrap.php`**: Application initialization and dependencies
 - **Error Logging**: Check `error_log.txt` for debugging
 
----
+## Contributing
 
-## 📚 Documentation Index
+Contributions are welcome! Follow these steps to contribute:
 
-### Core Documentation
-- **[Architecture Guide](docs/architecture.md)**: System design, data flow, and component interactions
-- **[Database Schema](docs/database.md)**: Table structures, relationships, and optimization
-- **[Security Model](docs/security.md)**: Authentication, validation, and security practices
-- **[Developer Guide](docs/developer_guide.md)**: Coding standards, workflow, and troubleshooting
+1. Fork the repository.
+2. Create a new branch:
+   ```sh
+   git checkout -b feature/your-feature-name
+   ```
+3. Make your changes and commit them:
+   ```sh
+   git commit -m 'Add some feature'
+   ```
+4. Push to the branch:
+   ```sh
+   git push origin feature/your-feature-name
+   ```
+5. Open a pull request.
 
-### Module Documentation
-- **[Modules Overview](docs/modules.md)**: Directory structure and purpose of each module
-- **[API Planning](docs/api.md)**: Future REST API endpoints and integration
+### Development Workflow
 
-### Quick References
-- **File Structure**: See project layout above
-- **Database Tables**: See `docs/database.md`
-- **Function Reference**: See `includes/functions.php` and `admin/includes/adminFunctions.php`
-
----
-
-## 🔧 Development Workflow
-
-### Adding New Features
+#### Adding New Features
 
 1. **Database Changes**
    ```sql
@@ -200,23 +239,42 @@ The application uses a centralized configuration system:
    ```
 
 3. **Frontend Integration**
-   ```php
-   // Create new page in pages/ or admin/pages/
-   // Add process script in process/ or admin/process/
+   ```javascript
+   // Add to assets/js/script.js or admin/assets/js/adminScript.js
+   function handleNewFeature() {
+       // AJAX calls and UI updates
+   }
    ```
 
-4. **Styling**
-   ```css
-   /* Use Tailwind CSS classes or add custom styles */
-   .custom-class { /* styles */ }
-   ```
+## License
 
-### Code Standards
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-- **PHP**: PSR-12 coding standards
-- **SQL**: Use prepared statements, avoid raw queries
-- **Security**: Validate all inputs, sanitize outputs
-- **Performance**: Optimize database queries, use indexes
+## Contact
+
+For any questions or feedback, feel free to reach out:
+
+- **Email**: [your-email@example.com](mailto:your-email@example.com)
+- **GitHub**: [your-github-username](https://github.com/your-github-username)
+
+---
+
+## 📚 Additional Documentation
+
+### Core Documentation
+- **[Architecture Guide](docs/architecture.md)**: System design, data flow, and component interactions
+- **[Database Schema](docs/database.md)**: Table structures, relationships, and optimization
+- **[Security Model](docs/security.md)**: Authentication, validation, and security practices
+- **[Developer Guide](docs/developer_guide.md)**: Coding standards, workflow, and troubleshooting
+
+### Module Documentation
+- **[Modules Overview](docs/modules.md)**: Directory structure and purpose of each module
+- **[API Planning](docs/api.md)**: Future REST API endpoints and integration
+
+### Quick References
+- **File Structure**: See project layout in the main documentation
+- **Database Tables**: See `docs/database.md`
+- **Function Reference**: See `includes/functions.php` and `admin/includes/adminFunctions.php`
 
 ---
 
@@ -274,54 +332,6 @@ ini_set('display_errors', 1);
 4. **Database Security**
    - Use dedicated database user with minimal privileges
    - Regular backups and monitoring
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these guidelines:
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/AmazingFeature`
-3. **Follow coding standards**: PSR-12 for PHP, consistent formatting
-4. **Test thoroughly**: Ensure all functionality works
-5. **Document changes**: Update relevant documentation
-6. **Submit pull request**: With clear description of changes
-
-### Development Setup
-
-```bash
-# Fork and clone
-git clone https://github.com/yourusername/auraedition.git
-cd auraedition
-
-# Create development branch
-git checkout -b feature/your-feature
-
-# Make changes and test
-# ...
-
-# Commit with descriptive message
-git commit -m "Add new feature: description"
-
-# Push and create pull request
-git push origin feature/your-feature
-```
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📞 Support & Contact
-
-- **Email**: contact@auraedition.com
-- **Website**: https://auraedition.com
-- **Documentation**: [docs/](docs/) directory
-- **Issues**: GitHub Issues for bug reports and feature requests
 
 ---
 
