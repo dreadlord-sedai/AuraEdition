@@ -61,7 +61,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
           <button id="payBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-xl py-4 rounded-xl transition mb-3" type="submit" name="submit" value="Pay" onclick="pay();">
             Pay
           </button>
-          <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xl py-4 rounded-xl transition" type="button" id="cancelBtn" onclick="clearCheckout();">
+          <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xl py-4 rounded-xl transition" type="button" id="cancelBtn">
             Cancel
           </button>
         </div>

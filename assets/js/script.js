@@ -169,7 +169,11 @@ function clearCheckout() {
         try {
           var obj = JSON.parse(request.responseText);
           if (obj.status === "success") {
-            window.location = "/Projects/AuraEdition/products/listings.php";
+            // Show a visual confirmation before redirect
+            showCartClearedMessage();
+            setTimeout(function() {
+              window.location = "/Projects/AuraEdition/products/listings.php";
+            }, 1000); // 1 second delay
           } else {
             alert("Clear cart failed: " + (obj.message || "Unknown error"));
           }
@@ -187,6 +191,33 @@ function clearCheckout() {
     true
   );
   request.send();
+}
+
+function showCartClearedMessage() {
+  // Create overlay
+  var overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.background = 'rgba(0,0,0,0.7)';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.zIndex = 9999;
+
+  var message = document.createElement('div');
+  message.style.background = '#222';
+  message.style.color = '#fff';
+  message.style.padding = '2rem 3rem';
+  message.style.borderRadius = '1rem';
+  message.style.fontSize = '2rem';
+  message.style.boxShadow = '0 4px 32px rgba(0,0,0,0.3)';
+  message.innerText = 'Cart Cleared! Redirecting...';
+
+  overlay.appendChild(message);
+  document.body.appendChild(overlay);
 }
 
 function pay() {

@@ -6,6 +6,12 @@ header('Content-Type: application/json');
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
 
+while (ob_get_level()) {
+    ob_end_clean();
+}
+
+error_log("Reached POST check");
+
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(["status" => "error", "message" => "Invalid request method"]);
@@ -21,7 +27,12 @@ try {
         clearCart($connection, $_SESSION['user_id']);
     }
     
+    error_log("Reached clearCart");
+    
+    @ob_end_clean();
     echo json_encode(["status" => "success"]);
+    error_log("Reached success response");
+    flush();
     exit;
 } catch (Exception $e) {
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
