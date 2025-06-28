@@ -1,21 +1,25 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php'; 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+
+header('Content-Type: application/json');
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserWithAddress($connection, $_SESSION['user_id']) : null;
 if (!$user || $user['role'] != "admin") {
-    header("Location: /Projects/AuraEdition/index.php");
+    echo json_encode(["success" => false, "message" => "Unauthorized access."]);
     exit;
 }
 
-if (isset($_POST['id'])) {
-    $make_id = $_POST['id'];
-
-    // Delete product
-    deleteMake($connection, $make_id);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+    $make_id = (int)$_POST['id'];
+    if (deleteMake($connection, $make_id)) {
+        echo json_encode(["success" => true, "message" => "Make deleted successfully."]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Failed to delete make."]);
+    }
+    exit;
+} else {
+    echo json_encode(["success" => false, "message" => "Invalid request."]);
+    exit;
 }
-
-exit;

@@ -164,23 +164,73 @@ $makes = getAllMakes($connection);
 
         function deleteMake(id) {
             if (confirm('Are you sure you want to delete this make? This might affect existing vehicles.')) {
-                // Example: window.location.href = `/Projects/AuraEdition/admin/process/handleCategory.php?action=delete_make&id=${id}`;
-                alert('Delete functionality not yet connected.');
+                fetch('/Projects/AuraEdition/admin/process/deleteMakeProcess.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'id=' + encodeURIComponent(id)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(() => {
+                    alert('An error occurred while deleting the make.');
+                });
             }
         }
 
         function addModel(event) {
             event.preventDefault();
-            const modelName = document.getElementById('model_name').value;
+            const modelName = document.getElementById('model_name').value.trim();
             const makeId = document.getElementById('make_id').value;
-            if (!modelName || !makeId) return;
-            console.log(`Adding model: ${modelName} to make ID: ${makeId}`);
-            alert('Add functionality not yet connected.');
+            if (!modelName || !makeId) {
+                alert('Please enter a model name and select a make.');
+                return false;
+            }
+            fetch('/Projects/AuraEdition/admin/process/addModelProcess.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'name=' + encodeURIComponent(modelName) + '&make_id=' + encodeURIComponent(makeId)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(() => {
+                alert('An error occurred while adding the model.');
+            });
+            return false;
         }
 
         function deleteModel(id) {
             if (confirm('Are you sure you want to delete this model?')) {
-                alert('Delete functionality not yet connected.');
+                fetch('/Projects/AuraEdition/admin/process/deleteModelProcess.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'id=' + encodeURIComponent(id)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(() => {
+                    alert('An error occurred while deleting the model.');
+                });
             }
         }
     </script>

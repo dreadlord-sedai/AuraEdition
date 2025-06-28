@@ -168,36 +168,31 @@ function addMake(event) {
 
 
 function addModel(event) {
-  event.preventDefault(); // Prevent form from submitting normally
-  const modelName = document.getElementById("model_name").value;
-  const makeId = document.getElementById("make_id").value;
-  if (modelName.trim() === "" || makeId === "") {
-    alert("Please enter a model name and select a make.");
+  event.preventDefault();
+  const modelName = document.getElementById('model_name').value.trim();
+  const makeId = document.getElementById('make_id').value;
+  if (!modelName || !makeId) {
+    alert('Please enter a model name and select a make.');
     return false;
   }
-
-  var request = new XMLHttpRequest();
-  request.onreadystatechange = function () {
-    if (request.readyState === XMLHttpRequest.DONE) {
-      if (request.status === 200) {
-        alert("Model added successfully.");
-        window.location.reload();
-      } else {
-        alert("Error adding model: " + request.responseText);
-      }
+  fetch('/Projects/AuraEdition/admin/process/addModelProcess.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'name=' + encodeURIComponent(modelName) + '&make_id=' + encodeURIComponent(makeId)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(data.message);
+      window.location.reload();
+    } else {
+      alert(data.message);
     }
-  };
-
-  request.open(
-    "POST",
-    "/Projects/AuraEdition/admin/process/addModelProcess.php",
-    true
-  );
-  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  request.send(
-    "name=" + encodeURIComponent(modelName) + "&make_id=" + encodeURIComponent(makeId)
-  );
-  return false; // Prevent default form submission
+  })
+  .catch(() => {
+    alert('An error occurred while adding the model.');
+  });
+  return false;
 }
 
 function deleteMake(makeId) {
