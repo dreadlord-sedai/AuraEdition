@@ -1,7 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
 
 if (isset($_POST['id'])) {
     $vehicle_id = $_POST['id'];

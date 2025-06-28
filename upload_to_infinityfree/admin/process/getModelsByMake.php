@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 header('Content-Type: application/json');

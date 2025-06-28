@@ -27,8 +27,7 @@
 
 
     <?php
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db.php';
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
     $featured_vehicles = get_featured_vehicles($connection, 3);
     foreach ($featured_vehicles as $vehicle) {
         $image = get_vehicle_image($vehicle['id'], $connection);
@@ -74,8 +73,7 @@
         <div class="row">
 
             <?php
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db.php';
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
             $makes = getAllMakes($connection);
             ?>
 

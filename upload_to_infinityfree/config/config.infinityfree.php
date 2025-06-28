@@ -6,14 +6,14 @@
  */
 
 // --- Database Configuration ---
-define('DB_HOST', 'sql101.infinityfree.com');
-define('DB_USER', 'if0_39343562');
-define('DB_PASS', 'b8Ud7jYGRVW1EfC');
-define('DB_NAME', 'https://auraedition.infinityfreeapp.com/');
+define('DB_HOST', 'sql102.infinityfree.com');
+define('DB_USER', 'if0_39345541');
+define('DB_PASS', '9ipSx4cnhHLj0OD');
+define('DB_NAME', 'if0_39345541_auraedition');
 
 // --- Path and URL Configuration ---
 define('BASE_PATH', $_SERVER['DOCUMENT_ROOT']);
-define('BASE_URL', 'https://yourname.infinityfree.com');
+define('BASE_URL', 'https://auraedition.wuaze.com');
 
 // --- Production Settings ---
 error_reporting(0);

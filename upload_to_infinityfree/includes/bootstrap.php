@@ -14,7 +14,7 @@ date_default_timezone_set('UTC');
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/session.php';
 
 // Load global configuration (DB credentials, paths, etc.).
-include_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.infinityfree.php';
 
 // Establish the database connection.
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db.php';
