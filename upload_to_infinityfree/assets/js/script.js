@@ -7,11 +7,11 @@ function logout() {
     if (request.readyState == 4 && request.status == 200) {
       var response = request.responseText;
       if (response == "success") {
-        window.location = "/Projects/AuraEdition/index.php";
+        window.location = "/index.php";
       }
     }
   };
-  request.open("POST", "/Projects/AuraEdition/process/logoutProcess.php", true);
+  request.open("POST", "/process/logoutProcess.php", true);
   request.send();
 }
 
@@ -30,7 +30,7 @@ function buyNow(id, quantity) {
       if (request.status == 200) {
         var response = request.responseText.trim();
         if (response === "success") {
-          window.location = "/Projects/AuraEdition/pages/checkout.php";
+          window.location = "/pages/checkout.php";
         } else {
           alert("Buy Now failed: " + response);
         }
@@ -39,7 +39,7 @@ function buyNow(id, quantity) {
       }
     }
   };
-  request.open("POST", "/Projects/AuraEdition/process/buyNowProcess.php", true);
+  request.open("POST", "/process/buyNowProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send(
     "id=" + encodeURIComponent(id) + "&quantity=" + encodeURIComponent(quantity)
@@ -70,7 +70,7 @@ function setupCheckoutUnloadHandler() {
       var xhr = new XMLHttpRequest();
       xhr.open(
         "POST",
-        "/Projects/AuraEdition/process/clearCartProcess.php",
+        "/process/clearCartProcess.php",
         false
       );
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -103,7 +103,7 @@ function setupCartPageQuantityButtons() {
 
         try {
           const response = await fetch(
-            "/Projects/AuraEdition/process/updateCartQuantity.php",
+            "/process/updateCartQuantity.php",
             {
               method: "POST",
               headers: {
@@ -172,7 +172,7 @@ function clearCheckout() {
             // Show a visual confirmation before redirect
             showCartClearedMessage();
             setTimeout(function() {
-          window.location = "/Projects/AuraEdition/products/listings.php";
+          window.location = "/products/listings.php";
             }, 1000); // 1 second delay
         } else {
             alert("Clear cart failed: " + (obj.message || "Unknown error"));
@@ -187,7 +187,7 @@ function clearCheckout() {
   };
   request.open(
     "POST",
-    "/Projects/AuraEdition/process/clearCartProcess.php",
+    "/process/clearCartProcess.php",
     true
   );
   request.send();
@@ -199,61 +199,65 @@ function showCartClearedMessage() {
   overlay.style.position = 'fixed';
   overlay.style.top = 0;
   overlay.style.left = 0;
-  overlay.style.width = '100vw';
-  overlay.style.height = '100vh';
-  overlay.style.background = 'rgba(0,0,0,0.7)';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
   overlay.style.display = 'flex';
-  overlay.style.alignItems = 'center';
   overlay.style.justifyContent = 'center';
-  overlay.style.zIndex = 9999;
+  overlay.style.alignItems = 'center';
+  overlay.style.zIndex = '9999';
 
-  var message = document.createElement('div');
-  message.style.background = '#222';
-  message.style.color = '#fff';
-  message.style.padding = '2rem 3rem';
-  message.style.borderRadius = '1rem';
-  message.style.fontSize = '2rem';
-  message.style.boxShadow = '0 4px 32px rgba(0,0,0,0.3)';
-  message.innerText = 'Cart Cleared! Redirecting...';
+  // Create message box
+  var messageBox = document.createElement('div');
+  messageBox.style.backgroundColor = '#1f2937';
+  messageBox.style.color = '#fbbf24';
+  messageBox.style.padding = '2rem';
+  messageBox.style.borderRadius = '0.5rem';
+  messageBox.style.border = '2px solid #fbbf24';
+  messageBox.style.textAlign = 'center';
+  messageBox.style.fontSize = '1.25rem';
+  messageBox.style.fontWeight = 'bold';
 
-  overlay.appendChild(message);
+  messageBox.innerHTML = 'Cart cleared successfully!<br>Redirecting to listings...';
+
+  overlay.appendChild(messageBox);
   document.body.appendChild(overlay);
+
+  // Remove overlay after 1 second
+  setTimeout(function() {
+    document.body.removeChild(overlay);
+  }, 1000);
 }
 
 function pay() {
   var request = new XMLHttpRequest();
   request.onreadystatechange = function () {
-    if (request.readyState == 4 && request.status == 200) {
-      var obj = JSON.parse(request.responseText);
-
-      if (obj === 1) {
-        alert("Please Log In To Your Account.");
-        window.location = "/Projects/AuraEdition/pages/login.php";
-      } else if (obj === 2) {
-        alert("Please Update Your Address.");
-        window.location = "/Projects/AuraEdition/pages/userProfile.php";
-      } else if (obj.status === "success" && obj.payment) {
-        payhere.onCompleted = function onCompleted(orderId) {
-          window.location = "/Projects/AuraEdition/pages/invoice.php";
-        };
-        payhere.onDismissed = function onDismissed() {
-          window.location = "/Projects/AuraEdition/pages/checkout.php?status=cancel";
-        };
-        payhere.onError = function onError(error) {
-          alert("Payment Error: " + error);
-        };
-
-        var payment = obj.payment; // <-- Use the payment object directly
-
-        payhere.startPayment(payment);
-      } else if (obj.status === "error") {
-        alert("Payment Failed: " + obj.message);
+    if (request.readyState == 4) {
+      if (request.status == 200) {
+        try {
+          var obj = JSON.parse(request.responseText);
+          if (obj.status === "success") {
+            payhere.startPayment(obj.payment);
+          } else if (obj.status === "login_required") {
+            window.location = "/auth/login.php";
+          } else if (obj.status === "profile_required") {
+            window.location = "/pages/account.php";
+          } else if (obj.status === "purchase_success") {
+            window.location = "/pages/invoice.php";
+          } else if (obj.status === "purchase_cancelled") {
+            window.location = "/pages/checkout.php?status=cancel";
+          } else {
+            alert("Payment failed: " + (obj.message || "Unknown error"));
+          }
+        } catch (e) {
+          alert("Payment failed: Invalid server response.");
+        }
       } else {
-        alert("Unexpected response from server.");
+        alert("Request failed with status " + request.status);
       }
     }
   };
-  request.open("POST", "/Projects/AuraEdition/process/purchaseProcess.php", true);
+  request.open("POST", "/process/purchaseProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send();
 }
@@ -262,27 +266,22 @@ function pay() {
 
 // Quantity buttons functionality
 function setupQuantityButtons() {
-  // Attach event listeners to all minus buttons
-  document.querySelectorAll(".btn-minus").forEach((button) => {
-    button.addEventListener("click", () => {
-      const vehicleId = button.dataset.vehicleId;
-      const quantityElem = document.getElementById("quantity-" + vehicleId);
-      let quantity = parseInt(quantityElem.textContent);
-      if (quantity > 1) {
-        quantity--;
-        updateQuantity(vehicleId, quantity, quantityElem);
-      }
-    });
-  });
+  document.querySelectorAll(".quantity-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      const vehicleId = this.dataset.vehicleId;
+      const quantityElem = document.getElementById(`quantity-${vehicleId}`);
+      const currentQuantity = parseInt(quantityElem.textContent);
+      let newQuantity = currentQuantity;
 
-  // Attach event listeners to all plus buttons
-  document.querySelectorAll(".btn-plus").forEach((button) => {
-    button.addEventListener("click", () => {
-      const vehicleId = button.dataset.vehicleId;
-      const quantityElem = document.getElementById("quantity-" + vehicleId);
-      let quantity = parseInt(quantityElem.textContent);
-      quantity++;
-      updateQuantity(vehicleId, quantity, quantityElem);
+      if (this.classList.contains("btn-plus")) {
+        newQuantity = currentQuantity + 1;
+      } else if (this.classList.contains("btn-minus") && currentQuantity > 1) {
+        newQuantity = currentQuantity - 1;
+      }
+
+      if (newQuantity !== currentQuantity) {
+        updateQuantity(vehicleId, newQuantity, quantityElem);
+      }
     });
   });
 }
@@ -292,30 +291,30 @@ function updateQuantity(vehicleId, quantity, quantityElem) {
   request.onreadystatechange = function () {
     if (request.readyState == 4) {
       if (request.status == 200) {
-        var response = request.responseText.trim();
-        if (response === "success") {
-          quantityElem.textContent = quantity;
-          // Optionally, refresh the page or update total price dynamically here
-          location.reload();
-        } else {
-          alert("Update quantity failed: " + response);
+        try {
+          var obj = JSON.parse(request.responseText);
+          if (obj.status === "success") {
+            quantityElem.textContent = quantity;
+            // Update total price if it exists
+            const totalPriceElem = document.getElementById("total-price");
+            if (totalPriceElem && obj.total_price) {
+              totalPriceElem.textContent = "$" + parseFloat(obj.total_price).toLocaleString();
+            }
+          } else {
+            alert("Update failed: " + (obj.message || "Unknown error"));
+          }
+        } catch (e) {
+          alert("Update failed: Invalid server response.");
         }
       } else {
         alert("Request failed with status " + request.status);
       }
     }
   };
-  request.open(
-    "POST",
-    "/Projects/AuraEdition/process/updateQuantityProcess.php",
-    true
-  );
+  request.open("POST", "/process/updateQuantityProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send(
-    "id=" +
-      encodeURIComponent(vehicleId) +
-      "&quantity=" +
-      encodeURIComponent(quantity)
+    "vehicle_id=" + encodeURIComponent(vehicleId) + "&quantity=" + encodeURIComponent(quantity)
   );
 }
 
@@ -327,28 +326,36 @@ function removeFromCart(id) {
   request.onreadystatechange = function () {
     if (request.readyState == 4) {
       if (request.status == 200) {
-        var response = request.responseText.trim();
-        if (response === "success") {
-          location.reload();
-        } else {
-          alert("Remove from cart failed: " + response);
+        try {
+          var obj = JSON.parse(request.responseText);
+          if (obj.status === "success") {
+            // Remove the cart item from the DOM
+            const cartItem = document.querySelector(`[data-cart-item-id="${id}"]`);
+            if (cartItem) {
+              cartItem.remove();
+            }
+            // Update total price if it exists
+            const totalPriceElem = document.getElementById("total-price");
+            if (totalPriceElem && obj.total_price) {
+              totalPriceElem.textContent = "$" + parseFloat(obj.total_price).toLocaleString();
+            }
+          } else {
+            alert("Remove failed: " + (obj.message || "Unknown error"));
+          }
+        } catch (e) {
+          alert("Remove failed: Invalid server response.");
         }
       } else {
         alert("Request failed with status " + request.status);
       }
     }
   };
-  request.open(
-    "POST",
-    "/Projects/AuraEdition/process/removeFromCartProcess.php",
-    true
-  );
+  request.open("POST", "/process/removeFromCartProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send("id=" + encodeURIComponent(id));
 }
 
 function addToCart(vehicleId, quantity) {
-  // Default quantity to 1 if not provided or invalid
   if (!quantity || isNaN(quantity) || quantity < 1) {
     quantity = 1;
   }
@@ -356,28 +363,27 @@ function addToCart(vehicleId, quantity) {
   request.onreadystatechange = function () {
     if (request.readyState == 4) {
       if (request.status == 200) {
-        var response = request.responseText.trim();
-        if (response === "success") {
-          alert("Vehicle added to cart.");
-        } else {
-          alert("Add to cart failed: " + response);
+        try {
+          var obj = JSON.parse(request.responseText);
+          if (obj.status === "success") {
+            alert("Added to cart successfully!");
+          } else if (obj.status === "login_required") {
+            window.location = "/auth/login.php";
+          } else {
+            alert("Add to cart failed: " + (obj.message || "Unknown error"));
+          }
+        } catch (e) {
+          alert("Add to cart failed: Invalid server response.");
         }
       } else {
         alert("Request failed with status " + request.status);
       }
     }
   };
-  request.open(
-    "POST",
-    "/Projects/AuraEdition/process/addToCartProcess.php",
-    true
-  );
+  request.open("POST", "/process/addToCartProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send(
-    "vehicle_id=" +
-      encodeURIComponent(vehicleId) +
-      "&quantity=" +
-      encodeURIComponent(quantity)
+    "vehicle_id=" + encodeURIComponent(vehicleId) + "&quantity=" + encodeURIComponent(quantity)
   );
 }
 
@@ -386,25 +392,21 @@ function setupCartPageQuantityButtons() {
     .querySelectorAll(".cart-item-row .btn-plus, .cart-item-row .btn-minus")
     .forEach((button) => {
       button.addEventListener("click", async (event) => {
-        const cartItemId = event.currentTarget.dataset.cartItemId;
+        const vehicleId = event.currentTarget.dataset.vehicleId;
         const action = event.currentTarget.classList.contains("btn-plus")
           ? "increment"
           : "decrement";
 
-        // Use FormData for compatibility with PHP $_POST
-        const formData = new URLSearchParams();
-        formData.append("cart_item_id", cartItemId);
-        formData.append("action", action);
-
         try {
           const response = await fetch(
-            "/Projects/AuraEdition/process/updateCartQuantity.php",
+            "/process/updateCartQuantity.php",
             {
               method: "POST",
               headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
+                Accept: "application/json",
               },
-              body: formData,
+              body: JSON.stringify({ vehicle_id: vehicleId, action: action }),
             }
           );
 
@@ -413,7 +415,7 @@ function setupCartPageQuantityButtons() {
           if (result.success) {
             // Update the quantity display on the page
             const quantityElement = document.getElementById(
-              `quantity-${cartItemId}`
+              `quantity-${vehicleId}`
             );
             if (quantityElement) {
               quantityElement.textContent = result.newQuantity;
@@ -438,22 +440,26 @@ function removeFromWishlist(id) {
   request.onreadystatechange = function () {
     if (request.readyState == 4) {
       if (request.status == 200) {
-        var response = request.responseText.trim();
-        if (response === "success") {
-          location.reload();
-        } else {
-          alert("Remove from cart failed: " + response);
+        try {
+          var obj = JSON.parse(request.responseText);
+          if (obj.status === "success") {
+            // Remove the wishlist item from the DOM
+            const wishlistItem = document.querySelector(`[data-wishlist-item-id="${id}"]`);
+            if (wishlistItem) {
+              wishlistItem.remove();
+            }
+          } else {
+            alert("Remove failed: " + (obj.message || "Unknown error"));
+          }
+        } catch (e) {
+          alert("Remove failed: Invalid server response.");
         }
       } else {
         alert("Request failed with status " + request.status);
       }
     }
   };
-  request.open(
-    "POST",
-    "/Projects/AuraEdition/process/removeFromWishlistProcess.php",
-    true
-  );
+  request.open("POST", "/process/removeFromWishlistProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send("id=" + encodeURIComponent(id));
 }
@@ -463,22 +469,24 @@ function addToWishlist(vehicleId) {
   request.onreadystatechange = function () {
     if (request.readyState == 4) {
       if (request.status == 200) {
-        var response = request.responseText.trim();
-        if (response === "success") {
-          alert("Vehicle added to wishlist.");
-        } else {
-          alert("Add to wishlist failed: " + response);
+        try {
+          var obj = JSON.parse(request.responseText);
+          if (obj.status === "success") {
+            alert("Added to wishlist successfully!");
+          } else if (obj.status === "login_required") {
+            window.location = "/auth/login.php";
+          } else {
+            alert("Add to wishlist failed: " + (obj.message || "Unknown error"));
+          }
+        } catch (e) {
+          alert("Add to wishlist failed: Invalid server response.");
         }
       } else {
         alert("Request failed with status " + request.status);
       }
     }
   };
-  request.open(
-    "POST",
-    "/Projects/AuraEdition/process/addToWishlistProcess.php",
-    true
-  );
+  request.open("POST", "/process/addToWishlistProcess.php", true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send("vehicle_id=" + encodeURIComponent(vehicleId));
 }
@@ -486,174 +494,42 @@ function addToWishlist(vehicleId) {
 
 /* ACCOUNT PAGE */
 function setupAccountPage() {
-  const form = document.getElementById("accountForm");
-  if (!form) return;
-
-  // Form validation
-  form.addEventListener("submit", function (e) {
-    let isValid = true;
-    const errors = [];
-
-    // Validate email
-    const email = form.querySelector("#email");
-    if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-      errors.push("Please enter a valid email address");
-      email.classList.add("border-red-500");
-      isValid = false;
-    } else {
-      email.classList.remove("border-red-500");
-    }
-
-    // Validate password if changing
-    const currentPassword = form.querySelector("#current_password");
-    const newPassword = form.querySelector("#new_password");
-    const confirmPassword = form.querySelector("#confirm_password");
-
-    if (newPassword.value) {
-      // If changing password, current password is required
-      if (!currentPassword.value) {
-        errors.push("Current password is required to change your password");
-        currentPassword.classList.add("border-red-500");
-        isValid = false;
-      } else {
-        currentPassword.classList.remove("border-red-500");
-      }
-
-      if (
-        newPassword.value.length < 8 ||
-        !/[A-Z]/.test(newPassword.value) ||
-        !/[0-9]/.test(newPassword.value) ||
-        !/[^A-Za-z0-9]/.test(newPassword.value)
-      ) {
-        errors.push(
-          "Password must be at least 8 characters with uppercase, number, and special character"
-        );
-        newPassword.classList.add("border-red-500");
-        isValid = false;
-      } else {
-        newPassword.classList.remove("border-red-500");
-      }
-
-      if (newPassword.value !== confirmPassword.value) {
-        errors.push("Passwords do not match");
-        confirmPassword.classList.add("border-red-500");
-        isValid = false;
-      } else {
-        confirmPassword.classList.remove("border-red-500");
-      }
-    }
-
-    // Validate required fields
-    const requiredFields = ["fname", "lname", "email"];
-    requiredFields.forEach((field) => {
-      const element = form.querySelector(`#${field}`);
-      if (!element.value.trim()) {
-        errors.push(
-          `${field.charAt(0).toUpperCase() + field.slice(1)} is required`
-        );
-        element.classList.add("border-red-500");
-        isValid = false;
-      } else {
-        element.classList.remove("border-red-500");
-      }
-    });
-
-    // Display errors
-    const errorContainer = document.getElementById("formErrors");
-    if (errorContainer) {
-      errorContainer.innerHTML = "";
-      if (errors.length > 0) {
-        errors.forEach((error) => {
-          const errorElement = document.createElement("p");
-          errorElement.className = "text-red-500 text-sm mt-1";
-          errorElement.textContent = error;
-          errorContainer.appendChild(errorElement);
-        });
-      }
-    }
-
-    if (!isValid) {
+  // Add event listeners for account page functionality
+  const updateForm = document.getElementById('updateAccountForm');
+  if (updateForm) {
+    updateForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      // Scroll to first error
-      const firstError = form.querySelector(".border-red-500");
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  });
-
-  // Real-time password strength indicator
-  const passwordInput = document.getElementById("new_password");
-  const passwordStrength = document.getElementById("passwordStrength");
-
-  if (passwordInput && passwordStrength) {
-    passwordInput.addEventListener("input", function () {
-      const password = this.value;
-      let strength = 0;
-      let messages = [];
-
-      if (password.length >= 8) strength++;
-      if (/[A-Z]/.test(password)) strength++;
-      if (/[0-9]/.test(password)) strength++;
-      if (/[^A-Za-z0-9]/.test(password)) strength++;
-
-      // Update UI based on strength
-      passwordStrength.className = "";
-      passwordStrength.classList.add("text-sm", "mt-1");
-
-      if (password.length === 0) {
-        passwordStrength.textContent = "";
-        return;
-      }
-
-      switch (strength) {
-        case 0:
-        case 1:
-          passwordStrength.classList.add("text-red-500");
-          passwordStrength.textContent =
-            "Weak - Add more characters, numbers, and symbols";
-          break;
-        case 2:
-          passwordStrength.classList.add("text-yellow-500");
-          passwordStrength.textContent =
-            "Moderate - Try adding more complexity";
-          break;
-        case 3:
-          passwordStrength.classList.add("text-blue-500");
-          passwordStrength.textContent = "Good - Almost there!";
-          break;
-        case 4:
-          passwordStrength.classList.add("text-green-500");
-          passwordStrength.textContent = "Strong - Great job!";
-          break;
-      }
-    });
-  }
-
-  // Phone number formatting
-  const phoneInput = document.getElementById("phone");
-  if (phoneInput) {
-    phoneInput.addEventListener("input", function (e) {
-      let phone = this.value.replace(/\D/g, "");
-      if (phone.length > 10) phone = phone.substring(0, 10);
-
-      // Format as (XXX) XXX-XXXX
-      let formatted = "";
-      if (phone.length > 0) {
-        formatted = "(" + phone.substring(0, 3);
-        if (phone.length > 3) {
-          formatted += ") " + phone.substring(3, 6);
-          if (phone.length > 6) {
-            formatted += "-" + phone.substring(6, 10);
+      
+      const formData = new FormData(this);
+      const request = new XMLHttpRequest();
+      
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+          if (request.status == 200) {
+            try {
+              const response = JSON.parse(request.responseText);
+              if (response.status === 'success') {
+                alert('Account updated successfully!');
+                location.reload();
+              } else {
+                alert('Update failed: ' + (response.message || 'Unknown error'));
+              }
+            } catch (e) {
+              alert('Update failed: Invalid server response.');
+            }
+          } else {
+            alert('Request failed with status ' + request.status);
           }
         }
-        this.value = formatted;
-      }
+      };
+      
+      request.open('POST', '/process/updateAccount.php', true);
+      request.send(formData);
     });
   }
 }
 
-// Initialize account page when DOM is loaded
-document.addEventListener("DOMContentLoaded", function () {
+// Initialize account page functionality
+if (window.location.pathname.endsWith('/pages/account.php')) {
   setupAccountPage();
-});
+}
