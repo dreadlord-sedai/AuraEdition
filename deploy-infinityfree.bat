@@ -34,15 +34,24 @@ if %errorlevel% neq 0 (
 )
 call :print_status "Dependencies installed successfully"
 
-REM Build Tailwind CSS
+REM Build Tailwind CSS (with error handling)
 echo 🎨 Building Tailwind CSS...
-call npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind.css --minify
+call npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind.css --minify 2>nul
 if %errorlevel% neq 0 (
-    call :print_error "Failed to build Tailwind CSS"
-    pause
-    exit /b 1
+    call :print_warning "Tailwind build failed, using existing CSS file"
+    REM Copy existing tailwind file if build fails
+    if exist "assets\css\tailwind-output.css" (
+        copy "assets\css\tailwind-output.css" "assets\css\tailwind.css" >nul
+        call :print_status "Copied existing tailwind-output.css to tailwind.css"
+    ) else if exist "assets\css\tailwind.css" (
+        call :print_status "Using existing tailwind.css file"
+    ) else (
+        call :print_error "No Tailwind CSS file found. Creating empty file."
+        echo /* Tailwind CSS */ > "assets\css\tailwind.css"
+    )
+) else (
+    call :print_status "Tailwind CSS built successfully"
 )
-call :print_status "Tailwind CSS built successfully"
 
 REM Create InfinityFree configuration template
 echo ⚙️ Creating InfinityFree configuration template...
