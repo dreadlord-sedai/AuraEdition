@@ -9,6 +9,9 @@
 > 
 > Modern, secure, and scalable. Built for car enthusiasts, dealers, and admins.
 
+## 🌐 Live Demo
+**Visit the live application:** [https://auraedition.wuaze.com](https://auraedition.wuaze.com)
+
 ## Screenshots
 <details>
   <summary>Click to view screenshots</summary>
@@ -43,6 +46,7 @@
 
 ## Table of Contents
 - [AuraEdition](#auraedition-)
+  - [Live Demo](#-live-demo)
   - [Screenshots](#screenshots)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
