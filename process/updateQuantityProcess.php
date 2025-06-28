@@ -1,5 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['id']) || !isset($_POST['quantity'])) {
@@ -15,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Fetch max stock from DB
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
     $stock_stmt = $connection->prepare("SELECT stock FROM vehicles WHERE id = ?");
     $stock_stmt->bind_param("i", $vehicle_id);
     $stock_stmt->execute();
