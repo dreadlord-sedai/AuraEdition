@@ -137,12 +137,29 @@ $makes = getAllMakes($connection);
     <script>
         function addMake(event) {
             event.preventDefault();
-            const makeName = document.getElementById('make_name').value;
-            if (!makeName) return;
-            // You can use Fetch API to send this to a handler
-            console.log('Adding make:', makeName);
-            // Example: window.location.href = `/Projects/AuraEdition/admin/process/handleCategory.php?action=add_make&name=${makeName}`;
-            alert('Add functionality not yet connected.');
+            const makeName = document.getElementById('make_name').value.trim();
+            if (!makeName) {
+                alert('Please enter a make name.');
+                return false;
+            }
+            fetch('/Projects/AuraEdition/admin/process/addMakeProcess.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'name=' + encodeURIComponent(makeName)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(() => {
+                alert('An error occurred while adding the make.');
+            });
+            return false;
         }
 
         function deleteMake(id) {

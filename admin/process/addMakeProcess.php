@@ -1,20 +1,30 @@
 <?php 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php'; 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+
+header('Content-Type: application/json');
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserWithAddress($connection, $_SESSION['user_id']) : null;
 if (!$user || $user['role'] != "admin") {
-    header("Location: /Projects/AuraEdition/index.php");
+    echo json_encode(["success" => false, "message" => "Unauthorized access."]);
     exit;
 }
 
-if (isset($_POST['name'])) {
-    $make_name = $_POST['name'];
-    addMake($connection, $make_name);
-    echo "success";
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'])) {
+    $make_name = trim($_POST['name']);
+    if ($make_name === '') {
+        echo json_encode(["success" => false, "message" => "Make name cannot be empty."]);
+        exit;
+    }
+    if (addMake($connection, $make_name)) {
+        echo json_encode(["success" => true, "message" => "Make added successfully."]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Failed to add make."]);
+    }
+    exit;
+} else {
+    echo json_encode(["success" => false, "message" => "Invalid request."]);
     exit;
 }
 
