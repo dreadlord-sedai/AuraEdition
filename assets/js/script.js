@@ -164,21 +164,17 @@ function updateCartTotal() {
 function clearCheckout() {
   var request = new XMLHttpRequest();
   request.onreadystatechange = function () {
-    var response = request.responseText;
-
-    var obj = JSON.parse(response);
-
-    var mail = obj["umail"];
-    var amount = obj["amount"];
-    var size = obj["size"];
-    var status = obj["orderstatus"];
     if (request.readyState == 4) {
       if (request.status == 200) {
-        var response = request.responseText.trim();
-        if (response === "success") {
-          window.location = "/Projects/AuraEdition/products/listings.php";
-        } else {
-          alert("Clear cart failed: " + response);
+        try {
+          var obj = JSON.parse(request.responseText);
+          if (obj.status === "success") {
+            window.location = "/Projects/AuraEdition/products/listings.php";
+          } else {
+            alert("Clear cart failed: " + (obj.message || "Unknown error"));
+          }
+        } catch (e) {
+          alert("Clear cart failed: Invalid server response.");
         }
       } else {
         alert("Request failed with status " + request.status);
