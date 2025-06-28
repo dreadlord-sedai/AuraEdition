@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 header('Content-Type: application/json');
 if (isset($_GET['make_id'])) {

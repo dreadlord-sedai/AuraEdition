@@ -134,7 +134,7 @@ function getListingsByMake(mysqli $connection, int $make_id): array
     $sql = "SELECT v.id as listing_id, 
                    v.title, 
                    v.price,
-                   MIN(COALESCE(vi.image_path, '/Projects/AuraEdition/assets/images/default-car.jpg')) as image_url
+                   MIN(COALESCE(vi.image_path, '/assets/images/default-car.jpg')) as image_url
             FROM vehicles v
             LEFT JOIN vehicle_images vi ON v.id = vi.image_vehicle_id
             WHERE v.make_id = ? AND v.status = 'ACTIVE'
@@ -164,7 +164,7 @@ function getListingsByMake(mysqli $connection, int $make_id): array
 function fetchOrdersByUserId($connection, $user_id)
 {
     if (!isset($user_id)) {
-        header("Location: /Projects/AuraEdition/auth/login.php");
+        header("Location: /auth/login.php");
         exit;
     }
 
@@ -255,7 +255,7 @@ function getCartItemsByUserId(mysqli $connection, ?int $user_id): array
                 ci.quantity,
                 v.title,
                 v.price,
-                COALESCE((SELECT vi.image_path FROM vehicle_images vi WHERE vi.image_vehicle_id = v.id LIMIT 1), '/Projects/AuraEdition/assets/images/default-car.jpg') as image_path
+                COALESCE((SELECT vi.image_path FROM vehicle_images vi WHERE vi.image_vehicle_id = v.id LIMIT 1), '/assets/images/default-car.jpg') as image_path
             FROM cart_items ci
             JOIN carts c ON ci.cart_id = c.cart_id
             JOIN vehicles v ON ci.vehicle_id = v.id
@@ -569,7 +569,7 @@ function get_filter_values($connection, $items_per_page, $offset)
     $vehicle_images = [];
     foreach ($All_vehicles as $vehicle) {
         $image = get_vehicle_image($vehicle['id'], $connection);
-        $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+        $vehicle_images[$vehicle['id']] = $image ? $image : '/products/img/default.jpg';
     }
 
     return [

@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
 $token = $_GET['token'] ?? '';
 $valid = false;
 if ($token) {
@@ -17,18 +17,18 @@ if ($token) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Reset Password</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 </head>
 <body>
     <div class="relative w-full h-screen">
-        <img src="/Projects/AuraEdition/assets/images/sign.jpg" class="w-full h-screen object-cover" alt="Sign Image">
+        <img src="/assets/images/sign.jpg" class="w-full h-screen object-cover" alt="Sign Image">
         <div class="absolute inset-0 flex justify-center items-center bg-black/60">
             <div class="w-full max-w-md">
                 <div class="bg-black/80 backdrop-blur-lg shadow-2xl rounded-xl px-8 pt-8 pb-10 border border-yellow-400/30">
                     <h2 class="text-3xl font-serif text-yellow-400 mb-6 text-center tracking-wide" style="font-family: 'Trajan Pro', serif;">Reset Password</h2>
-                    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/flash_messages.php'; ?>
+                    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/flash_messages.php'; ?>
                     <?php if ($valid): ?>
-                    <form action="/Projects/AuraEdition/auth/resetPasswordProcess.php" method="POST" class="space-y-6">
+                    <form action="/auth/resetPasswordProcess.php" method="POST" class="space-y-6">
                         <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
                         <div>
@@ -44,7 +44,7 @@ if ($token) {
                         <div class="flex flex-col gap-3 mt-6">
                             <button type="submit"
                                 class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg hover:bg-yellow-500 transition-all text-lg tracking-wide shadow">Reset Password</button>
-                            <a href="/Projects/AuraEdition/auth/login.php" class="w-full">
+                            <a href="/auth/login.php" class="w-full">
                                 <button type="button"
                                     class="w-full bg-gray-900 text-yellow-400 border border-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all text-lg font-semibold py-3 mt-2 shadow">Back to Login</button>
                             </a>
@@ -57,6 +57,6 @@ if ($token) {
             </div>
         </div>
     </div>
-    <script src="/Projects/AuraEdition/assets/js/script.js"></script>
+    <script src="/assets/js/script.js"></script>
 </body>
 </html> 

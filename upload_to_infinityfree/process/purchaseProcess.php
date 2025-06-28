@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -81,9 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $payment = [
             "sandbox" => true,
             "merchant_id" => $merchant_id,
-            "return_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
-            "cancel_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
-            "notify_url" => "http://localhost/Projects/AuraEdition/process/payhereNotify.php",
+            "return_url" => "http://localhost/pages/checkout.php",
+            "cancel_url" => "http://localhost/pages/checkout.php",
+            "notify_url" => "http://localhost/process/payhereNotify.php",
             "order_id" => $order_code,
             "items" => "Vehicle Purchase",
             "amount" => number_format($amount, 2, '.', ''),

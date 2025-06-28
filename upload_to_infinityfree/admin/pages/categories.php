@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 $user = authorize_admin($connection);
 
@@ -15,19 +15,19 @@ $makes = getAllMakes($connection);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Manage Makes & Models</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
     <!-- Sidebar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
 
     <!-- Main Content Area -->
     <div class="ml-64 flex-1 flex flex-col">
         <!-- Navigation Bar -->
         <?php 
-            $breadcrumbs = ['Makes & Models' => '/Projects/AuraEdition/admin/pages/categories.php'];
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+            $breadcrumbs = ['Makes & Models' => '/admin/pages/categories.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; 
         ?>
         
         <!-- Main Content -->
@@ -142,7 +142,7 @@ $makes = getAllMakes($connection);
                 alert('Please enter a make name.');
                 return false;
             }
-            fetch('/Projects/AuraEdition/admin/process/addMakeProcess.php', {
+            fetch('/admin/process/addMakeProcess.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'name=' + encodeURIComponent(makeName)
@@ -164,7 +164,7 @@ $makes = getAllMakes($connection);
 
         function deleteMake(id) {
             if (confirm('Are you sure you want to delete this make? This might affect existing vehicles.')) {
-                fetch('/Projects/AuraEdition/admin/process/deleteMakeProcess.php', {
+                fetch('/admin/process/deleteMakeProcess.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'id=' + encodeURIComponent(id)
@@ -192,7 +192,7 @@ $makes = getAllMakes($connection);
                 alert('Please enter a model name and select a make.');
                 return false;
             }
-            fetch('/Projects/AuraEdition/admin/process/addModelProcess.php', {
+            fetch('/admin/process/addModelProcess.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'name=' + encodeURIComponent(modelName) + '&make_id=' + encodeURIComponent(makeId)
@@ -214,7 +214,7 @@ $makes = getAllMakes($connection);
 
         function deleteModel(id) {
             if (confirm('Are you sure you want to delete this model?')) {
-                fetch('/Projects/AuraEdition/admin/process/deleteModelProcess.php', {
+                fetch('/admin/process/deleteModelProcess.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'id=' + encodeURIComponent(id)

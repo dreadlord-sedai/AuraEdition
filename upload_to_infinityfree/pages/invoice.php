@@ -1,9 +1,9 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /Projects/AuraEdition/pages/login.php');
+    header('Location: /pages/login.php');
     exit;
 }
 
@@ -25,12 +25,12 @@ $order = $data['order'];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AuraEdition | Invoice</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 </head>
 
 <body class="bg-black min-h-screen text-white">
     <!-- Navigation Bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
     <!-- Main Content -->
@@ -115,6 +115,6 @@ $order = $data['order'];
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/Projects/AuraEdition/assets/js/script.js"></script>
+    <script src="/assets/js/script.js"></script>
 </body>
 </html>

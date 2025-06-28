@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 $current_user = authorize_admin($connection);
 
@@ -46,15 +46,15 @@ $users = getAllUsers($connection, $search, $role, $items_per_page, $offset);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Manage Users</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
     <div class="ml-64 flex-1 flex flex-col">
         <?php 
-            $breadcrumbs = ['Users' => '/Projects/AuraEdition/admin/pages/users.php'];
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+            $breadcrumbs = ['Users' => '/admin/pages/users.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; 
         ?>
         <main class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
@@ -136,7 +136,7 @@ $users = getAllUsers($connection, $search, $role, $items_per_page, $offset);
                     <div class="flex items-center">
                         <?php
                         $query_params = http_build_query(array_filter(['search' => $search, 'role' => $role]));
-                        $base_url = "/Projects/AuraEdition/admin/pages/users.php?" . $query_params;
+                        $base_url = "/admin/pages/users.php?" . $query_params;
                         if ($page > 1) echo '<a href="' . $base_url . '&page=' . ($page - 1) . '" class="px-4 py-2 mx-1 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700">Previous</a>';
                         if ($page < $total_pages) echo '<a href="' . $base_url . '&page=' . ($page + 1) . '" class="px-4 py-2 mx-1 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700">Next</a>';
                         ?>

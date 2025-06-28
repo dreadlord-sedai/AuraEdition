@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/session.php';
 
 // Unset all of the session variables.
 $_SESSION = array();
@@ -18,5 +18,5 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to login page
-header("Location: /Projects/AuraEdition/auth/login.php");
+header("Location: /auth/login.php");
 exit; 

@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 ?>
 
 
@@ -12,14 +12,21 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Home</title>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <!-- Stylesheets -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/tailwind-output.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://www.payhere.lk/lib/payhere.js"></script>
+
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 
 </head>
 
 <body class="bg-black min-h-screen text-white">
 
     <!-- Navigation Bar -- -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
@@ -83,7 +90,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
         $featured_vehicles = get_featured_vehicles($connection, 3);
         foreach ($featured_vehicles as $vehicle) {
             $image = get_vehicle_image($vehicle['id'], $connection);
-            $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+            $vehicle_images[$vehicle['id']] = $image ? $image : '/products/img/default.jpg';
         }
         ?>
         <div class="max-w-6xl mx-auto my-12 px-4">
@@ -95,7 +102,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             <button class="absolute top-3 right-3 w-12 h-12 bg-white/80 hover:bg-yellow-400 border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition opacity-0 group-hover:opacity-100" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
                                 <i class="fa-solid fa-heart text-2xl text-yellow-400 transition"></i>
                             </button>
-                            <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
+                            <a href="/products/productDetails.php?id=<?= $vehicle['id'] ?>">
                                 <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="w-full h-48 object-cover" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                             </a>
                         </div>
@@ -103,7 +110,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             <h5 class="text-lg font-semibold text-white" style="font-family: 'Trajan Pro', serif;"><?= htmlspecialchars($vehicle['title']) ?></h5>
                             <p class="text-yellow-400 font-bold text-xl">$<?= number_format($vehicle['price']) ?></p>
                             <div class="flex gap-2 mt-auto">
-                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
+                                <a href="/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
                                 <button class="flex-1 bg-gray-900 text-white py-2 rounded hover:bg-gray-700 transition font-semibold" onclick="addToCart(<?= $vehicle['id'] ?>)">Add to Cart</button>
                             </div>
                         </div>
@@ -118,7 +125,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
         $popular_vehicles = get_popular_vehicles($connection, 3);
         foreach ($popular_vehicles as $vehicle) {
             $image = get_vehicle_image($vehicle['id'], $connection);
-            $vehicle_images[$vehicle['id']] = $image ? $image : '/Projects/AuraEdition/products/img/default.jpg';
+            $vehicle_images[$vehicle['id']] = $image ? $image : '/products/img/default.jpg';
         }
         ?>
         <div class="max-w-6xl mx-auto my-12 px-4">
@@ -130,7 +137,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             <button class="absolute top-3 right-3 w-12 h-12 bg-white/80 hover:bg-yellow-400 border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition opacity-0 group-hover:opacity-100" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
                                 <i class="fa-solid fa-heart text-2xl text-yellow-400 transition"></i>
                             </button>
-                            <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
+                            <a href="/products/productDetails.php?id=<?= $vehicle['id'] ?>">
                                 <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="w-full h-48 object-cover" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                             </a>
                         </div>
@@ -138,7 +145,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
                             <h5 class="text-lg font-semibold text-white" style="font-family: 'Trajan Pro', serif;"><?= htmlspecialchars($vehicle['title']) ?></h5>
                             <p class="text-yellow-400 font-bold text-xl">$<?= number_format($vehicle['price']) ?></p>
                             <div class="flex gap-2 mt-auto">
-                                <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
+                                <a href="/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
                                 <button class="flex-1 bg-gray-900 text-white py-2 rounded hover:bg-gray-700 transition font-semibold" onclick="addToCart(<?= $vehicle['id'] ?>)">Add to Cart</button>
                             </div>
                         </div>
@@ -149,7 +156,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functio
         <!-- Popular Vehicles Section -->
     </div>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>
 
 </body>
 

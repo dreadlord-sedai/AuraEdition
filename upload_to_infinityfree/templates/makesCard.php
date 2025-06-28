@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/header.php"; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/header.php"; ?>
 
 <div class="container-md my-5">
     <h2 class="text-start mb-4">Cards </h2>
@@ -7,7 +7,7 @@
         <!-- Makes Card -->
             <div class="col-12 col-sm-6 col-md-4 mb-4">
                 <div class="card makes-card  d-flex flex-row align-items-center gap-3">
-                    <img src="/Projects/AuraEdition/products/img/makes1.jpg" class="makesCard-img" alt="Featured Vehicle">
+                    <img src="/products/img/makes1.jpg" class="makesCard-img" alt="Featured Vehicle">
                     <div class="d-flex flex-column justify-content-center flex-grow-1">
 
                         <div class="pb-4">
@@ -26,4 +26,4 @@
 
     </div>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>

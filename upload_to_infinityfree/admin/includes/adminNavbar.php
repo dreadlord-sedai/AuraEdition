@@ -3,11 +3,11 @@
     <div class="flex items-center justify-between px-8 py-4">
         <!-- Home Button + Breadcrumbs -->
         <div class="flex items-center gap-6">
-            <a href="/Projects/AuraEdition/index.php" class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-yellow-400 transition-colors group" title="Go to site home">
+            <a href="/index.php" class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-yellow-400 transition-colors group" title="Go to site home">
                 <i class="fas fa-home text-xl text-yellow-400 group-hover:text-black"></i>
             </a>
             <div class="text-gray-400">
-                <a href="/Projects/AuraEdition/admin/dashboard.php" class="hover:text-yellow-400">Admin</a>
+                <a href="/admin/dashboard.php" class="hover:text-yellow-400">Admin</a>
                 <span class="mx-2">/</span>
                 <span class="text-white font-semibold">Dashboard</span>
             </div>
@@ -25,8 +25,8 @@
 
             <!-- Dropdown menu -->
             <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-black border border-gray-800 rounded-lg shadow-xl py-2 z-50">
-                <a href="/Projects/AuraEdition/admin/pages/adminAccount.php" class="block px-4 py-2 text-gray-300 hover:bg-gray-900 hover:text-yellow-400">My Account</a>
-                <a href="/Projects/AuraEdition/auth/logout.php" class="block px-4 py-2 text-gray-300 hover:bg-gray-900 hover:text-yellow-400">Sign Out</a>
+                <a href="/admin/pages/adminAccount.php" class="block px-4 py-2 text-gray-300 hover:bg-gray-900 hover:text-yellow-400">My Account</a>
+                <a href="/auth/logout.php" class="block px-4 py-2 text-gray-300 hover:bg-gray-900 hover:text-yellow-400">Sign Out</a>
             </div>
         </div>
     </div>

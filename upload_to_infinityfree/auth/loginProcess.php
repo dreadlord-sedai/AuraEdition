@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $select_user_query->close();
                     // Redirect to the home page after successful login
-                    header("Location: /Projects/AuraEdition/index.php");
+                    header("Location: /index.php");
                     exit;
                 } else {
                     set_flash('error', 'Incorrect email or password.');

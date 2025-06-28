@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 $items_per_page = 9;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -21,16 +21,16 @@ $total_pages = $filter_results['total_pages'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Listings</title>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 
 <body class="bg-black text-white min-h-screen">
 
     <!-- Navigation Bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
     <!-- Search and Filter bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/filterBar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/filterBar.php'; ?>
     <!-- Search and Filter Bar -->
 
     <div class="max-w-7xl mx-auto px-4 my-10">
@@ -43,7 +43,7 @@ $total_pages = $filter_results['total_pages'];
                         <button class="absolute top-3 right-3 w-12 h-12 bg-white/80 hover:bg-yellow-400 border-2 border-yellow-400 rounded-full flex items-center justify-center shadow transition opacity-0 group-hover:opacity-100" onclick="addToWishlist(<?= $vehicle['id'] ?>)" data-id="<?= $vehicle['id'] ?>">
                             <i class="fa-solid fa-heart text-2xl text-yellow-400 transition"></i>
                         </button>
-                        <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>">
+                        <a href="/products/productDetails.php?id=<?= $vehicle['id'] ?>">
                             <img src="<?= $vehicle_images[$vehicle['id']] ?>" class="w-full h-48 object-cover" alt="<?= htmlspecialchars($vehicle['title']) ?>">
                         </a>
                     </div>
@@ -51,7 +51,7 @@ $total_pages = $filter_results['total_pages'];
                         <h5 class="text-lg font-semibold text-white" style="font-family: 'Trajan Pro', serif;"><?= htmlspecialchars($vehicle['title']) ?></h5>
                         <p class="text-yellow-400 font-bold text-xl">$<?= number_format($vehicle['price']) ?></p>
                         <div class="flex gap-2 mt-auto">
-                            <a href="/Projects/AuraEdition/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
+                            <a href="/products/productDetails.php?id=<?= $vehicle['id'] ?>" class="flex-1 bg-yellow-400 text-black py-2 rounded hover:bg-yellow-500 text-center transition font-semibold">Buy Now</a>
                             <button class="flex-1 bg-gray-900 text-white py-2 rounded hover:bg-gray-700 transition font-semibold" onclick="addToCart(<?= $vehicle['id'] ?>)">Add to Cart</button>
                         </div>
                     </div>
@@ -88,6 +88,6 @@ $total_pages = $filter_results['total_pages'];
     </div>
 
     <!-- Footer -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>
 </body>
 </html>

@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->AltBody = "Name: {$name}\nEmail: {$email}\nMessage:\n{$message}";
 
         $mail->send();
-        header('Location: /Projects/AuraEdition/pages/contact.php?status=success');
+        header('Location: /pages/contact.php?status=success');
         exit();
     } catch (Exception $e) {
         // Show PHPMailer error for debugging

@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Contact</title>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 
 <body class="bg-black text-white min-h-screen">
 
     <!-- Navigation Bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
@@ -34,7 +34,7 @@
             <?php endif; ?>
         <?php endif; ?>
 
-        <form action="/Projects/AuraEdition/process/contactProcess.php" method="POST" class="p-8 bg-gray-900 rounded-xl shadow-lg border border-yellow-400/20 flex flex-col gap-6">
+        <form action="/process/contactProcess.php" method="POST" class="p-8 bg-gray-900 rounded-xl shadow-lg border border-yellow-400/20 flex flex-col gap-6">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
             <div class="flex flex-col md:flex-row gap-6">
                 <div class="flex-1">
@@ -59,6 +59,6 @@
         <!-- Contact Section -->
     </div>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>
 </body>
 </html>

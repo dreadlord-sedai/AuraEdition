@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 // filterBar.php
 $selected_make = $_GET['make'] ?? '';
@@ -15,7 +15,7 @@ $models = getModels($connection, $selected_make ?: null);
 ?>
 <nav class="bg-black py-4 border-b-2 border-yellow-400/30">
     <div class="max-w-7xl mx-auto px-4">
-        <form action="/Projects/AuraEdition/products/listings.php" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" role="search">
+        <form action="/products/listings.php" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" role="search">
             
             <!-- Filter Options -->
             <div class="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -50,7 +50,7 @@ $models = getModels($connection, $selected_make ?: null);
             <!-- Search Bar -->
             <div class="col-span-1 flex items-center gap-2">
                 <input class="w-full bg-gray-900 border border-gray-700 text-white rounded-md p-2 focus:ring-yellow-400 focus:border-yellow-400" type="search" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Search vehicles..." aria-label="Search">
-                <a href="/Projects/AuraEdition/products/listings.php" class="text-gray-400 hover:text-white font-semibold transition-all">Reset</a>
+                <a href="/products/listings.php" class="text-gray-400 hover:text-white font-semibold transition-all">Reset</a>
             </div>
         </form>
     </div>

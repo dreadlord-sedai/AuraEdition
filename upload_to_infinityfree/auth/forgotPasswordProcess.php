@@ -6,9 +6,9 @@ require_once __DIR__ . '/../includes/PHPMailer/Exception.php';
 require_once __DIR__ . '/../includes/PHPMailer/PHPMailer.php';
 require_once __DIR__ . '/../includes/PHPMailer/SMTP.php';
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
 // If you have PHPMailer setup, include it here
-// include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/PHPMailer/PHPMailerAutoload.php';
+// include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/PHPMailer/PHPMailerAutoload.php';
 
 date_default_timezone_set('Asia/Colombo'); // or your preferred timezone
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $update->close();
 
             // Send email using PHPMailer
-            $reset_link = "http://" . $_SERVER['HTTP_HOST'] . "/Projects/AuraEdition/auth/reset_password.php?token=$token";
+            $reset_link = "http://" . $_SERVER['HTTP_HOST'] . "/auth/reset_password.php?token=$token";
             
             $mail = new PHPMailer(true);
             try {

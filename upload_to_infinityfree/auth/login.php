@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
 
 $Error_message = "";
 $Success_message = "";
@@ -21,13 +21,13 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Login</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 </head>
 
 <body>
     <div class="relative w-full h-screen">
         <!-- Background image -->
-        <img src="/Projects/AuraEdition/assets/images/sign.jpg" class="w-full h-screen object-cover" alt="Sign Image">
+        <img src="/assets/images/sign.jpg" class="w-full h-screen object-cover" alt="Sign Image">
 
         <!-- Centered login card -->
         <div class="absolute inset-0 flex justify-center items-center bg-black/60">
@@ -36,10 +36,10 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
                     <h2 class="text-3xl font-serif text-yellow-400 mb-6 text-center tracking-wide" style="font-family: 'Trajan Pro', serif;">Login</h2>
 
                     <!-- Display error message if any -->
-                    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/flash_messages.php'; ?>
+                    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/flash_messages.php'; ?>
 
                     <!-- Login form -->
-                    <form action="/Projects/AuraEdition/auth/loginProcess.php" method="POST" class="space-y-6">
+                    <form action="/auth/loginProcess.php" method="POST" class="space-y-6">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
                         <div>
                             <label for="email" class="block text-yellow-400 font-serif mb-2" style="font-family: 'Trajan Pro', serif;">Email</label>
@@ -52,13 +52,13 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
                                 class="w-full px-4 py-3 bg-black border border-gray-700 text-white rounded-lg focus:ring-yellow-400 focus:border-yellow-400 transition-all duration-200">
                         </div>
                         <div class="mb-6 text-right">
-                            <a href="/Projects/AuraEdition/auth/forgot_password.php"
+                            <a href="/auth/forgot_password.php"
                                 class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold transition">Forgot your password?</a>
                         </div>
                         <div class="flex flex-col gap-3 mt-6">
                             <button type="submit"
                                 class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg hover:bg-yellow-500 transition-all text-lg tracking-wide shadow">Login</button>
-                            <a href="/Projects/AuraEdition/auth/register.php" class="w-full">
+                            <a href="/auth/register.php" class="w-full">
                                 <button type="button"
                                     class="w-full bg-gray-900 text-yellow-400 border border-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all text-lg font-semibold py-3 mt-2 shadow">Register</button>
                             </a>
@@ -68,7 +68,7 @@ if (isset($_GET['password_reset']) && $_GET['password_reset'] == 1) {
             </div>
         </div>
     </div>
-    <script src="/Projects/AuraEdition/assets/js/script.js"></script>
+    <script src="/assets/js/script.js"></script>
 </body>
 
 </html>

@@ -1,11 +1,11 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserWithAddress($connection, $_SESSION['user_id']) : null;
 if (!$user || $user['role'] != "admin") {
-    header("Location: /Projects/AuraEdition/index.php");
+    header("Location: /index.php");
     exit;
 }
 ?>
@@ -17,18 +17,18 @@ if (!$user || $user['role'] != "admin") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Dashboard</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
 </head>
 
 <body class="bg-black">
     <div class="flex">
         <!-- Sidebar -->
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
 
         <!-- Main Content Area -->
         <div class="flex-1 min-h-screen flex flex-col">
             <!-- Navigation Bar -->
-            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; ?>
+            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; ?>
             <!-- Main Content -->
             <div class="p-8 flex flex-col">
                 
@@ -39,4 +39,4 @@ if (!$user || $user['role'] != "admin") {
         </div>
     </div>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFooter.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFooter.php'; ?>

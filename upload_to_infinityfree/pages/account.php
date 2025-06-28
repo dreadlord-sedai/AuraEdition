@@ -1,11 +1,11 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/auth_helpers.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /Projects/AuraEdition/auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 
@@ -15,7 +15,7 @@ $user = getUserWithAddress($connection, $user_id);
 
 if (!$user) {
     $_SESSION['error'] = 'User not found';
-    header("Location: /Projects/AuraEdition/auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 ?>
@@ -27,12 +27,12 @@ if (!$user) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | My Account</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 </head>
 
 <body class="bg-black text-white min-h-screen">
     <!-- Navigation Bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/navbar.php'; ?>
 
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto my-12 px-4">
@@ -47,13 +47,13 @@ if (!$user) {
 
             <!-- Messages -->
             <div class="px-6 pt-4">
-                <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/flash_messages.php'; ?>
+                <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/flash_messages.php'; ?>
             </div>
 
             <!-- Account Form -->
             <div class="p-8">
                 <div id="formErrors" class="mb-4"></div>
-                <form id="accountForm" action="/Projects/AuraEdition/process/updateAccount.php" method="POST" class="space-y-8">
+                <form id="accountForm" action="/process/updateAccount.php" method="POST" class="space-y-8">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(generate_csrf_token()) ?>">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-6">
@@ -169,6 +169,6 @@ if (!$user) {
     </div>
     <!-- Main Content -->
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>
 </body>
 </html>

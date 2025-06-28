@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 $user = authorize_admin($connection);
 
@@ -25,19 +25,19 @@ $orders = getAllOrders($connection, $search, $status, $items_per_page, $offset);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Manage Orders</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
         <!-- Sidebar -->
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
 
         <!-- Main Content Area -->
     <div class="ml-64 flex-1 flex flex-col">
             <!-- Navigation Bar -->
         <?php 
-            $breadcrumbs = ['Orders' => '/Projects/AuraEdition/admin/pages/orders.php'];
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+            $breadcrumbs = ['Orders' => '/admin/pages/orders.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; 
         ?>
         
             <!-- Main Content -->
@@ -133,7 +133,7 @@ $orders = getAllOrders($connection, $search, $status, $items_per_page, $offset);
                     <div class="flex items-center">
                         <?php
                         $query_params = http_build_query(array_filter(['search' => $search, 'status' => $status]));
-                        $base_url = "/Projects/AuraEdition/admin/pages/orders.php?" . $query_params;
+                        $base_url = "/admin/pages/orders.php?" . $query_params;
 
                         // Previous button
                         if ($page > 1) {

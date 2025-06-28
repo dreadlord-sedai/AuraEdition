@@ -11,15 +11,15 @@
 date_default_timezone_set('UTC');
 
 // Start the session manager.
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/session.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/session.php';
 
 // Load global configuration (DB credentials, paths, etc.).
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/config/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 
 // Establish the database connection.
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db.php';
 
 // Load application-wide helper functions (auth, flash messages, etc.).
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/auth_helpers.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/auth_helpers.php';
 
 ?> 

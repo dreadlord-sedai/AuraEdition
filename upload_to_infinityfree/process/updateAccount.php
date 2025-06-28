@@ -1,9 +1,9 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /Projects/AuraEdition/auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 
@@ -12,7 +12,7 @@ $user_id = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
         set_flash('error', 'Invalid CSRF token. Please try again.');
-        header("Location: /Projects/AuraEdition/pages/account.php");
+        header("Location: /pages/account.php");
         exit;
     }
     // Get form data
@@ -30,14 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
     // Basic validation
     if (empty($fname) || empty($lname) || empty($email)) {
         set_flash('error', "Please fill in all required fields.");
-        header("Location: /Projects/AuraEdition/pages/account.php");
+        header("Location: /pages/account.php");
         exit;
     }
 
     // Email validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         set_flash('error', "Please enter a valid email address.");
-        header("Location: /Projects/AuraEdition/pages/account.php");
+        header("Location: /pages/account.php");
         exit;
     }
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
     $stmt->execute();
     if ($stmt->get_result()->num_rows > 0) {
         set_flash('error', "Email already in use by another account.");
-        header("Location: /Projects/AuraEdition/pages/account.php");
+        header("Location: /pages/account.php");
         exit;
     }
     $stmt->close();
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
         
         if (!password_verify($current_password, $user['hashed_password'])) {
             set_flash('error', "Current password is incorrect.");
-            header("Location: /Projects/AuraEdition/pages/account.php");
+            header("Location: /pages/account.php");
             exit;
         }
 
@@ -73,13 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
             !preg_match("/[0-9]/", $new_password) || 
             !preg_match("/[^A-Za-z0-9]/", $new_password)) {
             set_flash('error', "New password must be at least 8 characters long and include uppercase, number and special character.");
-            header("Location: /Projects/AuraEdition/pages/account.php");
+            header("Location: /pages/account.php");
             exit;
         }
 
         if ($new_password !== $confirm_password) {
             set_flash('error', "New passwords do not match.");
-            header("Location: /Projects/AuraEdition/pages/account.php");
+            header("Location: /pages/account.php");
             exit;
         }
     }
@@ -137,10 +137,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
         error_log('Account update failed: ' . $e->getMessage());
         set_flash('error', "An error occurred while updating your account. Please try again.");
     }
-    header("Location: /Projects/AuraEdition/pages/account.php");
+    header("Location: /pages/account.php");
     exit;
 } else {
     set_flash('error', "Invalid request method.");
-    header("Location: /Projects/AuraEdition/pages/account.php");
+    header("Location: /pages/account.php");
     exit;
 }

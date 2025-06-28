@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 /* Account Functions */
 
@@ -275,7 +275,7 @@ function uploadProductImage($file, $product_id, $connection) {
         $fileExtension = strtolower(end($fileNameCmps));
         $allowedfileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         if (in_array($fileExtension, $allowedfileExtensions)) {
-            $uploadFileDir = '/Projects/AuraEdition/products/img/';
+            $uploadFileDir = '/products/img/';
             $newFileName = uniqid('product_' . $product_id . '_', true) . '.' . $fileExtension;
             $dest_path = $_SERVER['DOCUMENT_ROOT'] . $uploadFileDir . $newFileName;
             if (move_uploaded_file($fileTmpPath, $dest_path)) {
@@ -349,7 +349,7 @@ function updateProductImage($file, $product_id, $connection) {
         $fileExtension = strtolower(end($fileNameCmps));
         $allowedfileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         if (in_array($fileExtension, $allowedfileExtensions)) {
-            $uploadFileDir = '/Projects/AuraEdition/products/img/';
+            $uploadFileDir = '/products/img/';
             $newFileName = uniqid('product_' . $product_id . '_', true) . '.' . $fileExtension;
             $dest_path = $_SERVER['DOCUMENT_ROOT'] . $uploadFileDir . $newFileName;
             if (move_uploaded_file($fileTmpPath, $dest_path)) {

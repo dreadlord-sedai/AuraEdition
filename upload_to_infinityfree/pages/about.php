@@ -6,20 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | About</title>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 
 <body class="bg-black text-white min-h-screen">
 
     <!-- Navigation Bar -->
     <nav class="z-20">
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbarTransparent.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/navbarTransparent.php'; ?>
     </nav>
     <!-- Navigation Bar -->
 
     <!-- Hero Section -->
     <div class="relative w-full h-screen flex items-center justify-start overflow-hidden">
         <video class="absolute inset-0 w-full h-full object-cover z-0" autoplay muted loop playsinline>
-            <source src="/Projects/AuraEdition/assets/video/hero.mp4" type="video/mp4">
+            <source src="/assets/video/hero.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="relative z-20 flex flex-col gap-4 px-4 md:px-16">
@@ -42,13 +42,13 @@
                 <p class="text-left text-gray-300">Through a combination of automation and manual curation, our moderation team selects the highest quality listings on the market.</p>
             </div>
             <div class="flex-1 flex justify-center">
-                <img src="/Projects/AuraEdition/assets/images/about1.jpg" alt="car" class="rounded-xl border-2 border-yellow-400/20 shadow-lg max-w-xs md:max-w-md">
+                <img src="/assets/images/about1.jpg" alt="car" class="rounded-xl border-2 border-yellow-400/20 shadow-lg max-w-xs md:max-w-md">
             </div>
         </div>
 
         <div class="flex flex-col md:flex-row justify-evenly items-center mb-20 gap-10">
             <div class="flex-1 flex justify-center order-2 md:order-1">
-                <img src="/Projects/AuraEdition/assets/images/about2.jpg" alt="car" class="rounded-xl border-2 border-yellow-400/20 shadow-lg max-w-xs md:max-w-md">
+                <img src="/assets/images/about2.jpg" alt="car" class="rounded-xl border-2 border-yellow-400/20 shadow-lg max-w-xs md:max-w-md">
             </div>
             <div class="flex-1 order-1 md:order-2">
                 <h4 class="text-xl font-serif text-yellow-400 mb-2" style="font-family: 'Trajan Pro', serif;">One Search, <br>Unlimited Potential</h4>
@@ -59,9 +59,9 @@
     </div>
     <!-- Main Content -->
     <div class="w-full">
-        <img src="/Projects/AuraEdition/assets/images/about3.jpg" class="w-full object-cover rounded-none md:rounded-xl border-t-2 border-yellow-400/20 shadow-lg" alt="Luxury Cars">
+        <img src="/assets/images/about3.jpg" class="w-full object-cover rounded-none md:rounded-xl border-t-2 border-yellow-400/20 shadow-lg" alt="Luxury Cars">
     </div>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>
 </body>
 </html>

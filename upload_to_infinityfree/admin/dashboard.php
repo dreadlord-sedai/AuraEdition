@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 $user = authorize_admin($connection);
 
@@ -22,21 +22,21 @@ $page_title = "Dashboard";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Dashboard</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-900 text-white" style="font-family: 'Lato', sans-serif;">
     <div class="flex min-h-screen">
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
         <div class="flex-1 flex flex-col">
             <?php 
-                $breadcrumbs = ['Dashboard' => '/Projects/AuraEdition/admin/dashboard.php'];
-                include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+                $breadcrumbs = ['Dashboard' => '/admin/dashboard.php'];
+                include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; 
             ?>
-            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/templates/content_header.php'; ?>
+            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/templates/content_header.php'; ?>
 
-            <a href="/Projects/AuraEdition/admin/pages/addProduct.php"
+            <a href="/admin/pages/addProduct.php"
                 class="absolute top-8 right-8 px-5 py-2 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500 transition-all shadow-md">
                 <i class="fas fa-plus mr-2"></i> Add New Vehicle
             </a>
@@ -120,7 +120,7 @@ $page_title = "Dashboard";
                 </div>
             </div>
 
-            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/templates/content_footer.php'; ?>
+            <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/templates/content_footer.php'; ?>
         </div>
     </div>
 

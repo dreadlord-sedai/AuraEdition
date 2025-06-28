@@ -16,7 +16,7 @@ define('DB_NAME', 'auraedition');
 // --- Path and URL Configuration ---
 // Define the project's root path and base URL to build reliable links and includes.
 // The DOCUMENT_ROOT is used to create an absolute path from the server's root.
-define('BASE_PATH', $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition');
-define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/Projects/AuraEdition');
+define('BASE_PATH', $_SERVER['DOCUMENT_ROOT']);
+define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
 
 ?> 

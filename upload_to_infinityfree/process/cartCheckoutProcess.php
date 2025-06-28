@@ -1,11 +1,11 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 // 1. Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login if not logged in, with a redirect back to the cart
-    header("Location: /Projects/AuraEdition/auth/login.php?redirect=cart");
+    header("Location: /auth/login.php?redirect=cart");
     exit;
 }
 
@@ -16,7 +16,7 @@ $cart_items = getCartItemsByUserId($connection, $user_id);
 
 // 3. If the cart is empty, just go back to the cart page.
 if (empty($cart_items)) {
-    header("Location: /Projects/AuraEdition/pages/cart.php");
+    header("Location: /pages/cart.php");
     exit;
 }
 
@@ -38,5 +38,5 @@ foreach ($cart_items as $item) {
 $_SESSION['total_price'] = $total_price;
 
 // 5. Redirect to the checkout page, which will now be populated with the cart items
-header("Location: /Projects/AuraEdition/pages/checkout.php");
+header("Location: /pages/checkout.php");
 exit;

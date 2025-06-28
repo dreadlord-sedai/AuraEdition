@@ -1,11 +1,11 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserWithAddress($connection, $_SESSION['user_id']) : null;
 if (!$user || $user['role'] != "admin") {
-    header("Location: /Projects/AuraEdition/index.php");
+    header("Location: /index.php");
     exit;
 }
 
@@ -21,7 +21,7 @@ if (isset($_POST['update_product'])) {
     // Validate inputs
     if (empty($title) || empty($description) || empty($price) || empty($stock) || empty($make) || empty($model)) {
         $_SESSION['error'] = "All fields are required.";
-        header("Location: /Projects/AuraEdition/admin/pages/editProduct.php?product_id=" . $product_id);
+        header("Location: /admin/pages/editProduct.php?product_id=" . $product_id);
         exit;
     }
 
@@ -30,5 +30,5 @@ if (isset($_POST['update_product'])) {
 
 updateProductImage($_FILES['image'], $product_id, $connection);
 
-header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
+header("Location: /admin/pages/vehicles.php");
 exit;

@@ -6,24 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Makes</title>
 
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/header.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 
 <body class="bg-black text-white min-h-screen">
 
     <!-- Navigation Bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/navbar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/navbar.php'; ?>
     <!-- Navigation Bar -->
 
     <!-- Search and Filter bar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/filterBar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/filterBar.php'; ?>
     <!-- Search and Filter Bar -->
 
     <div class="max-w-7xl mx-auto px-4 my-10">
         <h2 class="text-3xl font-serif mb-8 text-yellow-400" style="font-family: 'Trajan Pro', serif;">Makes</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         <?php
-        include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-        include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
         $makes = getAllMakes($connection);
         ?>
             <!-- Makes Card -->
@@ -36,7 +36,7 @@
                     </div>
                     <div class="flex flex-row justify-between items-center">
                         <p class="text-gray-400 text-sm mb-0" style="font-size: 0.95rem;"><?= $make['listings_count'] ?> Listings</p>
-                        <a href="/Projects/AuraEdition/pages/makesListings.php?id=<?= $make['make_id'] ?>" class="ml-4">
+                        <a href="/pages/makesListings.php?id=<?= $make['make_id'] ?>" class="ml-4">
                             <button class="flex items-center justify-center w-10 h-10 rounded-full border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all">
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
@@ -50,6 +50,6 @@
     </div>
 
     <!-- Footer -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/Projects/AuraEdition/includes/footer.php"; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>
 </body>
 </html>

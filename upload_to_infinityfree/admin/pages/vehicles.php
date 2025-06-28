@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 $user = authorize_admin($connection);
 
@@ -18,19 +18,19 @@ $vehicles = getVehicles($connection, $search, $status, $price_sort);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Manage Vehicles</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
     <!-- Sidebar -->
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
 
     <!-- Main Content Area -->
     <div class="ml-64 flex-1 flex flex-col">
         <!-- Navigation Bar -->
         <?php 
-            $breadcrumbs = ['Vehicles' => '/Projects/AuraEdition/admin/pages/vehicles.php'];
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+            $breadcrumbs = ['Vehicles' => '/admin/pages/vehicles.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; 
         ?>
         
         <!-- Main Content -->
@@ -38,7 +38,7 @@ $vehicles = getVehicles($connection, $search, $status, $price_sort);
             <!-- Page Title -->
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-yellow-400" style="font-family: 'Trajan Pro', serif;">Manage Vehicles</h1>
-                <a href="/Projects/AuraEdition/admin/pages/addProduct.php"
+                <a href="/admin/pages/addProduct.php"
                     class="px-5 py-2 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500 transition-all shadow-md flex items-center">
                     <i class="fas fa-plus mr-2"></i> Add New Vehicle
                 </a>
@@ -105,7 +105,7 @@ $vehicles = getVehicles($connection, $search, $status, $price_sort);
                                 <td class="px-6 py-4 text-gray-200">$<?= number_format(htmlspecialchars($vehicle['price']), 2); ?></td>
                                 <td class="px-6 py-4 text-gray-200"><?= htmlspecialchars($vehicle['stock']); ?></td>
                                 <td class="px-6 py-4 text-center">
-                                    <a href="/Projects/AuraEdition/admin/pages/EditProduct.php?id=<?= $vehicle['id'] ?>" class="text-yellow-400 hover:text-yellow-300 font-semibold mr-4">Edit</a>
+                                    <a href="/admin/pages/EditProduct.php?id=<?= $vehicle['id'] ?>" class="text-yellow-400 hover:text-yellow-300 font-semibold mr-4">Edit</a>
                                     <a href="javascript:void(0)" onclick="deleteProduct(<?= $vehicle['id'] ?>); return false;" class="text-red-500 hover:text-red-400 font-semibold">Delete</a>
                                 </td>
                             </tr>
@@ -119,7 +119,7 @@ $vehicles = getVehicles($connection, $search, $status, $price_sort);
     <script>
         function deleteProduct(id) {
             if (confirm('Are you sure you want to delete this vehicle?')) {
-                window.location.href = '/Projects/AuraEdition/admin/process/handleVehicle.php?action=delete&id=' + id;
+                window.location.href = '/admin/process/handleVehicle.php?action=delete&id=' + id;
             }
         }
     </script>

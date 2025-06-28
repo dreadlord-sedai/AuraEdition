@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 $user = authorize_admin($connection);
 
@@ -10,7 +10,7 @@ $product = getProductInfo($connection, $product_id);
 
 if (!$product) {
     set_flash('error', 'Product not found.');
-    header("Location: /Projects/AuraEdition/admin/pages/vehicles.php");
+    header("Location: /admin/pages/vehicles.php");
     exit;
 }
 
@@ -23,18 +23,18 @@ $makes = getAllMakes($connection);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Edit Vehicle</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
     <div class="ml-64 flex-1 flex flex-col">
         <?php 
             $breadcrumbs = [
-                'Vehicles' => '/Projects/AuraEdition/admin/pages/vehicles.php',
+                'Vehicles' => '/admin/pages/vehicles.php',
                 'Edit Vehicle' => '#'
             ];
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; 
         ?>
         <main class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
@@ -48,7 +48,7 @@ $makes = getAllMakes($connection);
                     <?php endif; ?>
 
             <div class="bg-black border border-gray-800 rounded-2xl p-8 shadow-lg">
-                <form action="/Projects/AuraEdition/admin/process/editProductProcess.php" method="POST" enctype="multipart/form-data" class="space-y-8">
+                <form action="/admin/process/editProductProcess.php" method="POST" enctype="multipart/form-data" class="space-y-8">
                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']) ?>">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -122,7 +122,7 @@ $makes = getAllMakes($connection);
 
                     <div class="pt-5 border-t border-gray-800">
                     <div class="flex justify-end">
-                            <a href="/Projects/AuraEdition/admin/pages/vehicles.php" class="bg-gray-700 text-gray-200 font-semibold py-3 px-6 rounded-lg hover:bg-gray-600 transition-all mr-4">Cancel</a>
+                            <a href="/admin/pages/vehicles.php" class="bg-gray-700 text-gray-200 font-semibold py-3 px-6 rounded-lg hover:bg-gray-600 transition-all mr-4">Cancel</a>
                             <button type="submit" name="update_product" class="bg-yellow-400 text-black font-semibold py-3 px-8 rounded-lg hover:bg-yellow-500 transition-all shadow-md">Update Vehicle</button>
                         </div>
                     </div>
@@ -143,7 +143,7 @@ $makes = getAllMakes($connection);
             modelSelect.disabled = true;
 
             if (makeId) {
-                fetch(`/Projects/AuraEdition/admin/pages/get_models.php?make_id=${makeId}`)
+                fetch(`/admin/pages/get_models.php?make_id=${makeId}`)
                     .then(response => response.json())
                     .then(data => {
                         modelSelect.innerHTML = '<option value="">Select Model</option>';

@@ -1,11 +1,11 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 // Check if user is logged in and is admin
 $user = isset($_SESSION['user_id']) ? getUserWithAddress($connection, $_SESSION['user_id']) : null;
 if (!$user || $user['role'] !== 'admin') {
-    header("Location: /Projects/AuraEdition/index.php");
+    header("Location: /index.php");
     exit;
 }
 
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verify CSRF token
     if (!verify_csrf_token($_POST['csrf_token'])) {
         set_flash('error', 'Invalid request. Please try again.');
-        header('Location: /Projects/AuraEdition/admin/pages/adminAccount.php');
+        header('Location: /admin/pages/adminAccount.php');
         exit;
     }
     
@@ -49,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         set_flash('success', 'Address updated successfully.');
     }
 
-    header('Location: /Projects/AuraEdition/admin/pages/adminAccount.php');
+    header('Location: /admin/pages/adminAccount.php');
     exit;
 } else {
-    header('Location: /Projects/AuraEdition/admin/pages/adminAccount.php');
+    header('Location: /admin/pages/adminAccount.php');
     exit;
 } 

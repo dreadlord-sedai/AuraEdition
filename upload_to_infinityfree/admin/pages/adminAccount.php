@@ -1,6 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminFunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminFunctions.php';
 
 $user = authorize_admin($connection);
 
@@ -15,15 +15,15 @@ generate_csrf_token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraEdition | Admin Account</title>
-    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminHeader.php'; ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminHeader.php'; ?>
 </head>
 
 <body class="bg-gray-900 text-gray-100">
-        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminSidebar.php'; ?>
+        <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminSidebar.php'; ?>
     <div class="ml-64 flex-1 flex flex-col">
         <?php 
-            $breadcrumbs = ['Account' => '/Projects/AuraEdition/admin/pages/adminAccount.php'];
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/admin/includes/adminNavbar.php'; 
+            $breadcrumbs = ['Account' => '/admin/pages/adminAccount.php'];
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/adminNavbar.php'; 
         ?>
         <main class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
@@ -37,7 +37,7 @@ generate_csrf_token();
             <?php endif; ?>
 
             <div class="bg-black border border-gray-800 rounded-2xl p-8 shadow-lg">
-                <form action="/Projects/AuraEdition/admin/process/accountProcess.php" method="POST" class="space-y-8">
+                <form action="/admin/process/accountProcess.php" method="POST" class="space-y-8">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
