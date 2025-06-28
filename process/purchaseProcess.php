@@ -22,13 +22,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        // Insert order into orders table
+        $user_id = $_SESSION['user_id'];
+        $order_stmt = $connection->prepare("INSERT INTO orders (user_id, total_price, orderd_at, status) VALUES (?, ?, NOW(), 'pending')");
+        $order_stmt->bind_param("id", $user_id, $amount);
+        $order_stmt->execute();
+        $order_id = $connection->insert_id;
+        $order_stmt->close();
+
+        // Insert each item into order_items table
+        $item_stmt = $connection->prepare("INSERT INTO order_items (order_id, vehicle_id, price, quantity) VALUES (?, ?, ?, ?)");
+        foreach ($vehicles as $vehicle) {
+            $item_stmt->bind_param("iidi", $order_id, $vehicle['id'], $vehicle['price'], $vehicle['quantity']);
+            $item_stmt->execute();
+        }
+        $item_stmt->close();
+
+        // Optionally, clear the cart after purchase
+        unset($_SESSION['vehicles']);
+        unset($_SESSION['total_price']);
+        clearCart($connection, $user_id);
+
         // Generate PayHere payment parameters
-        $order_id = uniqid('order_');
+        $order_code = uniqid('order_');
         $merchant_id = "1224621"; // Use your actual merchant ID
         $currency = "LKR";
 
         // Get user info for PayHere
-        $user_id = $_SESSION['user_id'];
         $user = getUserWithAddress($connection, $user_id);
 
         // Defensive check: Make sure $user is valid and has all required fields
@@ -50,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hash = strtoupper(
             md5(
                 $merchant_id .
-                $order_id .
+                $order_code .
                 number_format($amount, 2, '.', '') .
                 $currency .
                 strtoupper(md5($merchant_secret))
@@ -64,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "return_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
             "cancel_url" => "http://localhost/Projects/AuraEdition/pages/checkout.php",
             "notify_url" => "http://localhost/Projects/AuraEdition/process/payhereNotify.php",
-            "order_id" => $order_id,
+            "order_id" => $order_code,
             "items" => "Vehicle Purchase",
             "amount" => number_format($amount, 2, '.', ''),
             "currency" => $currency,

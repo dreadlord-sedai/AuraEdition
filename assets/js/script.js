@@ -234,7 +234,7 @@ function pay() {
         window.location = "/Projects/AuraEdition/pages/userProfile.php";
       } else if (obj.status === "success" && obj.payment) {
         payhere.onCompleted = function onCompleted(orderId) {
-          window.location = "/Projects/AuraEdition/pages/checkout.php?status=success";
+          window.location = "/Projects/AuraEdition/pages/invoice.php";
         };
         payhere.onDismissed = function onDismissed() {
           window.location = "/Projects/AuraEdition/pages/checkout.php?status=cancel";
