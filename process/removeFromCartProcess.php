@@ -1,5 +1,6 @@
 <?php 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
 
 if (isset($_POST['id'])) {
     $cart_item_id = $_POST['id'];
