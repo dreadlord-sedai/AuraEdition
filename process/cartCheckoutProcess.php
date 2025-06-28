@@ -1,5 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/bootstrap.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/Projects/AuraEdition/includes/functions.php';
 
 // 1. Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
