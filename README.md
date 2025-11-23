@@ -111,7 +111,7 @@ AuraEdition is a premium e-commerce platform specifically designed for luxury ve
 
 <p align="left">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=php,mysql,html,css,js,tailwind,bootstrap,git,github,vscode" />
+    <img src="https://skillicons.dev/icons?i=php,mysql,html,css,js,tailwind,bootstrap" />
   </a>
 </p>
 
