@@ -21,12 +21,15 @@ AuraEdition is a modular PHP web application designed for luxury vehicle e-comme
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Backend       │    │   Database      │
 │                 │    │                 │    │                 │
-│ • HTML5         │◄──►│ • PHP 7.4+      │◄──►│ • MySQL 5.7+    │
-│ • CSS3          │    │ • Procedural    │    │ • InnoDB Engine │
-│ • JavaScript    │    │ • mysqli        │    │ • ACID Compliant│
-│ • Tailwind CSS  │    │ • Sessions      │    │                 │
+│ • HTML5         │◄──►│ • PHP 7.4+      │◄──►│ • MySQL 8.x     │
+│ • CSS3          │    │ • Procedural    │    │   (tested 8.4)  │
+│ • JavaScript    │    │ • mysqli        │    │ • InnoDB Engine │
+│ • Tailwind CSS 4│    │ • Sessions      │    │ • utf8mb4       │
 │ • Font Awesome  │    │ • CSRF Tokens   │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
+
+Server-side integrations bundled in-tree: PHPMailer (`includes/PHPMailer/`, SMTP email for
+password reset) and the PayHere JS SDK loaded from payhere.lk (checkout payment).
 ```
 
 ### Application Layers
@@ -238,11 +241,11 @@ sequenceDiagram
     P-->>U: Product page
     
     U->>A: Login
-    A->>F: validateUser()
-    F->>DB: SELECT user WHERE email
-    DB-->>F: User data
-    A->>F: createSession()
-    A-->>U: Redirect to dashboard
+    A->>F: validate_csrf_token()
+    A->>DB: SELECT user WHERE email
+    DB-->>A: hashed_password, role
+    A->>A: password_verify() + session_regenerate_id()
+    A-->>U: Redirect to index.php
 ```
 
 ### Admin Workflow
@@ -258,7 +261,8 @@ sequenceDiagram
     D->>F: authorize_admin()
     F->>DB: SELECT user WHERE role=admin
     DB-->>F: Admin data
-    D->>F: getDashboardStats()
+    D->>F: getTotalRevenue(), getTotalListings(), getTotalOrders(), getTotalUsers()
+    D->>F: getSalesDataForChart(), getRecentOrders()
     F->>DB: Multiple analytics queries
     DB-->>F: Statistics data
     D-->>A: Dashboard with metrics
@@ -394,30 +398,29 @@ graph TD
 
 1. **Indexing Strategy**
    - Primary keys on all tables
-   - Foreign key indexes for joins
-   - Composite indexes for common queries
+   - Indexes on foreign-key columns (see `docs/database.md` for the exact list)
+   - No indexes on `status`, `is_featured`, or `price` - table scans on those filters are
+     acceptable at current data volumes
 
 2. **Query Optimization**
    - Prepared statements for all queries
-   - Efficient JOIN operations
-   - Pagination for large datasets
+   - Pagination via `LIMIT ? OFFSET ?` driven by page-size constants in callers
 
-3. **Caching Strategy**
-   - Session-based caching
-   - Static asset optimization
-   - Database query result caching
+3. **Caching**
+   - There is no caching layer: no query-result cache, no opcode hints, nothing beyond
+     browser caching of static assets. Don't assume cached reads when reasoning about
+     consistency.
 
 ### Frontend Performance
 
 1. **Asset Optimization**
-   - Minified CSS and JavaScript
-   - Optimized images and fonts
-   - CDN integration for static assets
+   - Tailwind CSS is minified at build time (`tailwind-output.css`, `--minify` flag)
+   - JavaScript is plain and unminified (`assets/js/script.js`)
+   - Third-party libs load from CDNs (PayHere SDK, Font Awesome, Chart.js)
 
 2. **AJAX Implementation**
-   - Asynchronous data loading
-   - Progressive enhancement
-   - Error handling and fallbacks
+   - Cart/wishlist/category interactions POST to `process/*.php` endpoints
+   - Response formats vary per handler - see [api.md](api.md) before writing client code
 
 ---
 
@@ -464,36 +467,11 @@ The modular architecture allows for easy integration of new features:
 
 ## 🚀 Deployment Architecture
 
-### Development Environment
-- Local PHP development server
-- MySQL database
-- File-based configuration
-- Debug mode enabled
-
-### Production Environment
-- Web server (Apache/Nginx)
-- MySQL database with replication
-- Environment-based configuration
-- Error logging and monitoring
-- SSL/TLS encryption
-- CDN for static assets
-
-### Scalability Considerations
-
-1. **Database Scaling**
-   - Read replicas for heavy read operations
-   - Connection pooling
-   - Query optimization
-
-2. **Application Scaling**
-   - Load balancing
-   - Session sharing
-   - Static asset optimization
-
-3. **Monitoring and Logging**
-   - Error tracking
-   - Performance monitoring
-   - User analytics
+- **Development**: local Apache (XAMPP) or `php -S ... -t <parent-dir>`; the hardcoded
+  `/Projects/AuraEdition` path prefix dictates the directory layout. See
+  [deployment.md](deployment.md).
+- **Production**: any Apache + PHP + MySQL host; deployment is manual (no CI/CD, no build
+  pipeline). See [deployment.md](deployment.md) for the steps and constraints.
 
 ---
 

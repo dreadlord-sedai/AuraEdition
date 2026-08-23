@@ -9,46 +9,49 @@
 > 
 > Modern, secure, and scalable. Built for car enthusiasts, dealers, and admins.
 
-## 🌐 Live Demo
-**Visit the live application:** [https://auraedition.wuaze.com](https://auraedition.wuaze.com)
-</br>
-(Some Features might not work due to free server limitations)
-
 ## Screenshots
 <details>
   <summary>Click to view screenshots</summary>
   
   ### Home Page
-  <img src="screenshots/home-page.png" alt="Home Page" width="700">
+  <img src="screenshots/Home-1.png" alt="Home Page" width="700">
+  <img src="screenshots/Home-2.png" alt="Home Page - Featured Vehicles" width="700">
   
   ### Product Listings
-  <img src="screenshots/product-listings.png" alt="Product Listings" width="700"> 
+  <img src="screenshots/all-listings.png" alt="Product Listings" width="700"> 
   
   ### Product Details
-  <img src="screenshots/product-details.png" alt="Product Details" width="700">
+  <img src="screenshots/product-page.png" alt="Product Details" width="700">
   
   ### Shopping Cart
-  <img src="screenshots/shopping-cart.png" alt="Shopping Cart" width="700">
+  <img src="screenshots/user-cart.png" alt="Shopping Cart" width="700">
 
-  ### Checkout Page
-  <img src="screenshots/checkout.png" alt="Checkout Page" width="700"> 
+  ### Wishlist
+  <img src="screenshots/user-wishlist.png" alt="Wishlist" width="700"> 
   
+  ### User Account
+  <img src="screenshots/my-account.png" alt="User Account" width="700">
+
+  ### Login & Register
+  <img src="screenshots/login-page.png" alt="Login Page" width="700">
+  <img src="screenshots/register-page.png" alt="Register Page" width="700">
+
   ### Admin Dashboard
   <img src="screenshots/admin-dashboard.png" alt="Admin Dashboard" width="700">
   
-  ### Product Management
-  <img src="screenshots/product-management.png" alt="Product Management" width="700">
+  ### Vehicle Management (Admin)
+  <img src="screenshots/admin-manage-vehicles.png" alt="Vehicle Management" width="700">
 
-  ### User Account
-  <img src="screenshots/user-account.png" alt="User Account" width="700">
-  
-  ### Order History
-  <img src="screenshots/order-history.png" alt="Order History" width="700">
+  ### About
+  <img src="screenshots/about-1.png" alt="About Page" width="700">
+  <img src="screenshots/about-2.png" alt="About Page - Continued" width="700">
+
+  ### Contact
+  <img src="screenshots/contact.png" alt="Contact Page" width="700">
 </details>
 
 ## Table of Contents
 - [AuraEdition](#auraedition-)
-  - [Live Demo](#-live-demo)
   - [Screenshots](#screenshots)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
@@ -161,8 +164,8 @@ To get a local copy up and running, follow these steps:
    
    # Update these values:
    define('DB_HOST', 'localhost');
-   define('DB_USER', 'your_username');
-   define('DB_PASS', 'your_password');
+   define('DB_USER', 'root');
+   define('DB_PASS', 'mysql2006');
    define('DB_NAME', 'auraedition');
    ```
 
@@ -175,11 +178,25 @@ To get a local copy up and running, follow these steps:
 
 7. **Start Development Server**:
    ```sh
-   # Using PHP built-in server
-   php -S localhost:8000
+   # Using PHP built-in server - serve the PARENT directory of the repo,
+   # because includes/asset URLs hardcode /Projects/AuraEdition under DOCUMENT_ROOT:
+   php -S localhost:8000 -t ..
    
    # Or configure your web server (Apache/Nginx)
    ```
+
+### Default Credentials
+
+After importing `database/schema.sql` and `database/seed.sql`, the following demo accounts are available:
+
+| Role  | Email          | Password  |
+|-------|----------------|-----------|
+| Admin | admin@aura.com | admin123  |
+| User  | demo@aura.com  | demo1234  |
+
+Additional seeded customers (`james.carter@example.com`, `sarah.nguyen@example.com`, `mia.rodriguez@example.com`) use the password `password123`.
+
+> **Warning**: Remove or rotate these accounts before any public deployment.
 
 ## Usage
 
@@ -205,7 +222,7 @@ The application uses a centralized configuration system:
 
 - **`config/config.php`**: Database credentials, paths, and constants
 - **`includes/bootstrap.php`**: Application initialization and dependencies
-- **Error Logging**: Check `error_log.txt` for debugging
+- **Error Logging**: Enable `display_errors` in development; no app-level log file exists by default
 
 ## Contributing
 
@@ -291,10 +308,9 @@ For any questions or feedback, feel free to reach out:
 1. **Database Connection Error**
    - Check `config/config.php` credentials
    - Verify MySQL service is running
-   - Check error logs in `error_log.txt`
 
-2. **AJAX/JSON Errors**
-   - Ensure process scripts return valid JSON
+2. **AJAX Errors**
+   - Check the specific handler's response format - they vary (some plain text, some JSON): see [docs/api.md](docs/api.md)
    - Check browser console for JavaScript errors
    - Verify CSRF tokens on forms
 

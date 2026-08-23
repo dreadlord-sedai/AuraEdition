@@ -41,8 +41,3 @@ Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Order allow,deny
     Deny from all
 </Files>
-
-# InfinityFree specific optimizations
-<IfModule mod_headers.c>
-    Header set Cache-Control "public, max-age=31536000"
-</IfModule>

@@ -12,13 +12,12 @@ AuraEdition follows a **modular architecture** with clear separation of concerns
 **Purpose**: Centralized configuration and environment settings
 
 **Key Files**:
-- `config.php`: Database credentials, application constants, and paths
+- `config.php`: Database credentials, application constants, and paths (`BASE_PATH`,
+  `BASE_URL` - both derived from the hardcoded `/Projects/AuraEdition` layout)
 
 **Responsibilities**:
 - Database connection parameters
 - Application constants and base URLs
-- Environment-specific settings
-- Security configurations
 
 **Usage Pattern**:
 ```php
@@ -36,13 +35,13 @@ $base_url = BASE_URL;
 **Key Files**:
 - `bootstrap.php`: Application initialization and dependency loading
 - `db.php`: Database connection and mysqli configuration
-- `functions.php`: Core business logic functions (655 lines)
+- `functions.php`: Core business logic functions
 - `session.php`: Session management and security
-- `auth_helpers.php`: Authentication utilities
+- `auth_helpers.php`: Authentication utilities, CSRF, flash messages, PHPMailer wrapper
 - `flash_messages.php`: User feedback system
 - `header.php`: Common HTML head section
 - `footer.php`: Common HTML footer
-- `navbar.php`: Navigation component
+- `navbar.php` / `navbarTransparent.php`: Navigation components (solid / transparent variants)
 - `filterBar.php`: Search and filter interface
 
 **Responsibilities**:
@@ -70,6 +69,16 @@ getUserWithAddress(), hasUserAddresses()
 // Category Functions
 addMake(), addModel(), deleteMake(), deleteModel()
 ```
+
+### `database/` - Schema & Seed Data
+**Purpose**: Authoritative SQL for the `auraedition` database
+
+**Key Files**:
+- `schema.sql`: Full DDL, reconstructed from `auraedition.mwb` (MySQL 8.x, InnoDB, utf8mb4)
+- `seed.sql`: Demo data and accounts
+
+`database/schema.sql` is the authoritative DDL; there are no SQL dumps elsewhere. Details
+in [database.md](database.md).
 
 ---
 
@@ -231,7 +240,8 @@ getAllOrders(), countAllOrders(), getRecentOrders()
 **Key Files**:
 - `addToCartProcess.php`: Add items to shopping cart
 - `removeFromCartProcess.php`: Remove items from cart
-- `updateCartQuantity.php`: Update cart item quantities
+- `updateCartQuantity.php`: Update DB-backed cart item quantities
+- `updateQuantityProcess.php`: Update buy-now session quantities (`$_SESSION['vehicles']`) - distinct from the above despite the similar name
 - `clearCartProcess.php`: Clear entire shopping cart
 - `addToWishlistProcess.php`: Add items to wishlist
 - `removeFromWishlistProcess.php`: Remove items from wishlist
@@ -312,8 +322,9 @@ try {
 ```
 assets/
 ├── css/
-│   ├── style.css              # Main application styles
-│   └── tailwind.css           # Tailwind CSS framework
+│   ├── input.css               # Tailwind v4 source (build input, committed)
+│   ├── tailwind-output.css     # Build output - GITIGNORED, run the build command
+│   └── style.css               # Hand-written app styles
 ├── js/
 │   └── script.js              # Main application JavaScript
 ├── images/                    # Application images
@@ -326,6 +337,11 @@ assets/
 └── video/
     └── hero.mp4               # Hero video
 ```
+
+Tailwind v4 auto-detects class usage across the repo; `tailwind.config.js` is a stale v3
+leftover that is ignored. Rebuild after changing any class:
+`npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind-output.css --minify`
+(The committed `assets/css/tailwind.css` is a stale artifact kept for reference.)
 
 **Responsibilities**:
 - Styling and visual design
@@ -345,9 +361,10 @@ assets/
 - `architecture.md`: System architecture and design patterns
 - `database.md`: Database schema and relationships
 - `modules.md`: This file - module explanations
-- `security.md`: Security practices and implementation
+- `security.md`: Security practices actually implemented, plus known gaps
 - `developer_guide.md`: Development workflow and standards
-- `api.md`: API planning and documentation
+- `deployment.md`: Local setup and manual production deployment
+- `api.md`: HTTP endpoint reference (there is no REST API)
 
 **Responsibilities**:
 - Project documentation
@@ -427,19 +444,22 @@ header('Content-Type: application/json');
 
 // Validate request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
     exit;
 }
 
 // Process request
 try {
     $result = processData($connection, $_POST);
-    echo json_encode(['success' => true, 'data' => $result]);
+    echo json_encode(['status' => 'success', 'data' => $result]);
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
 }
 ?>
 ```
+
+Note: older handlers echo plain text (`success` / `Error: ...`) instead of JSON. The exact
+contract per handler is documented in [api.md](api.md) - check it before writing client code.
 
 #### 3. Admin Page Pattern
 ```php

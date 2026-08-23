@@ -26,31 +26,32 @@ npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind-output.css --
 
 #### 2. Database Setup
 ```bash
-# Create database
-mysql -u root -p
-CREATE DATABASE auraedition;
-USE auraedition;
-
-# Import schema (if available)
-mysql -u root -p auraedition < database/schema.sql
+mysql -u root -p < database/schema.sql   # creates DB + tables
+mysql -u root -p < database/seed.sql     # demo data + accounts
 ```
 
 #### 3. Configuration
 ```php
-// Edit config/config.php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'your_username');
+// Edit config/config.php (committed with local XAMPP defaults)
+define('DB_HOST', '127.0.0.1');
+define('DB_USER', 'root');
 define('DB_PASS', 'your_password');
 define('DB_NAME', 'auraedition');
 ```
 
 #### 4. Start Development Server
-```bash
-# Using PHP built-in server
-php -S localhost:8000
 
-# Or configure your web server (Apache/Nginx)
+The hardcoded `/Projects/AuraEdition` include paths mean the docroot must be the repo's
+parent directory:
+
+```bash
+php -S localhost:8000 -t <parent-dir-of-repo>
+# open http://localhost:8000/Projects/AuraEdition/
 ```
+
+`php -S localhost:8000` from inside the repo will NOT resolve includes. XAMPP users: place
+the repo at `htdocs/Projects/AuraEdition` and browse to
+`http://localhost/Projects/AuraEdition/`.
 
 ---
 
@@ -87,9 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ```
 
 #### 2. Function Naming
-- **Use snake_case** for function names: `get_user_data()`
+- **Use camelCase** for new function names: `addToCart()`, `getAllMakes()` - this is what
+  the existing codebase mostly uses (some older snake_case names like `get_vehicle()`
+  remain; don't rename them, just follow camelCase for new code)
 - **Use descriptive names**: `addToCart()` not `add()`
-- **Prefix admin functions**: `admin_get_users()`
+- **No prefix convention**: admin logic is separated by file
+  (`admin/includes/adminFunctions.php`), not by naming
 
 #### 3. Variable Naming
 - **Use snake_case** for variables: `$user_id`, `$total_price`
@@ -244,19 +248,19 @@ document.getElementById('form-id').addEventListener('submit', function(event) {
 5. **Styling**: Use Tailwind CSS classes
 6. **JavaScript**: Add interactive functionality
 
-#### Testing Phase
-1. **Unit Testing**: Test individual functions
-2. **Integration Testing**: Test complete workflows
-3. **Security Testing**: Validate input, check permissions
-4. **UI Testing**: Test on different devices/browsers
+#### Verification (no test suite exists)
+1. **Lint**: `php -l <changed-file>` for every touched PHP file
+2. **Exercise pages**: click through affected flows locally (see deployment.md for serving)
+3. **Handler contracts**: if you changed a `process/` handler, verify its response format against the JS that calls it - formats vary per handler ([api.md](api.md))
+4. **CSS**: if you added/changed Tailwind classes, rebuild the stylesheet or changes won't render
 
 ### 2. Bug Fixes
 
 #### Debugging Process
-1. **Reproduce the Issue**: Understand when it occurs
-2. **Check Error Logs**: Look in `error_log.txt`
+1. **Reproduce the Issue**: Understand when the issue occurs
+2. **Check PHP errors**: enable `error_reporting(E_ALL); ini_set('display_errors', 1);` in development (there is no app-level log file)
 3. **Add Debug Output**: Use `error_log()` or `var_dump()`
-4. **Test Fixes**: Verify the solution works
+4. **Test Fixes**: Verify the solution works in the browser
 5. **Document Changes**: Update relevant documentation
 
 #### Common Debugging Techniques
@@ -289,7 +293,8 @@ echo json_encode(['debug' => $variable, 'success' => true]);
 - [ ] Error handling is appropriate
 - [ ] Security measures are in place
 - [ ] Documentation is updated
-- [ ] Tests pass
+- [ ] `php -l` passes on all changed files
+- [ ] Affected flows manually verified in the browser
 
 ---
 
@@ -404,6 +409,14 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// HTML-form handlers must validate CSRF (see auth/*Process.php for the pattern);
+// generate_csrf_token() is embedded as a hidden field in the form.
+if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+    set_flash('error', 'Invalid CSRF token.');
+    header('Location: /Projects/AuraEdition/pages/newFeature.php');
+    exit;
+}
+
 // Validate input
 $name = trim($_POST['name'] ?? '');
 $description = trim($_POST['description'] ?? '');
@@ -496,16 +509,16 @@ define('DB_NAME', 'auraedition'); // Verify database name
 #### 2. AJAX/JSON Errors
 **Problem**: "Unexpected token in JSON"
 ```php
-// Ensure process scripts return valid JSON
+// JSON handlers set the content type explicitly
 header('Content-Type: application/json');
-echo json_encode(['success' => true, 'message' => 'Success']);
+echo json_encode(['status' => 'success', 'message' => 'Success']);
 exit;
 ```
 
 **Solutions**:
 - Check for PHP errors before JSON output
 - Ensure no whitespace before `<?php`
-- Validate JSON syntax
+- Match the handler's actual response format - they vary per handler ([api.md](api.md)); some older ones return plain text, not JSON
 - Check browser console for errors
 
 #### 3. Session Issues
@@ -548,18 +561,16 @@ npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind-output.css --
 **Solutions**:
 - Rebuild Tailwind CSS
 - Clear browser cache
-- Check CSS file paths
-- Verify Tailwind configuration
+- Check CSS file paths (`tailwind-output.css`, not the stale committed `tailwind.css`)
+- Tailwind v4 auto-detects classes; `tailwind.config.js` is ignored
 
 ### Debug Mode
 
-Enable detailed error reporting for development:
+Enable detailed error reporting for development (no log file exists by default):
 ```php
 // Add to config/config.php for development
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-ini_set('log_errors', 1);
-ini_set('error_log', __DIR__ . '/../error_log.txt');
 ```
 
 ### Performance Optimization

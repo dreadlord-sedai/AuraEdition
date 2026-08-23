@@ -1,597 +1,219 @@
-# AuraEdition Database Schema & Design
+# Database Reference
 
-## 🗄️ Database Overview
+The `auraedition` database runs on MySQL (tested on 8.4), InnoDB engine, `utf8mb4` charset.
+The authoritative DDL is [`database/schema.sql`](../database/schema.sql), which was extracted
+from `auraedition.mwb` (MySQL Workbench model). This document describes that schema as it
+actually exists - not an idealized design.
 
-The AuraEdition database is designed as a **relational MySQL database** using the InnoDB engine for ACID compliance and foreign key support. The schema is optimized for e-commerce operations with proper indexing and normalization.
+## Setup
 
-### Database Characteristics
-- **Engine**: InnoDB (ACID compliant)
-- **Character Set**: UTF-8
-- **Collation**: utf8mb4_unicode_ci
-- **Version**: MySQL 5.7+
-- **Connection**: mysqli with prepared statements
-
----
-
-## 📊 Core Tables & Relationships
-
-### Entity Relationship Diagram
-
-```mermaid
-erDiagram
-    users ||--o{ user_addresses : "has"
-    users ||--o{ orders : "places"
-    users ||--o{ wishlist_items : "saves"
-    users ||--o{ cart_items : "adds"
-    
-    makes ||--o{ vehicles : "manufactures"
-    models ||--o{ vehicles : "defines"
-    makes ||--o{ models : "contains"
-    
-    vehicles ||--o{ vehicle_images : "displays"
-    vehicles ||--o{ order_items : "sold_in"
-    vehicles ||--o{ cart_items : "added_to"
-    vehicles ||--o{ wishlist_items : "saved_in"
-    
-    orders ||--o{ order_items : "contains"
-    carts ||--o{ cart_items : "contains"
-    
-    users {
-        int id PK
-        varchar fname
-        varchar lname
-        varchar email UK
-        varchar hashed_password
-        enum role
-        datetime registerd_date
-    }
-    
-    user_addresses {
-        int address_user_id FK
-        varchar address
-        varchar city
-        varchar state
-        varchar country
-    }
-    
-    vehicles {
-        int id PK
-        varchar title
-        text description
-        decimal price
-        int stock
-        int make_id FK
-        int model_id FK
-        enum status
-        boolean is_featured
-        boolean is_popular
-        datetime created_at
-    }
-    
-    makes {
-        int make_id PK
-        varchar make_name
-        varchar make_image
-    }
-    
-    models {
-        int model_id PK
-        varchar model_name
-        int model_make_id FK
-    }
-    
-    vehicle_images {
-        int id PK
-        int image_vehicle_id FK
-        varchar image_path
-    }
-    
-    orders {
-        int order_id PK
-        int user_id FK
-        decimal total_price
-        datetime orderd_at
-        enum status
-    }
-    
-    order_items {
-        int id PK
-        int order_id FK
-        int vehicle_id FK
-        decimal price
-        int quantity
-    }
-    
-    carts {
-        int cart_id PK
-        int user_id FK
-        datetime created_at
-    }
-    
-    cart_items {
-        int cart_item_id PK
-        int cart_id FK
-        int vehicle_id FK
-        int quantity
-    }
-    
-    wishlist_items {
-        int id PK
-        int user_id FK
-        int vehicle_id FK
-        datetime added_at
-    }
-```
-
----
-
-## 📋 Detailed Table Schemas
-
-### 1. Users Table
-**Purpose**: Store user account information and authentication data
-
-```sql
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    fname VARCHAR(50) NOT NULL,
-    lname VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    hashed_password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') DEFAULT 'user',
-    registerd_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_email (email),
-    INDEX idx_role (role),
-    INDEX idx_registration_date (registerd_date)
-);
-```
-
-**Key Features**:
-- **Primary Key**: Auto-incrementing ID
-- **Unique Constraint**: Email address
-- **Role-based Access**: User/Admin enumeration
-- **Security**: Bcrypt hashed passwords
-- **Audit Trail**: Registration timestamp
-
-### 2. User Addresses Table
-**Purpose**: Store user shipping/billing addresses
-
-```sql
-CREATE TABLE user_addresses (
-    address_user_id INT PRIMARY KEY,
-    address VARCHAR(255) NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    state VARCHAR(100) NOT NULL,
-    country VARCHAR(100) DEFAULT 'USA',
-    
-    FOREIGN KEY (address_user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-```
-
-**Key Features**:
-- **One-to-One Relationship**: Each user has one address
-- **Cascade Delete**: Address removed when user is deleted
-- **Flexible Structure**: Supports international addresses
-
-### 3. Makes Table
-**Purpose**: Store vehicle manufacturers/brands
-
-```sql
-CREATE TABLE makes (
-    make_id INT AUTO_INCREMENT PRIMARY KEY,
-    make_name VARCHAR(100) NOT NULL UNIQUE,
-    make_image VARCHAR(255),
-    
-    INDEX idx_make_name (make_name)
-);
-```
-
-**Key Features**:
-- **Unique Names**: Prevents duplicate manufacturers
-- **Image Support**: Brand logos and images
-- **Performance**: Indexed for fast lookups
-
-### 4. Models Table
-**Purpose**: Store vehicle models within makes
-
-```sql
-CREATE TABLE models (
-    model_id INT AUTO_INCREMENT PRIMARY KEY,
-    model_name VARCHAR(100) NOT NULL,
-    model_make_id INT NOT NULL,
-    
-    FOREIGN KEY (model_make_id) REFERENCES makes(make_id) ON DELETE CASCADE,
-    UNIQUE KEY unique_model_per_make (model_name, model_make_id),
-    INDEX idx_make_id (model_make_id),
-    INDEX idx_model_name (model_name)
-);
-```
-
-**Key Features**:
-- **Hierarchical Structure**: Models belong to makes
-- **Unique Constraint**: Model names unique within make
-- **Cascade Delete**: Models removed when make is deleted
-
-### 5. Vehicles Table
-**Purpose**: Core product catalog for vehicles
-
-```sql
-CREATE TABLE vehicles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10,2) NOT NULL,
-    stock INT DEFAULT 1,
-    make_id INT,
-    model_id INT,
-    status ENUM('ACTIVE', 'INACTIVE', 'SOLD') DEFAULT 'ACTIVE',
-    is_featured BOOLEAN DEFAULT FALSE,
-    is_popular BOOLEAN DEFAULT FALSE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (make_id) REFERENCES makes(make_id) ON DELETE SET NULL,
-    FOREIGN KEY (model_id) REFERENCES models(model_id) ON DELETE SET NULL,
-    
-    INDEX idx_status (status),
-    INDEX idx_featured (is_featured),
-    INDEX idx_popular (is_popular),
-    INDEX idx_created_at (created_at),
-    INDEX idx_price (price),
-    INDEX idx_make_model (make_id, model_id)
-);
-```
-
-**Key Features**:
-- **Product Management**: Complete vehicle information
-- **Status Tracking**: Active, inactive, or sold
-- **Featured/Popular**: Marketing flags for homepage
-- **Inventory**: Stock quantity tracking
-- **Performance**: Multiple indexes for common queries
-
-### 6. Vehicle Images Table
-**Purpose**: Store multiple images per vehicle
-
-```sql
-CREATE TABLE vehicle_images (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    image_vehicle_id INT NOT NULL,
-    image_path VARCHAR(255) NOT NULL,
-    
-    FOREIGN KEY (image_vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE,
-    INDEX idx_vehicle_id (image_vehicle_id)
-);
-```
-
-**Key Features**:
-- **Multiple Images**: One vehicle can have many images
-- **Cascade Delete**: Images removed when vehicle is deleted
-- **File Path Storage**: Flexible image storage system
-
-### 7. Orders Table
-**Purpose**: Store customer orders and transactions
-
-```sql
-CREATE TABLE orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    total_price DECIMAL(10,2) NOT NULL,
-    orderd_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
-    
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    
-    INDEX idx_user_id (user_id),
-    INDEX idx_status (status),
-    INDEX idx_order_date (orderd_at)
-);
-```
-
-**Key Features**:
-- **Order Tracking**: Complete order lifecycle
-- **Status Management**: Multiple order states
-- **Audit Trail**: Order timestamp
-- **User Association**: Links to customer
-
-### 8. Order Items Table
-**Purpose**: Store individual items within orders
-
-```sql
-CREATE TABLE order_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
-    vehicle_id INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    quantity INT DEFAULT 1,
-    
-    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE RESTRICT,
-    
-    INDEX idx_order_id (order_id),
-    INDEX idx_vehicle_id (vehicle_id)
-);
-```
-
-**Key Features**:
-- **Order Details**: Individual items in orders
-- **Price Snapshot**: Price at time of purchase
-- **Quantity Support**: Multiple units per item
-- **Data Integrity**: Prevents vehicle deletion if in orders
-
-### 9. Carts Table
-**Purpose**: Store user shopping carts
-
-```sql
-CREATE TABLE carts (
-    cart_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL UNIQUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    
-    INDEX idx_user_id (user_id)
-);
-```
-
-**Key Features**:
-- **One Cart Per User**: Unique constraint on user_id
-- **Session Persistence**: Cart survives browser sessions
-- **Automatic Cleanup**: Cart removed when user is deleted
-
-### 10. Cart Items Table
-**Purpose**: Store items in user shopping carts
-
-```sql
-CREATE TABLE cart_items (
-    cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
-    cart_id INT NOT NULL,
-    vehicle_id INT NOT NULL,
-    quantity INT DEFAULT 1,
-    
-    FOREIGN KEY (cart_id) REFERENCES carts(cart_id) ON DELETE CASCADE,
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE,
-    
-    INDEX idx_cart_id (cart_id),
-    INDEX idx_vehicle_id (vehicle_id)
-);
-```
-
-**Key Features**:
-- **Cart Management**: Items in shopping cart
-- **Quantity Support**: Multiple units per item
-- **Cascade Delete**: Items removed when cart or vehicle is deleted
-
-### 11. Wishlist Items Table
-**Purpose**: Store user saved/favorite vehicles
-
-```sql
-CREATE TABLE wishlist_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    vehicle_id INT NOT NULL,
-    added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE,
-    
-    UNIQUE KEY unique_user_vehicle (user_id, vehicle_id),
-    INDEX idx_user_id (user_id),
-    INDEX idx_vehicle_id (vehicle_id)
-);
-```
-
-**Key Features**:
-- **Wishlist Management**: User saved vehicles
-- **Unique Constraint**: Prevents duplicate saves
-- **Timestamp**: When item was added
-- **Cascade Delete**: Items removed when user or vehicle is deleted
-
----
-
-## 🔍 Query Patterns & Optimization
-
-### Common Query Patterns
-
-#### 1. Featured Vehicles Query
-```sql
--- Get featured vehicles with images
-SELECT v.id, v.title, v.price, v.description,
-       COALESCE(vi.image_path, '/default.jpg') as image_url
-FROM vehicles v
-LEFT JOIN vehicle_images vi ON v.id = vi.image_vehicle_id
-WHERE v.is_featured = 1 AND v.status = 'ACTIVE'
-ORDER BY v.created_at DESC
-LIMIT 6;
-```
-
-#### 2. Category Browsing Query
-```sql
--- Get makes with vehicle counts
-SELECT m.make_id, m.make_name, m.make_image,
-       COUNT(v.id) as listings_count
-FROM makes m
-LEFT JOIN vehicles v ON m.make_id = v.make_id AND v.status = 'ACTIVE'
-GROUP BY m.make_id, m.make_name, m.make_image
-ORDER BY listings_count DESC;
-```
-
-#### 3. User Cart Query
-```sql
--- Get user's cart items with vehicle details
-SELECT ci.cart_item_id, ci.quantity,
-       v.id as vehicle_id, v.title, v.price,
-       COALESCE(vi.image_path, '/default.jpg') as image_url
-FROM cart_items ci
-JOIN vehicles v ON ci.vehicle_id = v.id
-LEFT JOIN vehicle_images vi ON v.id = vi.image_vehicle_id
-JOIN carts c ON ci.cart_id = c.cart_id
-WHERE c.user_id = ? AND v.status = 'ACTIVE';
-```
-
-#### 4. Order History Query
-```sql
--- Get user's order history with items
-SELECT o.order_id, o.total_price, o.orderd_at, o.status,
-       oi.vehicle_id, oi.price as item_price, oi.quantity,
-       v.title as vehicle_title
-FROM orders o
-JOIN order_items oi ON o.order_id = oi.order_id
-JOIN vehicles v ON oi.vehicle_id = v.id
-WHERE o.user_id = ?
-ORDER BY o.orderd_at DESC;
-```
-
-### Indexing Strategy
-
-#### Primary Indexes
-- **Primary Keys**: All tables have auto-incrementing primary keys
-- **Foreign Keys**: Indexed for join performance
-- **Unique Constraints**: Email, model names, wishlist items
-
-#### Performance Indexes
-```sql
--- Composite indexes for common query patterns
-CREATE INDEX idx_vehicle_status_featured ON vehicles(status, is_featured);
-CREATE INDEX idx_vehicle_status_popular ON vehicles(status, is_popular);
-CREATE INDEX idx_vehicle_make_status ON vehicles(make_id, status);
-CREATE INDEX idx_order_user_status ON orders(user_id, status);
-CREATE INDEX idx_cart_user_vehicle ON cart_items(cart_id, vehicle_id);
-```
-
-#### Query Optimization Tips
-1. **Use Prepared Statements**: All queries use prepared statements for security and performance
-2. **Limit Results**: Use LIMIT clauses for pagination
-3. **Selective Columns**: Only select needed columns
-4. **Efficient Joins**: Use appropriate JOIN types (INNER vs LEFT)
-5. **Index Usage**: Ensure queries use indexed columns
-
----
-
-## 🔄 Data Flow Patterns
-
-### E-commerce Transaction Flow
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant C as Cart
-    participant O as Order
-    participant V as Vehicle
-    
-    U->>C: Add to Cart
-    C->>V: Check Stock
-    V-->>C: Stock Available
-    C->>C: Create Cart Item
-    
-    U->>O: Checkout
-    O->>C: Get Cart Items
-    C-->>O: Cart Contents
-    O->>O: Create Order
-    O->>V: Update Stock
-    O->>C: Clear Cart
-    O-->>U: Order Confirmation
-```
-
-### Inventory Management Flow
-
-```mermaid
-graph TD
-    A[Vehicle Added] --> B[Stock = 1]
-    B --> C[Available for Purchase]
-    C --> D[Added to Cart]
-    D --> E[Stock Check]
-    E --> F{Stock > 0?}
-    F -->|Yes| G[Allow Purchase]
-    F -->|No| H[Out of Stock]
-    G --> I[Decrease Stock]
-    I --> J{Stock = 0?}
-    J -->|Yes| K[Mark as Sold]
-    J -->|No| L[Update Status]
-```
-
----
-
-## 🛡️ Data Integrity & Constraints
-
-### Foreign Key Constraints
-- **Cascade Delete**: User deletion removes addresses, orders, cart, wishlist
-- **Restrict Delete**: Vehicles cannot be deleted if in orders
-- **Set Null**: Make/model deletion sets vehicle references to NULL
-
-### Data Validation
-- **Email Format**: Valid email addresses only
-- **Price Range**: Positive decimal values
-- **Stock Quantity**: Non-negative integers
-- **Status Values**: Enumerated status options only
-
-### Transaction Management
-```php
-// Example transaction for order processing
-function processOrder($connection, $user_id, $cart_items) {
-    $connection->begin_transaction();
-    
-    try {
-        // Create order
-        $order_id = createOrder($connection, $user_id, $total);
-        
-        // Add order items
-        foreach ($cart_items as $item) {
-            addOrderItem($connection, $order_id, $item);
-            updateVehicleStock($connection, $item['vehicle_id'], -$item['quantity']);
-        }
-        
-        // Clear cart
-        clearUserCart($connection, $user_id);
-        
-        $connection->commit();
-        return $order_id;
-    } catch (Exception $e) {
-        $connection->rollback();
-        throw $e;
-    }
-}
-```
-
----
-
-## 📈 Performance Monitoring
-
-### Key Performance Indicators
-1. **Query Response Time**: Monitor slow queries
-2. **Index Usage**: Ensure indexes are being used
-3. **Connection Pool**: Monitor database connections
-4. **Lock Contention**: Watch for table locks
-
-### Optimization Recommendations
-1. **Regular Maintenance**: Analyze and optimize tables
-2. **Query Caching**: Cache frequently accessed data
-3. **Connection Pooling**: Reuse database connections
-4. **Read Replicas**: Use for heavy read operations
-
----
-
-## 🔧 Database Maintenance
-
-### Backup Strategy
 ```bash
-# Daily backup script
-mysqldump -u username -p auraedition > backup_$(date +%Y%m%d).sql
-
-# Restore from backup
-mysql -u username -p auraedition < backup_20231201.sql
+mysql -u root -p < database/schema.sql   # creates DB + tables
+mysql -u root -p < database/seed.sql     # optional demo data
 ```
 
-### Maintenance Queries
+`schema.sql` creates the database if it does not exist and is safe to re-run only against a
+fresh database (it uses `CREATE TABLE` without `IF NOT EXISTS`). Demo logins created by
+`seed.sql`: see [Default Credentials](../README.md#default-credentials).
+
+## Entity relationships
+
+```
+users 1--1 user_addresses        (address_user_id -> users.id)
+users 1--N orders                (orders.user_id -> users.id)
+users 1--1 carts                 (carts.user_id -> users.id)
+users 1--N wishlist_items        (user_id -> users.id)
+
+makes 1--N model                 (model.model_make_id -> makes.make_id)
+makes 1--N vehicles              (vehicles.make_id -> makes.make_id)
+model 1--N vehicles              (vehicles.model_id -> model.model_id)
+
+vehicles 1--N vehicle_images     (image_vehicle_id -> vehicles.id)
+vehicles 1--N cart_items         (vehicle_id -> vehicles.id)
+vehicles 1--N order_items        (vehicle_id -> vehicles.id)
+vehicles 1--N wishlist_items     (vehicle_id -> vehicles.id)
+
+carts 1--N cart_items            (cart_id -> carts.cart_id)
+orders 1--N order_items          (order_id -> orders.order_id)
+```
+
+All foreign keys use the default `RESTRICT` rule. The application deletes child rows itself
+before deleting parents (e.g. `deleteProductProcess.php` removes `vehicle_images` first,
+then the vehicle). Keep this pattern when adding new parent/child tables.
+
+## Tables
+
+### users
+
+| Column | Type | Null | Default | Notes |
+|---|---|---|---|---|
+| id | INT | NO | auto_increment | PK |
+| fname | VARCHAR(45) | NO | | |
+| lname | VARCHAR(45) | NO | | |
+| email | VARCHAR(255) | NO | | UNIQUE KEY `UNIQUE` |
+| hashed_password | VARCHAR(255) | NO | | bcrypt via `password_hash()` |
+| role | ENUM('user','admin') | NO | 'user' | |
+| registerd_date | DATETIME | YES | NULL | [sic] column name |
+| password_reset_token | VARCHAR(255) | YES | NULL | |
+| password_reset_expires | DATETIME | YES | NULL | |
+
+Note: there is no `created_at`; the misspelled `registerd_date` is the registration timestamp.
+Do not rename without updating `auth/registerProcess.php`, admin user queries, and seed data.
+
+### user_addresses
+
+| Column | Type | Null | Default |
+|---|---|---|---|
+| address_id | INT | NO | auto_increment (PK) |
+| address_user_id | INT | NO | |
+| address | VARCHAR(255) | YES | NULL |
+| city | VARCHAR(45) | YES | NULL |
+| state | VARCHAR(45) | YES | NULL |
+| country | VARCHAR(45) | YES | NULL |
+
+A user may have multiple rows; checkout requires at least one (`hasUserAddresses()`).
+
+### makes
+
+| Column | Type | Null | Default |
+|---|---|---|---|
+| make_id | INT | NO | auto_increment (PK) |
+| make_name | VARCHAR(100) | NO | |
+| make_image | VARCHAR(255) | YES | '/Projects/AuraEdition/products/img/makes1.jpg' |
+
+### model
+
+Singular table name. Do not rename without updating every query in
+`includes/functions.php` (`addMake/addModel/deleteMake/deleteModel/getModels`,
+`get_filter_values`) and `admin/process/*`.
+
+| Column | Type | Null | Default |
+|---|---|---|---|
+| model_id | INT | NO | auto_increment (PK) |
+| model_name | VARCHAR(100) | NO | |
+| model_make_id | INT | NO | FK -> makes.make_id |
+
+### vehicles
+
+Core product table.
+
+| Column | Type | Null | Default | Notes |
+|---|---|---|---|---|
+| id | INT | NO | auto_increment | PK |
+| title | VARCHAR(100) | NO | | |
+| price | DECIMAL(10,2) | NO | | |
+| make_id | INT | NO | | FK -> makes.make_id |
+| model_id | INT | NO | | FK -> model.model_id |
+| description | TEXT | NO | | |
+| stock | INT | NO | | |
+| created_at | DATETIME | NO | CURRENT_TIMESTAMP | |
+| is_featured | TINYINT | YES | '0' | home page section |
+| is_popular | TINYINT | YES | '0' | home page section |
+| status | ENUM('ACTIVE','INACTIVE') | NO | 'ACTIVE' | most queries filter ACTIVE |
+
+Indexes: PRIMARY(id), KEY make_id(make_id), KEY model_id(model_id).
+There are no indexes on `status`, `is_featured`, or `price`.
+
+### vehicle_images
+
+| Column | Type | Null | Default | Notes |
+|---|---|---|---|---|
+| image_id | INT | NO | auto_increment | PK |
+| image_vehicle_id | INT | NO | | FK -> vehicles.id |
+| image_path | VARCHAR(255) | NO | | full URL path under BASE_URL |
+| is_primary | TINYINT | YES | '0' | written by seeds/admin; queries just take LIMIT 1 |
+| uploaded_at | TIMESTAMP | YES | NULL | |
+
+`image_path` values are absolute URL paths such as
+`/Projects/AuraEdition/products/img/product_1_....jpg`. Code fallbacks reference
+`products/img/default.jpg` and `assets/images/default-car.jpg`, neither of which exists on
+disk yet - add those files or every imageless listing shows a broken image.
+
+### carts / cart_items
+
+One row per user in `carts` (no unique constraint enforced; `cartExists()` checks in code).
+Quantities live in `cart_items`.
+
+```
+carts:       cart_id INT AI PK, user_id INT NOT NULL (FK -> users.id), KEY cart_user_idx(user_id)
+cart_items:  cart_item_id INT AI PK, cart_id INT NOT NULL (FK -> carts.cart_id),
+             vehicle_id INT NOT NULL (FK -> vehicles.id), quantity INT NOT NULL
+             KEY vehicle_idx(vehicle_id), KEY cart_id_idx(cart_id)
+```
+
+Cart handlers create the cart lazily (`createCart()` after `cartExists()` returns false).
+Buy-now ("order now") bypasses carts entirely and stores items in `$_SESSION['vehicles']`.
+
+### orders / order_items
+
+```
+orders:       order_id INT AI PK, user_id INT NOT NULL (FK -> users.id),
+              total_price DECIMAL(10,2) NOT NULL,
+              status ENUM('pending','shipped','delivered') NULL DEFAULT 'pending',
+              orderd_at DATETIME NULL DEFAULT NULL    -- [sic] column name
+              KEY user_id_idx(user_id)
+
+order_items:  id INT AI PK, order_id INT NOT NULL (FK -> orders.order_id),
+              vehicle_id INT NOT NULL (FK -> vehicles.id),
+              quantity INT NOT NULL, price DECIMAL(10,2) NOT NULL
+              KEY vehicle_id_idx(vehicle_id), KEY order_id_idx(order_id)
+```
+
+`order_items.price` snapshots the unit price at purchase time. Statuses are exactly
+pending/shipped/delivered - no processing/cancelled states exist.
+
+### wishlist_items
+
+```
+wishlist_items: id INT AI PK, user_id INT NOT NULL (FK -> users.id),
+                vehicle_id INT NOT NULL DEFAULT '0' (FK -> vehicles.id)
+                KEY wishlist_user_id(user_id), KEY wishlist_vehicle_id(vehicle_id)
+```
+
+No timestamp column, no uniqueness constraint on (user_id, vehicle_id) - duplicates are
+possible at the DB level.
+
+## Query patterns used by the app
+
+These are the actual queries from `includes/functions.php` (simplified where noted):
+
 ```sql
--- Analyze table performance
-ANALYZE TABLE vehicles, orders, users;
+-- get_featured_vehicles($connection, $limit): home page "Featured"
+SELECT id, title, price FROM vehicles
+WHERE is_featured = 1 AND status = 'ACTIVE' LIMIT 3;
 
--- Optimize table structure
-OPTIMIZE TABLE vehicles, orders, users;
+-- getAllMakes(): categories page with per-make listing counts
+SELECT m.make_id, m.make_name, m.make_image, COUNT(v.id) AS listings_count
+FROM makes m LEFT JOIN vehicles v ON m.make_id = v.make_id
+GROUP BY m.make_id, m.make_name, m.make_image;
 
--- Check table status
-SHOW TABLE STATUS LIKE 'vehicles';
+-- getCartItemsByUserId($connection, $user_id): cart page
+SELECT ci.cart_item_id, ci.vehicle_id, ci.quantity, v.title, v.price,
+       COALESCE((SELECT vi.image_path FROM vehicle_images vi
+                 WHERE vi.image_vehicle_id = v.id LIMIT 1),
+                '/Projects/AuraEdition/assets/images/default-car.jpg') AS image_path
+FROM cart_items ci
+JOIN carts c ON ci.cart_id = c.cart_id
+JOIN vehicles v ON ci.vehicle_id = v.id
+WHERE c.user_id = ?;
+
+-- fetchOrdersByUserId($connection, $user_id): purchased history
+SELECT ... FROM order_items
+WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?);
+
+-- getUserWithAddress(): login/session hydration and checkout
+SELECT u.*, ua.address, ua.city, ua.state, ua.country
+FROM users u LEFT JOIN user_addresses ua ON u.id = ua.address_user_id
+WHERE u.id = ?;
+
+-- admin dashboard revenue
+SELECT SUM(total_price) AS total_revenue FROM orders;
 ```
 
----
+Pagination everywhere is `LIMIT ? OFFSET ?` driven by page-size constants in the callers.
 
-This comprehensive database design ensures data integrity, performance, and scalability while supporting all e-commerce functionality of the AuraEdition platform. 
+## Known dead code touching the schema
+
+`fetchUserById()` in `includes/functions.php` selects `zip` and `phone` columns from
+`users` that do not exist in the schema. The function has no callers anywhere; it will
+fatal if ever invoked. Delete it rather than adding the columns.
