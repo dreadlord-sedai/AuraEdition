@@ -10,6 +10,9 @@
 > Modern, secure, and scalable. Built for car enthusiasts, dealers, and admins.
 
 ## Screenshots
+
+<img src="thumbnail.png" alt="AuraEdition Thumbnail" width="700">
+
 <details>
   <summary>Click to view screenshots</summary>
   
@@ -277,8 +280,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 For any questions or feedback, feel free to reach out:
 
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
-- **GitHub**: [your-github-username](https://github.com/your-github-username)
+- **Email**: [dahamifabbio@gmail.com](mailto:dahamifabbio@gmail.com)
+- **GitHub**: [dreadlord_sedai](https://github.com/dreadlord_sedai)
 
 ---
 
@@ -355,9 +358,3 @@ ini_set('display_errors', 1);
    - Use dedicated database user with minimal privileges
    - Regular backups and monitoring
 
----
-
-<div align="center">
-  <p>Made with ❤️ by the AuraEdition Team</p>
-  <p><em>Driving the future of luxury vehicle commerce</em></p>
-</div>
