@@ -1,10 +1,5 @@
 # AuraEdition 🚗✨
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PHP](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://www.php.net/)
-[![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-blue.svg)](https://www.mysql.com/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.1.8-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
-
 > **A premium e-commerce platform for luxury vehicles.**
 > 
 > Modern, secure, and scalable. Built for car enthusiasts, dealers, and admins.
